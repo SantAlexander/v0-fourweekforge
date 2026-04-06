@@ -1,6 +1,9 @@
-import { neon } from '@neondatabase/serverless'
+import { neon, neonConfig } from '@neondatabase/serverless'
 
-// Use non-pooling URL for Neon driver with Supabase, or fall back to other options
+// Configure Neon for serverless environment
+neonConfig.fetchConnectionCache = true
+
+// Use non-pooling URL for direct connection
 const databaseUrl = 
   process.env.DATABASE_URL || 
   process.env.POSTGRES_URL_NON_POOLING || 
@@ -10,7 +13,24 @@ if (!databaseUrl) {
   throw new Error('DATABASE_URL, POSTGRES_URL_NON_POOLING, or POSTGRES_URL environment variable is not set')
 }
 
-export const sql = neon(databaseUrl)
+// Transform Supabase pooler URL to direct connection if needed
+function getDirectConnectionUrl(url: string): string {
+  // If it's a Supabase pooler URL, we need to use the direct host
+  if (url.includes('pooler.supabase.com')) {
+    // Extract project ref from the URL
+    // Format: postgresql://user:pass@aws-0-region.pooler.supabase.com:port/postgres
+    // Convert to: postgresql://user:pass@db.PROJECT_REF.supabase.co:5432/postgres
+    const projectRef = process.env.SUPABASE_URL?.match(/https:\/\/([^.]+)\.supabase/)?.[1]
+    if (projectRef) {
+      return url
+        .replace(/aws-0-[^.]+\.pooler\.supabase\.com/, `db.${projectRef}.supabase.co`)
+        .replace(/:6543/, ':5432')
+    }
+  }
+  return url
+}
+
+export const sql = neon(getDirectConnectionUrl(databaseUrl))
 
 // Types
 export interface User {
