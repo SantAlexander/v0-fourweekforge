@@ -1,9 +1,13 @@
 import { neon } from '@neondatabase/serverless'
 
-const databaseUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL
+// Use non-pooling URL for Neon driver with Supabase, or fall back to other options
+const databaseUrl = 
+  process.env.DATABASE_URL || 
+  process.env.POSTGRES_URL_NON_POOLING || 
+  process.env.POSTGRES_URL
 
 if (!databaseUrl) {
-  throw new Error('DATABASE_URL or POSTGRES_URL environment variable is not set')
+  throw new Error('DATABASE_URL, POSTGRES_URL_NON_POOLING, or POSTGRES_URL environment variable is not set')
 }
 
 export const sql = neon(databaseUrl)
