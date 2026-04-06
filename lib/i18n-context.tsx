@@ -260,7 +260,7 @@ const ru: Record<string, string> = {
   
   'planner.chooseHobbyTitle': 'Выбери своё хобби',
   'planner.chooseHobbySubtitle': 'Выбери из популярных или создай своё',
-  'planner.customHobby': 'Или своё хобби',
+  'planner.customHobby': 'Или с��оё хобби',
   'planner.customHobbyLabel': 'Название хобби',
   'planner.customHobbyPlaceholder': 'напр., Шахматы, Оригами, Садоводство...',
   
@@ -326,14 +326,12 @@ const translations: Record<Locale, Record<string, string>> = { en, ru }
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>('en')
-  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     const saved = localStorage.getItem('locale') as Locale
     if (saved && (saved === 'en' || saved === 'ru')) {
       setLocaleState(saved)
     }
-    setMounted(true)
   }, [])
 
   const setLocale = (newLocale: Locale) => {
@@ -343,10 +341,6 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   const t = (key: string): string => {
     return translations[locale][key] || key
-  }
-
-  if (!mounted) {
-    return <>{children}</>
   }
 
   return (
