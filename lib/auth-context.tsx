@@ -14,8 +14,8 @@ interface User {
 interface AuthContextType {
   user: User | null
   isLoading: boolean
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>
-  register: (email: string, name: string, password: string) => Promise<{ success: boolean; error?: string }>
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string; message?: string }>
+  register: (email: string, name: string, password: string) => Promise<{ success: boolean; error?: string; message?: string }>
   logout: () => Promise<void>
   refresh: () => void
 }
@@ -65,12 +65,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
       const data = await res.json()
       if (!res.ok) {
-        return { success: false, error: data.error || 'Registration failed' }
+        return { success: false, error: data.error || 'REGISTRATION_FAILED', message: data.message }
       }
       await mutate()
       return { success: true }
     } catch {
-      return { success: false, error: 'Network error' }
+      return { success: false, error: 'DATABASE_ERROR', message: 'Network error' }
     }
   }, [mutate])
 

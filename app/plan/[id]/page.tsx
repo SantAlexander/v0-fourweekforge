@@ -28,6 +28,7 @@ import {
 import { toast } from 'sonner'
 import { getHobbyIcon } from '@/lib/hobby-icons'
 import { PlanWithTasks } from '@/lib/db'
+import { ExportDropdown } from '@/components/export-dropdown'
 import { ArrowLeft, Calendar, Target, Trash2, Pause, Play, CheckCircle2 } from 'lucide-react'
 
 const fetcher = (url: string) => fetch(url).then(res => res.json())
@@ -202,6 +203,7 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
                   </div>
                 </div>
                 <div className="flex gap-2">
+                  <ExportDropdown planId={id} planName={plan.hobby_name} />
                   {plan.status === 'active' && (
                     <Button variant="outline" size="sm" onClick={() => handleStatusChange('paused')}>
                       <Pause className="mr-2 h-4 w-4" />
