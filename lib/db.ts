@@ -1,7 +1,4 @@
-import { neon, neonConfig } from '@neondatabase/serverless'
-
-// Configure Neon for serverless environment
-neonConfig.fetchConnectionCache = true
+import { neon } from '@neondatabase/serverless'
 
 // Use non-pooling URL for direct connection
 const databaseUrl = 
