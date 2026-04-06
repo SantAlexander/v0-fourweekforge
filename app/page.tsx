@@ -1,5 +1,8 @@
+'use client'
+
 import Link from 'next/link'
 import { Header } from '@/components/header'
+import { useI18n } from '@/lib/i18n-context'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { 
@@ -17,39 +20,47 @@ import {
   ArrowRight
 } from 'lucide-react'
 
-const features = [
-  {
-    icon: Target,
-    title: 'Set Clear Goals',
-    description: 'Define what you want to achieve with your new hobby in just 4 weeks.',
-  },
-  {
-    icon: Calendar,
-    title: 'Weekly Milestones',
-    description: 'Break down your learning into manageable weekly tasks and objectives.',
-  },
-  {
-    icon: CheckCircle2,
-    title: 'Track Progress',
-    description: 'Check off completed tasks and watch your progress grow day by day.',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Stay Motivated',
-    description: 'Visual progress tracking keeps you engaged and motivated throughout.',
-  },
-]
-
-const hobbies = [
-  { icon: Guitar, name: 'Guitar', color: 'bg-chart-1/10 text-chart-1' },
-  { icon: Palette, name: 'Painting', color: 'bg-chart-2/10 text-chart-2' },
-  { icon: Camera, name: 'Photography', color: 'bg-chart-3/10 text-chart-3' },
-  { icon: Code, name: 'Coding', color: 'bg-chart-4/10 text-chart-4' },
-  { icon: ChefHat, name: 'Cooking', color: 'bg-chart-5/10 text-chart-5' },
-  { icon: Pencil, name: 'Drawing', color: 'bg-chart-1/10 text-chart-1' },
+const featureIcons = [Target, Calendar, CheckCircle2, TrendingUp]
+const hobbyData = [
+  { icon: Guitar, key: 'guitar', color: 'bg-chart-1/10 text-chart-1' },
+  { icon: Palette, key: 'painting', color: 'bg-chart-2/10 text-chart-2' },
+  { icon: Camera, key: 'photography', color: 'bg-chart-3/10 text-chart-3' },
+  { icon: Code, key: 'coding', color: 'bg-chart-4/10 text-chart-4' },
+  { icon: ChefHat, key: 'cooking', color: 'bg-chart-5/10 text-chart-5' },
+  { icon: Pencil, key: 'drawing', color: 'bg-chart-1/10 text-chart-1' },
 ]
 
 export default function HomePage() {
+  const { t } = useI18n()
+  
+  const features = [
+    {
+      icon: featureIcons[0],
+      title: t('landing.feature1.title'),
+      description: t('landing.feature1.description'),
+    },
+    {
+      icon: featureIcons[1],
+      title: t('landing.feature2.title'),
+      description: t('landing.feature2.description'),
+    },
+    {
+      icon: featureIcons[2],
+      title: t('landing.feature3.title'),
+      description: t('landing.feature3.description'),
+    },
+    {
+      icon: featureIcons[3],
+      title: t('landing.feature4.title'),
+      description: t('landing.feature4.description'),
+    },
+  ]
+
+  const hobbies = hobbyData.map(h => ({
+    ...h,
+    name: t(`hobby.${h.key}`),
+  }))
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -62,25 +73,24 @@ export default function HomePage() {
             <div className="mx-auto max-w-3xl text-center">
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary">
                 <Flame className="h-4 w-4" />
-                <span>Master any hobby in just 4 weeks</span>
+                <span>{t('landing.badge')}</span>
               </div>
               <h1 className="mb-6 text-balance text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-                Turn Your Passion Into{' '}
-                <span className="text-primary">Progress</span>
+                {t('landing.title')}{' '}
+                <span className="text-primary">{t('landing.titleHighlight')}</span>
               </h1>
               <p className="mb-8 text-pretty text-lg text-muted-foreground md:text-xl">
-                FourWeekForge helps you create structured learning plans for any hobby. 
-                Set weekly goals, track your progress, and transform curiosity into skill.
+                {t('landing.subtitle')}
               </p>
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <Button asChild size="lg" className="w-full sm:w-auto">
                   <Link href="/register">
-                    Start Your Journey
+                    {t('landing.cta.start')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
-                  <Link href="/login">Sign In</Link>
+                  <Link href="/login">{t('landing.cta.signin')}</Link>
                 </Button>
               </div>
             </div>
@@ -91,9 +101,9 @@ export default function HomePage() {
         <section className="border-b border-border py-20">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-12 text-center">
-              <h2 className="mb-4 text-3xl font-bold tracking-tight">How It Works</h2>
+              <h2 className="mb-4 text-3xl font-bold tracking-tight">{t('landing.howItWorks')}</h2>
               <p className="text-muted-foreground">
-                Four simple steps to start mastering your new hobby
+                {t('landing.howItWorksSubtitle')}
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -121,14 +131,14 @@ export default function HomePage() {
         <section className="border-b border-border py-20">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-12 text-center">
-              <h2 className="mb-4 text-3xl font-bold tracking-tight">Popular Hobbies</h2>
+              <h2 className="mb-4 text-3xl font-bold tracking-tight">{t('landing.popularHobbies')}</h2>
               <p className="text-muted-foreground">
-                Choose from our curated list or create your own custom hobby plan
+                {t('landing.popularHobbiesSubtitle')}
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
               {hobbies.map((hobby) => (
-                <Card key={hobby.name} className="group cursor-pointer transition-all hover:shadow-md hover:border-primary/30">
+                <Card key={hobby.key} className="group cursor-pointer transition-all hover:shadow-md hover:border-primary/30">
                   <CardContent className="flex flex-col items-center justify-center p-6">
                     <div className={`mb-3 flex h-14 w-14 items-center justify-center rounded-xl ${hobby.color} transition-transform group-hover:scale-110`}>
                       <hobby.icon className="h-7 w-7" />
@@ -139,7 +149,7 @@ export default function HomePage() {
               ))}
             </div>
             <p className="mt-6 text-center text-sm text-muted-foreground">
-              And many more... or create your own custom hobby!
+              {t('landing.moreHobbies')}
             </p>
           </div>
         </section>
@@ -153,15 +163,14 @@ export default function HomePage() {
                   <Flame className="h-8 w-8" />
                 </div>
                 <h2 className="mb-4 text-3xl font-bold tracking-tight">
-                  Ready to Forge Your Skills?
+                  {t('landing.ctaTitle')}
                 </h2>
                 <p className="mb-8 max-w-lg text-muted-foreground">
-                  Join thousands of learners who have transformed their hobbies into skills. 
-                  Start your 4-week journey today.
+                  {t('landing.ctaSubtitle')}
                 </p>
                 <Button asChild size="lg">
                   <Link href="/register">
-                    Create Free Account
+                    {t('landing.ctaButton')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
@@ -182,7 +191,7 @@ export default function HomePage() {
               <span className="font-semibold">FourWeekForge</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Master any hobby in 4 weeks. Built with passion.
+              {t('landing.footer')}
             </p>
           </div>
         </div>

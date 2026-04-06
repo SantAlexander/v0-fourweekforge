@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import useSWR from 'swr'
 import { format, addWeeks, isWithinInterval, startOfDay } from 'date-fns'
 import { useAuth } from '@/lib/auth-context'
+import { useI18n } from '@/lib/i18n-context'
 import { Header } from '@/components/header'
 import { WeekTasks } from '@/components/week-tasks'
 import { Button } from '@/components/ui/button'
@@ -35,6 +36,7 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
   const { id } = use(params)
   const router = useRouter()
   const { user, isLoading: authLoading } = useAuth()
+  const { t } = useI18n()
   
   const { data, isLoading, mutate } = useSWR<{ plan: PlanWithTasks }>(
     user ? `/api/plans/${id}` : null,
@@ -60,7 +62,7 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
       mutate()
       
       if (isCompleted) {
-        toast.success('Task completed!')
+        toast.success(t('toast.taskCompleted'))
       }
     } catch (error) {
       toast.error('Failed to update task')
@@ -79,7 +81,14 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
       if (!response.ok) throw new Error('Failed to update status')
 
       mutate()
-      toast.success(`Plan ${newStatus === 'paused' ? 'paused' : newStatus === 'completed' ? 'completed' : 'resumed'}!`)
+      
+      if (newStatus === 'paused') {
+        toast.success(t('toast.planPaused'))
+      } else if (newStatus === 'completed') {
+        toast.success(t('toast.planCompleted'))
+      } else {
+        toast.success(t('toast.planResumed'))
+      }
     } catch {
       toast.error('Failed to update status')
     }
@@ -91,7 +100,7 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
       
       if (!response.ok) throw new Error('Failed to delete plan')
 
-      toast.success('Plan deleted')
+      toast.success(t('toast.planDeleted'))
       router.push('/dashboard')
     } catch {
       toast.error('Failed to delete plan')
@@ -120,14 +129,14 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
         <main className="flex-1 flex items-center justify-center">
           <Card className="max-w-md">
             <CardContent className="flex flex-col items-center py-12 text-center">
-              <h2 className="mb-2 text-lg font-semibold">Plan Not Found</h2>
+              <h2 className="mb-2 text-lg font-semibold">{t('plan.notFound')}</h2>
               <p className="mb-6 text-muted-foreground">
-                This plan may have been deleted or you don&apos;t have access to it.
+                {t('plan.notFoundSubtitle')}
               </p>
               <Button asChild>
                 <Link href="/dashboard">
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back to Dashboard
+                  {t('plan.backToDashboard')}
                 </Link>
               </Button>
             </CardContent>
@@ -170,7 +179,7 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
           <Button variant="ghost" asChild className="mb-6">
             <Link href="/dashboard">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Dashboard
+              {t('plan.backToDashboard')}
             </Link>
           </Button>
 
@@ -196,19 +205,19 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
                   {plan.status === 'active' && (
                     <Button variant="outline" size="sm" onClick={() => handleStatusChange('paused')}>
                       <Pause className="mr-2 h-4 w-4" />
-                      Pause
+                      {t('plan.pause')}
                     </Button>
                   )}
                   {plan.status === 'paused' && (
                     <Button variant="outline" size="sm" onClick={() => handleStatusChange('active')}>
                       <Play className="mr-2 h-4 w-4" />
-                      Resume
+                      {t('plan.resume')}
                     </Button>
                   )}
                   {plan.status !== 'completed' && plan.progress === 100 && (
                     <Button size="sm" onClick={() => handleStatusChange('completed')}>
                       <CheckCircle2 className="mr-2 h-4 w-4" />
-                      Mark Complete
+                      {t('plan.markComplete')}
                     </Button>
                   )}
                   <AlertDialog>
@@ -219,15 +228,15 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Plan?</AlertDialogTitle>
+                        <AlertDialogTitle>{t('plan.deletePlan')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                          This will permanently delete your {plan.hobby_name} plan and all its tasks. This action cannot be undone.
+                          {t('plan.deleteConfirm')}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{t('plan.deleteCancel')}</AlertDialogCancel>
                         <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                          Delete
+                          {t('plan.delete')}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -242,7 +251,7 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
                     <Calendar className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Duration</p>
+                    <p className="text-sm text-muted-foreground">{t('plan.duration')}</p>
                     <p className="font-medium">
                       {format(startDate, 'MMM d')} - {format(endDate, 'MMM d, yyyy')}
                     </p>
@@ -253,13 +262,13 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
                     <Target className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Current Week</p>
-                    <p className="font-medium">Week {currentWeek} of 4</p>
+                    <p className="text-sm text-muted-foreground">{t('plan.currentWeek')}</p>
+                    <p className="font-medium">{t('planner.week')} {currentWeek} {t('plan.weekOf')}</p>
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Overall Progress</span>
+                    <span className="text-muted-foreground">{t('plan.overallProgress')}</span>
                     <span className="font-medium">{plan.progress}%</span>
                   </div>
                   <Progress value={plan.progress} className="h-3" />

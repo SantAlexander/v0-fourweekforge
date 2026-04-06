@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { format } from 'date-fns'
+import { useI18n } from '@/lib/i18n-context'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
@@ -14,6 +15,7 @@ interface PlanCardProps {
 }
 
 export function PlanCard({ plan }: PlanCardProps) {
+  const { t } = useI18n()
   const Icon = getHobbyIcon(plan.hobby_icon)
   const statusColors = {
     active: 'bg-chart-2/10 text-chart-2 border-chart-2/20',
@@ -39,7 +41,7 @@ export function PlanCard({ plan }: PlanCardProps) {
                 </CardTitle>
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
                   <Calendar className="h-3.5 w-3.5" />
-                  <span>Started {format(new Date(plan.start_date), 'MMM d, yyyy')}</span>
+                  <span>{format(new Date(plan.start_date), 'MMM d, yyyy')}</span>
                 </div>
               </div>
             </div>
@@ -53,7 +55,7 @@ export function PlanCard({ plan }: PlanCardProps) {
           
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Progress</span>
+              <span className="text-muted-foreground">{t('planCard.progress')}</span>
               <span className="font-medium">{plan.progress}%</span>
             </div>
             <Progress value={plan.progress} className="h-2" />
@@ -62,12 +64,13 @@ export function PlanCard({ plan }: PlanCardProps) {
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1.5">
               <CheckCircle2 className="h-4 w-4 text-chart-2" />
-              <span>{completedTasks} completed</span>
+              <span>{completedTasks}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Circle className="h-4 w-4" />
-              <span>{totalTasks - completedTasks} remaining</span>
+              <span>{totalTasks - completedTasks}</span>
             </div>
+            <span>{t('planCard.tasks')}</span>
           </div>
         </CardContent>
       </Card>

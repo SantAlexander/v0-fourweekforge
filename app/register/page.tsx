@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/auth-context'
+import { useI18n } from '@/lib/i18n-context'
 import { Header } from '@/components/header'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -16,6 +17,7 @@ import { Flame } from 'lucide-react'
 export default function RegisterPage() {
   const router = useRouter()
   const { register } = useAuth()
+  const { t } = useI18n()
   const [isLoading, setIsLoading] = useState(false)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -28,7 +30,7 @@ export default function RegisterPage() {
     const result = await register(email, name, password)
     
     if (result.success) {
-      toast.success('Account created successfully!')
+      toast.success(t('toast.accountCreated'))
       router.push('/dashboard')
     } else {
       toast.error(result.error || 'Registration failed')
@@ -46,19 +48,19 @@ export default function RegisterPage() {
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
               <Flame className="h-6 w-6 text-primary-foreground" />
             </div>
-            <CardTitle className="text-2xl">Create Your Account</CardTitle>
+            <CardTitle className="text-2xl">{t('auth.createAccount')}</CardTitle>
             <CardDescription>
-              Start your 4-week journey to master any hobby
+              {t('auth.createAccountSubtitle')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">{t('auth.name')}</Label>
                 <Input
                   id="name"
                   type="text"
-                  placeholder="Your name"
+                  placeholder={t('auth.namePlaceholder')}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -66,11 +68,11 @@ export default function RegisterPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t('auth.email')}</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder={t('auth.emailPlaceholder')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -78,11 +80,11 @@ export default function RegisterPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t('auth.password')}</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="At least 6 characters"
+                  placeholder={t('auth.passwordHint')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -92,13 +94,13 @@ export default function RegisterPage() {
               </div>
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? <Spinner className="mr-2" /> : null}
-                Create Account
+                {t('auth.createAccountButton')}
               </Button>
             </form>
             <div className="mt-6 text-center text-sm">
-              <span className="text-muted-foreground">Already have an account? </span>
+              <span className="text-muted-foreground">{t('auth.hasAccount')} </span>
               <Link href="/login" className="text-primary hover:underline font-medium">
-                Sign in
+                {t('auth.signIn')}
               </Link>
             </div>
           </CardContent>

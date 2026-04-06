@@ -2,6 +2,8 @@
 
 import Link from 'next/link'
 import { useAuth } from '@/lib/auth-context'
+import { useI18n } from '@/lib/i18n-context'
+import { LanguageSwitcher } from '@/components/language-switcher'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -14,6 +16,7 @@ import { Flame, User, LogOut, LayoutDashboard, Plus } from 'lucide-react'
 
 export function Header() {
   const { user, logout, isLoading } = useAuth()
+  const { t } = useI18n()
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -25,7 +28,9 @@ export function Header() {
           <span className="text-xl font-bold tracking-tight">FourWeekForge</span>
         </Link>
 
-        <nav className="flex items-center gap-4">
+        <nav className="flex items-center gap-2">
+          <LanguageSwitcher />
+          
           {isLoading ? (
             <div className="h-9 w-20 animate-pulse rounded-md bg-muted" />
           ) : user ? (
@@ -33,13 +38,13 @@ export function Header() {
               <Button asChild variant="ghost" size="sm">
                 <Link href="/dashboard">
                   <LayoutDashboard className="mr-2 h-4 w-4" />
-                  Dashboard
+                  {t('header.dashboard')}
                 </Link>
               </Button>
               <Button asChild size="sm">
                 <Link href="/planner">
                   <Plus className="mr-2 h-4 w-4" />
-                  New Plan
+                  {t('header.newPlan')}
                 </Link>
               </Button>
               <DropdownMenu>
@@ -57,13 +62,13 @@ export function Header() {
                   <DropdownMenuItem asChild>
                     <Link href="/dashboard">
                       <LayoutDashboard className="mr-2 h-4 w-4" />
-                      Dashboard
+                      {t('header.dashboard')}
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={logout} className="text-destructive">
                     <LogOut className="mr-2 h-4 w-4" />
-                    Logout
+                    {t('header.logout')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -71,10 +76,10 @@ export function Header() {
           ) : (
             <>
               <Button asChild variant="ghost" size="sm">
-                <Link href="/login">Login</Link>
+                <Link href="/login">{t('header.login')}</Link>
               </Button>
               <Button asChild size="sm">
-                <Link href="/register">Get Started</Link>
+                <Link href="/register">{t('header.getStarted')}</Link>
               </Button>
             </>
           )}

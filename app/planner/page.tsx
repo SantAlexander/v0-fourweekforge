@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import useSWR from 'swr'
 import { useAuth } from '@/lib/auth-context'
+import { useI18n } from '@/lib/i18n-context'
 import { Header } from '@/components/header'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -28,6 +29,7 @@ const fetcher = (url: string) => fetch(url).then(res => res.json())
 export default function PlannerPage() {
   const router = useRouter()
   const { user, isLoading: authLoading } = useAuth()
+  const { t } = useI18n()
   const [step, setStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   
@@ -110,7 +112,7 @@ export default function PlannerPage() {
         throw new Error(data.error || 'Failed to create plan')
       }
 
-      toast.success(`Your ${selectedHobbyData?.name || customHobby} plan has been created!`)
+      toast.success(`${selectedHobbyData?.name || customHobby} ${t('toast.planCreated')}`)
       router.push(`/plan/${data.plan.id}`)
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Failed to create plan')
@@ -168,13 +170,13 @@ export default function PlannerPage() {
             </div>
             <div className="mt-2 flex justify-between text-sm">
               <span className={step >= 1 ? 'text-primary font-medium' : 'text-muted-foreground'}>
-                Choose Hobby
+                {t('planner.chooseHobby')}
               </span>
               <span className={step >= 2 ? 'text-primary font-medium' : 'text-muted-foreground'}>
-                Set Goal
+                {t('planner.setGoal')}
               </span>
               <span className={step >= 3 ? 'text-primary font-medium' : 'text-muted-foreground'}>
-                Plan Tasks
+                {t('planner.planTasks')}
               </span>
             </div>
           </div>
@@ -183,9 +185,9 @@ export default function PlannerPage() {
           {step === 1 && (
             <Card>
               <CardHeader>
-                <CardTitle>Choose Your Hobby</CardTitle>
+                <CardTitle>{t('planner.chooseHobbyTitle')}</CardTitle>
                 <CardDescription>
-                  Select from popular hobbies or create your own
+                  {t('planner.chooseHobbySubtitle')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -232,15 +234,15 @@ export default function PlannerPage() {
                         <span className="w-full border-t" />
                       </div>
                       <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-card px-2 text-muted-foreground">Or custom hobby</span>
+                        <span className="bg-card px-2 text-muted-foreground">{t('planner.customHobby')}</span>
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="custom-hobby">Custom Hobby Name</Label>
+                      <Label htmlFor="custom-hobby">{t('planner.customHobbyLabel')}</Label>
                       <Input
                         id="custom-hobby"
-                        placeholder="e.g., Chess, Origami, Gardening..."
+                        placeholder={t('planner.customHobbyPlaceholder')}
                         value={customHobby}
                         onChange={(e) => {
                           setCustomHobby(e.target.value)
@@ -258,24 +260,24 @@ export default function PlannerPage() {
           {step === 2 && (
             <Card>
               <CardHeader>
-                <CardTitle>Set Your Goal</CardTitle>
+                <CardTitle>{t('planner.setGoalTitle')}</CardTitle>
                 <CardDescription>
-                  What do you want to achieve in 4 weeks?
+                  {t('planner.setGoalSubtitle')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="goal">Your 4-Week Goal</Label>
+                  <Label htmlFor="goal">{t('planner.goalLabel')}</Label>
                   <Textarea
                     id="goal"
-                    placeholder="e.g., Learn to play 3 songs on guitar, Master basic watercolor techniques..."
+                    placeholder={t('planner.goalPlaceholder')}
                     value={goal}
                     onChange={(e) => setGoal(e.target.value)}
                     rows={4}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="start-date">Start Date</Label>
+                  <Label htmlFor="start-date">{t('planner.startDate')}</Label>
                   <Input
                     id="start-date"
                     type="date"
@@ -291,16 +293,16 @@ export default function PlannerPage() {
           {step === 3 && (
             <Card>
               <CardHeader>
-                <CardTitle>Plan Your Weekly Tasks</CardTitle>
+                <CardTitle>{t('planner.planTasksTitle')}</CardTitle>
                 <CardDescription>
-                  Break down your goal into weekly milestones
+                  {t('planner.planTasksSubtitle')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 {[1, 2, 3, 4].map((weekNumber) => (
                   <div key={weekNumber} className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-semibold">Week {weekNumber}</h3>
+                      <h3 className="font-semibold">{t('planner.week')} {weekNumber}</h3>
                       <Button
                         type="button"
                         variant="ghost"
@@ -308,7 +310,7 @@ export default function PlannerPage() {
                         onClick={() => addTask(weekNumber)}
                       >
                         <Plus className="mr-1 h-4 w-4" />
-                        Add Task
+                        {t('planner.addTask')}
                       </Button>
                     </div>
                     <div className="space-y-3">
@@ -316,12 +318,12 @@ export default function PlannerPage() {
                         <div key={index} className="flex gap-3">
                           <div className="flex-1 space-y-2">
                             <Input
-                              placeholder={`Week ${weekNumber} task title`}
+                              placeholder={`${t('planner.week')} ${weekNumber} ${t('planner.taskTitlePlaceholder')}`}
                               value={task.title}
                               onChange={(e) => updateTask(index, 'title', e.target.value)}
                             />
                             <Input
-                              placeholder="Description (optional)"
+                              placeholder={t('planner.taskDescPlaceholder')}
                               value={task.description}
                               onChange={(e) => updateTask(index, 'description', e.target.value)}
                             />
@@ -353,18 +355,18 @@ export default function PlannerPage() {
               onClick={() => step > 1 ? setStep(step - 1) : router.push('/dashboard')}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              {step === 1 ? 'Cancel' : 'Back'}
+              {step === 1 ? t('planner.cancel') : t('planner.back')}
             </Button>
             
             {step < 3 ? (
               <Button onClick={() => setStep(step + 1)} disabled={!canProceed()}>
-                Next
+                {t('planner.next')}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             ) : (
               <Button onClick={handleSubmit} disabled={!canProceed() || isSubmitting}>
                 {isSubmitting ? <Spinner className="mr-2" /> : null}
-                Create Plan
+                {t('planner.createPlan')}
               </Button>
             )}
           </div>

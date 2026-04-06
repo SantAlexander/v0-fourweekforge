@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import useSWR from 'swr'
 import { useAuth } from '@/lib/auth-context'
+import { useI18n } from '@/lib/i18n-context'
 import { Header } from '@/components/header'
 import { PlanCard } from '@/components/plan-card'
 import { Button } from '@/components/ui/button'
@@ -19,6 +20,7 @@ const fetcher = (url: string) => fetch(url).then(res => res.json())
 export default function DashboardPage() {
   const router = useRouter()
   const { user, isLoading: authLoading } = useAuth()
+  const { t } = useI18n()
   const [isInitializing, setIsInitializing] = useState(true)
   
   const { data, isLoading: plansLoading, mutate } = useSWR<{ plans: PlanWithTasks[] }>(
@@ -84,16 +86,16 @@ export default function DashboardPage() {
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <h1 className="text-3xl font-bold tracking-tight">
-                Welcome back, {user.name.split(' ')[0]}!
+                {t('dashboard.welcome')} {user.name.split(' ')[0]}!
               </h1>
               <p className="text-muted-foreground">
-                Track your progress and keep forging your skills
+                {t('dashboard.subtitle')}
               </p>
             </div>
             <Button asChild>
               <Link href="/planner">
                 <Plus className="mr-2 h-4 w-4" />
-                New Plan
+                {t('header.newPlan')}
               </Link>
             </Button>
           </div>
@@ -107,7 +109,7 @@ export default function DashboardPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{activePlans.length}</p>
-                  <p className="text-sm text-muted-foreground">Active Plans</p>
+                  <p className="text-sm text-muted-foreground">{t('dashboard.activePlans')}</p>
                 </div>
               </CardContent>
             </Card>
@@ -118,7 +120,7 @@ export default function DashboardPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{completedTasks}</p>
-                  <p className="text-sm text-muted-foreground">Tasks Done</p>
+                  <p className="text-sm text-muted-foreground">{t('dashboard.tasksDone')}</p>
                 </div>
               </CardContent>
             </Card>
@@ -129,7 +131,7 @@ export default function DashboardPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{totalTasks - completedTasks}</p>
-                  <p className="text-sm text-muted-foreground">Tasks Left</p>
+                  <p className="text-sm text-muted-foreground">{t('dashboard.tasksLeft')}</p>
                 </div>
               </CardContent>
             </Card>
@@ -140,7 +142,7 @@ export default function DashboardPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{completedPlans.length}</p>
-                  <p className="text-sm text-muted-foreground">Completed</p>
+                  <p className="text-sm text-muted-foreground">{t('dashboard.completed')}</p>
                 </div>
               </CardContent>
             </Card>
@@ -150,13 +152,13 @@ export default function DashboardPage() {
           <Tabs defaultValue="active" className="space-y-6">
             <TabsList>
               <TabsTrigger value="active">
-                Active ({activePlans.length})
+                {t('dashboard.active')} ({activePlans.length})
               </TabsTrigger>
               <TabsTrigger value="completed">
-                Completed ({completedPlans.length})
+                {t('dashboard.completed')} ({completedPlans.length})
               </TabsTrigger>
               <TabsTrigger value="paused">
-                Paused ({pausedPlans.length})
+                {t('dashboard.paused')} ({pausedPlans.length})
               </TabsTrigger>
             </TabsList>
 
@@ -171,14 +173,14 @@ export default function DashboardPage() {
                     <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
                       <Flame className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <h3 className="mb-2 text-lg font-semibold">No Active Plans</h3>
+                    <h3 className="mb-2 text-lg font-semibold">{t('dashboard.noActivePlans')}</h3>
                     <p className="mb-6 max-w-sm text-muted-foreground">
-                      Start your journey by creating a new 4-week learning plan for any hobby
+                      {t('dashboard.noActivePlansSubtitle')}
                     </p>
                     <Button asChild>
                       <Link href="/planner">
                         <Plus className="mr-2 h-4 w-4" />
-                        Create Your First Plan
+                        {t('dashboard.createFirstPlan')}
                       </Link>
                     </Button>
                   </CardContent>
@@ -199,9 +201,9 @@ export default function DashboardPage() {
                     <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
                       <CheckCircle2 className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <h3 className="mb-2 text-lg font-semibold">No Completed Plans Yet</h3>
+                    <h3 className="mb-2 text-lg font-semibold">{t('dashboard.noCompletedPlans')}</h3>
                     <p className="max-w-sm text-muted-foreground">
-                      Complete all tasks in a plan to see it here
+                      {t('dashboard.noCompletedPlansSubtitle')}
                     </p>
                   </CardContent>
                 </Card>
@@ -221,9 +223,9 @@ export default function DashboardPage() {
                     <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
                       <Clock className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <h3 className="mb-2 text-lg font-semibold">No Paused Plans</h3>
+                    <h3 className="mb-2 text-lg font-semibold">{t('dashboard.noPausedPlans')}</h3>
                     <p className="max-w-sm text-muted-foreground">
-                      Plans you pause will appear here
+                      {t('dashboard.noPausedPlansSubtitle')}
                     </p>
                   </CardContent>
                 </Card>
