@@ -15,7 +15,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { toast } from 'sonner'
 import { getHobbyIcon } from '@/lib/hobby-icons'
 import { Hobby } from '@/lib/db'
-import { ArrowLeft, ArrowRight, Check, Plus, Trash2 } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, Plus, Trash2, Sparkles, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface TaskInput {
@@ -29,9 +29,10 @@ const fetcher = (url: string) => fetch(url).then(res => res.json())
 export default function PlannerPage() {
   const router = useRouter()
   const { user, isLoading: authLoading } = useAuth()
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const [step, setStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isGenerating, setIsGenerating] = useState(false)
   
   // Form state
   const [selectedHobby, setSelectedHobby] = useState<string | null>(null)
@@ -75,6 +76,52 @@ export default function PlannerPage() {
     const newTasks = [...tasks]
     newTasks[index] = { ...newTasks[index], [field]: value }
     setTasks(newTasks)
+  }
+
+  const clearTasks = () => {
+    setTasks([
+      { week_number: 1, title: '', description: '' },
+      { week_number: 2, title: '', description: '' },
+      { week_number: 3, title: '', description: '' },
+      { week_number: 4, title: '', description: '' },
+    ])
+  }
+
+  const generateTasksWithAI = async () => {
+    const hobbyName = selectedHobby 
+      ? hobbies.find(h => h.id === selectedHobby)?.name || '' 
+      : customHobby.trim()
+    
+    if (!hobbyName || !goal.trim()) {
+      toast.error(locale === 'ru' ? 'Укажите хобби и цель' : 'Please specify hobby and goal')
+      return
+    }
+
+    setIsGenerating(true)
+    try {
+      const response = await fetch('/api/generate-tasks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          hobby: hobbyName,
+          goal: goal.trim(),
+          locale,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to generate tasks')
+      }
+
+      setTasks(data.tasks)
+      toast.success(locale === 'ru' ? '28 задач сгенерировано!' : '28 tasks generated!')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to generate tasks')
+    } finally {
+      setIsGenerating(false)
+    }
   }
 
   const canProceed = () => {
@@ -299,6 +346,34 @@ export default function PlannerPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
+                {/* AI Generate and Clear buttons */}
+                <div className="flex flex-wrap gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={generateTasksWithAI}
+                    disabled={isGenerating}
+                    className="gap-2"
+                  >
+                    {isGenerating ? (
+                      <Spinner className="h-4 w-4" />
+                    ) : (
+                      <Sparkles className="h-4 w-4" />
+                    )}
+                    {isGenerating ? t('planner.autoGenerating') : t('planner.autoGenerate')}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={clearTasks}
+                    disabled={isGenerating}
+                    className="gap-2 text-muted-foreground"
+                  >
+                    <X className="h-4 w-4" />
+                    {t('planner.clearTasks')}
+                  </Button>
+                </div>
+
                 {[1, 2, 3, 4].map((weekNumber) => (
                   <div key={weekNumber} className="space-y-3">
                     <div className="flex items-center justify-between">
