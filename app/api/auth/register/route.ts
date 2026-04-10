@@ -6,16 +6,47 @@ export async function POST(request: NextRequest) {
   try {
     const { email, name, password } = await request.json()
 
-    if (!email || !name || !password) {
+    // Detailed validation with specific error codes
+    if (!name || name.trim().length === 0) {
       return NextResponse.json(
-        { error: 'Email, name, and password are required' },
+        { error: 'NAME_REQUIRED', message: 'Name is required' },
+        { status: 400 }
+      )
+    }
+
+    if (name.trim().length < 2) {
+      return NextResponse.json(
+        { error: 'NAME_TOO_SHORT', message: 'Name must be at least 2 characters' },
+        { status: 400 }
+      )
+    }
+
+    if (!email || email.trim().length === 0) {
+      return NextResponse.json(
+        { error: 'EMAIL_REQUIRED', message: 'Email is required' },
+        { status: 400 }
+      )
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'EMAIL_INVALID', message: 'Please enter a valid email address' },
+        { status: 400 }
+      )
+    }
+
+    if (!password) {
+      return NextResponse.json(
+        { error: 'PASSWORD_REQUIRED', message: 'Password is required' },
         { status: 400 }
       )
     }
 
     if (password.length < 6) {
       return NextResponse.json(
-        { error: 'Password must be at least 6 characters' },
+        { error: 'PASSWORD_TOO_SHORT', message: 'Password must be at least 6 characters' },
         { status: 400 }
       )
     }
@@ -24,7 +55,7 @@ export async function POST(request: NextRequest) {
     const existingUser = await sql`SELECT id FROM users WHERE email = ${email}`
     if (existingUser.length > 0) {
       return NextResponse.json(
-        { error: 'User with this email already exists' },
+        { error: 'EMAIL_EXISTS', message: 'An account with this email already exists' },
         { status: 400 }
       )
     }

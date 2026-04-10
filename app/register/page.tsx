@@ -33,7 +33,10 @@ export default function RegisterPage() {
       toast.success(t('toast.accountCreated'))
       router.push('/dashboard')
     } else {
-      toast.error(result.error || 'Registration failed')
+      // Show localized error message
+      const errorKey = `error.${result.error}`
+      const errorMessage = t(errorKey) !== errorKey ? t(errorKey) : (result.message || t('error.REGISTRATION_FAILED'))
+      toast.error(errorMessage)
     }
     
     setIsLoading(false)

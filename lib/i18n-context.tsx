@@ -121,6 +121,9 @@ const en = {
   'planner.addTask': 'Add Task',
   'planner.taskTitlePlaceholder': 'task title',
   'planner.taskDescPlaceholder': 'Description (optional)',
+  'planner.autoGenerate': 'Auto-generate 28 tasks',
+  'planner.autoGenerating': 'Generating tasks...',
+  'planner.clearTasks': 'Clear all',
   
   'planner.cancel': 'Cancel',
   'planner.back': 'Back',
@@ -165,6 +168,24 @@ const en = {
   // Language
   'language.english': 'English',
   'language.russian': 'Russian',
+  
+  // Registration errors
+  'error.NAME_REQUIRED': 'Please enter your name',
+  'error.NAME_TOO_SHORT': 'Name must be at least 2 characters',
+  'error.EMAIL_REQUIRED': 'Please enter your email address',
+  'error.EMAIL_INVALID': 'Please enter a valid email address',
+  'error.PASSWORD_REQUIRED': 'Please enter a password',
+  'error.PASSWORD_TOO_SHORT': 'Password must be at least 6 characters',
+  'error.EMAIL_EXISTS': 'An account with this email already exists',
+  'error.REGISTRATION_FAILED': 'Registration failed. Please try again.',
+  'error.LOGIN_FAILED': 'Invalid email or password',
+  'error.DATABASE_ERROR': 'Database connection error. Please try again later.',
+  
+  // Export
+  'export.title': 'Export Plan',
+  'export.json': 'Download JSON',
+  'export.csv': 'Download CSV',
+  'export.pdf': 'Print / PDF',
 }
 
 // Russian translations
@@ -276,6 +297,9 @@ const ru: Record<string, string> = {
   'planner.addTask': 'Добавить задачу',
   'planner.taskTitlePlaceholder': 'название задачи',
   'planner.taskDescPlaceholder': 'Описание (необязательно)',
+  'planner.autoGenerate': 'Автогенерация 28 задач',
+  'planner.autoGenerating': 'Генерация задач...',
+  'planner.clearTasks': 'Очистить все',
   
   'planner.cancel': 'Отмена',
   'planner.back': 'Назад',
@@ -320,6 +344,24 @@ const ru: Record<string, string> = {
   // Language
   'language.english': 'English',
   'language.russian': 'Русский',
+  
+  // Registration errors
+  'error.NAME_REQUIRED': 'Пожалуйста, введите имя',
+  'error.NAME_TOO_SHORT': 'Имя должно содержать минимум 2 символа',
+  'error.EMAIL_REQUIRED': 'Пожалуйста, введите email',
+  'error.EMAIL_INVALID': 'Пожалуйста, введите корректный email',
+  'error.PASSWORD_REQUIRED': 'Пожалуйста, введите пароль',
+  'error.PASSWORD_TOO_SHORT': 'Пароль должен содержать минимум 6 символов',
+  'error.EMAIL_EXISTS': 'Аккаунт с таким email уже существует',
+  'error.REGISTRATION_FAILED': 'Ошибка регистрации. Попробуйте снова.',
+  'error.LOGIN_FAILED': 'Неверный email или пароль',
+  'error.DATABASE_ERROR': 'Ошибка подключения к базе данных. Попробуйте позже.',
+  
+  // Export
+  'export.title': 'Экспорт плана',
+  'export.json': 'Скачать JSON',
+  'export.csv': 'Скачать CSV',
+  'export.pdf': 'Печать / PDF',
 }
 
 const translations: Record<Locale, Record<string, string>> = { en, ru }
