@@ -51,13 +51,25 @@ const en = {
   
   'landing.footer': 'Master any hobby in 4 weeks. Built with passion.',
   
-  // Hobby names
+  // Hobby names (by icon key from DB)
   'hobby.guitar': 'Guitar',
   'hobby.painting': 'Painting',
   'hobby.photography': 'Photography',
   'hobby.coding': 'Coding',
   'hobby.cooking': 'Cooking',
   'hobby.drawing': 'Drawing',
+  'hobby.calligraphy': 'Calligraphy',
+  'hobby.yoga': 'Yoga',
+  'hobby.writing': 'Writing',
+  'hobby.gardening': 'Gardening',
+  'hobby.pencil': 'Drawing',
+  'hobby.chef-hat': 'Cooking',
+  'hobby.pen-tool': 'Calligraphy',
+  'hobby.camera': 'Photography',
+  'hobby.music': 'Guitar',
+  'hobby.heart': 'Yoga',
+  'hobby.book-open': 'Writing',
+  'hobby.leaf': 'Gardening',
   
   // Auth
   'auth.welcomeBack': 'Welcome Back',
@@ -116,11 +128,19 @@ const en = {
   'planner.startDate': 'Start Date',
   
   'planner.planTasksTitle': 'Plan Your Weekly Tasks',
-  'planner.planTasksSubtitle': 'Break down your goal into weekly milestones',
+  'planner.planTasksSubtitle': 'AI generated tasks based on your goal. Edit them as you like.',
   'planner.week': 'Week',
   'planner.addTask': 'Add Task',
   'planner.taskTitlePlaceholder': 'task title',
   'planner.taskDescPlaceholder': 'Description (optional)',
+
+  'planner.generateTasks': 'Generate Tasks with AI',
+  'planner.generating': 'Generating...',
+  'planner.regenerate': 'Regenerate',
+  'planner.generateHint': 'AI will create a weekly task plan based on your hobby and goal. You can edit the tasks after generation.',
+  'planner.generationError': 'Failed to generate tasks. You can add them manually.',
+  'planner.noTasksForWeek': 'No tasks for this week',
+
   'planner.autoGenerate': 'Auto-generate 28 tasks',
   'planner.autoGenerating': 'Generating tasks...',
   'planner.clearTasks': 'Clear all',
@@ -227,13 +247,25 @@ const ru: Record<string, string> = {
   
   'landing.footer': 'Освой любое хобби за 4 недели. Создано с любовью.',
   
-  // Hobby names
+  // Hobby names (by icon key from DB)
   'hobby.guitar': 'Гитара',
   'hobby.painting': 'Живопись',
   'hobby.photography': 'Фотография',
   'hobby.coding': 'Программирование',
   'hobby.cooking': 'Кулинария',
   'hobby.drawing': 'Рисование',
+  'hobby.calligraphy': 'Каллиграфия',
+  'hobby.yoga': 'Йога',
+  'hobby.writing': 'Писательство',
+  'hobby.gardening': 'Садоводство',
+  'hobby.pencil': 'Рисование',
+  'hobby.chef-hat': 'Кулинария',
+  'hobby.pen-tool': 'Каллиграфия',
+  'hobby.camera': 'Фотография',
+  'hobby.music': 'Гитара',
+  'hobby.heart': 'Йога',
+  'hobby.book-open': 'Писательство',
+  'hobby.leaf': 'Садоводство',
   
   // Auth
   'auth.welcomeBack': 'С возвращением',
@@ -269,7 +301,7 @@ const ru: Record<string, string> = {
   'dashboard.createFirstPlan': 'Создать первый план',
   
   'dashboard.noCompletedPlans': 'Пока нет завершенных планов',
-  'dashboard.noCompletedPlansSubtitle': 'Выполни все задачи плана, чтобы увидеть его здесь',
+  'dashboard.noCompletedPlansSubtitle': 'Выполни все за��ачи плана, чтобы увидеть его здесь',
   
   'dashboard.noPausedPlans': 'Нет планов на паузе',
   'dashboard.noPausedPlansSubtitle': 'Приостановленные планы появятся здесь',
@@ -281,7 +313,7 @@ const ru: Record<string, string> = {
   
   'planner.chooseHobbyTitle': 'Выбери своё хобби',
   'planner.chooseHobbySubtitle': 'Выбери из популярных или создай своё',
-  'planner.customHobby': 'Или с��оё хобби',
+  'planner.customHobby': 'Или своё хобби',
   'planner.customHobbyLabel': 'Название хобби',
   'planner.customHobbyPlaceholder': 'напр., Шахматы, Оригами, Садоводство...',
   
@@ -291,12 +323,20 @@ const ru: Record<string, string> = {
   'planner.goalPlaceholder': 'напр., Научиться играть 3 песни на гитаре, Освоить базовые техники акварели...',
   'planner.startDate': 'Дата начала',
   
-  'planner.planTasksTitle': 'Спланируй еженедельные задачи',
-  'planner.planTasksSubtitle': 'Разбей цель на еженедельные этапы',
+  'planner.planTasksTitle': 'Еженедельные задачи',
+  'planner.planTasksSubtitle': 'AI сгенерировал задачи на основе твоей цели. Редактируй как хочешь.',
   'planner.week': 'Неделя',
   'planner.addTask': 'Добавить задачу',
   'planner.taskTitlePlaceholder': 'название задачи',
   'planner.taskDescPlaceholder': 'Описание (необязательно)',
+
+  'planner.generateTasks': 'Сгенерировать задачи с AI',
+  'planner.generating': 'Генерирую...',
+  'planner.regenerate': 'Сгенерировать заново',
+  'planner.generateHint': 'AI создаст план задач по неделям на основе твоего хобби и цели. После генерации можно редактировать.',
+  'planner.generationError': 'Не удалось сгенерировать задачи. Можно добавить вручную.',
+  'planner.noTasksForWeek': 'Нет задач на эту неделю',
+
   'planner.autoGenerate': 'Автогенерация 28 задач',
   'planner.autoGenerating': 'Генерация задач...',
   'planner.clearTasks': 'Очистить все',
