@@ -132,16 +132,6 @@ export default function PlannerPage() {
   // ===========================================
   
   /**
-   * Автогенерация задач при первом переходе на шаг 3
-   * Если задачи уже были сгенерированы (tasksGenerated=true) — повторно не вызывается
-   */
-  useEffect(() => {
-    if (step === 3 && !tasksGenerated && !isGenerating) {
-      generateTasks()
-    }
-  }, [step, tasksGenerated, isGenerating, generateTasks])
-
-  /**
    * Защита маршрута - редирект на страницу входа если пользователь не авторизован
    * 
    * Как работает:
@@ -258,6 +248,16 @@ export default function PlannerPage() {
       setIsGenerating(false)
     }
   }, [hobbies, selectedHobby, customHobby, goal, locale, t])
+
+  /**
+   * Автогенерация задач при первом переходе на шаг 3
+   * Если задачи уже были сгенерированы (tasksGenerated=true) — повторно не вызывается
+   */
+  useEffect(() => {
+    if (step === 3 && !tasksGenerated && !isGenerating) {
+      generateTasks()
+    }
+  }, [step, tasksGenerated, isGenerating, generateTasks])
 
   /**
    * getWeekTasks - возвращает задачи для указанной недели с их индексами
