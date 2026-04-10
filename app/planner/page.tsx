@@ -297,7 +297,7 @@ export default function PlannerPage() {
    * 1. Устанавливает флаг загрузки
    * 2. Собирает данные из формы
    * 3. Отправляет POST запрос на /api/plans
-   * 4. При успехе - показывает уведомление и переходит на страницу плана
+   * 4. При успехе - показывает уведомлен��е и переходит на страницу плана
    * 5. При ошибке - показывает сообщение об ошибке
    * 6. В конце снимает флаг загрузки
    */
@@ -436,7 +436,7 @@ export default function PlannerPage() {
 
 /**
  * StepProgress - визуальный индикатор прогресса по шагам
- * Показывает 3 круга с номерами/галочками и линии между ними
+ * Показывает 3 круга с номерами/га��очками и линии между ними
  */
 function StepProgress({ step, t }: { step: number; t: (key: string) => string }) {
   return (
@@ -537,7 +537,9 @@ function HobbySelectionStep({
                     )}>
                       <Icon className="h-6 w-6" />
                     </div>
-                    <span className="text-sm font-medium">{hobby.name}</span>
+                    <span className="text-sm font-medium">
+                      {hobby.icon ? (t(`hobby.${hobby.icon}`) !== `hobby.${hobby.icon}` ? t(`hobby.${hobby.icon}`) : hobby.name) : hobby.name}
+                    </span>
                   </button>
                 )
               })}

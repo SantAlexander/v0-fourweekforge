@@ -51,13 +51,25 @@ const en = {
   
   'landing.footer': 'Master any hobby in 4 weeks. Built with passion.',
   
-  // Hobby names
+  // Hobby names (by icon key from DB)
   'hobby.guitar': 'Guitar',
   'hobby.painting': 'Painting',
   'hobby.photography': 'Photography',
   'hobby.coding': 'Coding',
   'hobby.cooking': 'Cooking',
   'hobby.drawing': 'Drawing',
+  'hobby.calligraphy': 'Calligraphy',
+  'hobby.yoga': 'Yoga',
+  'hobby.writing': 'Writing',
+  'hobby.gardening': 'Gardening',
+  'hobby.pencil': 'Drawing',
+  'hobby.chef-hat': 'Cooking',
+  'hobby.pen-tool': 'Calligraphy',
+  'hobby.camera': 'Photography',
+  'hobby.music': 'Guitar',
+  'hobby.heart': 'Yoga',
+  'hobby.book-open': 'Writing',
+  'hobby.leaf': 'Gardening',
   
   // Auth
   'auth.welcomeBack': 'Welcome Back',
@@ -206,13 +218,25 @@ const ru: Record<string, string> = {
   
   'landing.footer': 'Освой любое хобби за 4 недели. Создано с любовью.',
   
-  // Hobby names
+  // Hobby names (by icon key from DB)
   'hobby.guitar': 'Гитара',
   'hobby.painting': 'Живопись',
   'hobby.photography': 'Фотография',
   'hobby.coding': 'Программирование',
   'hobby.cooking': 'Кулинария',
   'hobby.drawing': 'Рисование',
+  'hobby.calligraphy': 'Каллиграфия',
+  'hobby.yoga': 'Йога',
+  'hobby.writing': 'Писательство',
+  'hobby.gardening': 'Садоводство',
+  'hobby.pencil': 'Рисование',
+  'hobby.chef-hat': 'Кулинария',
+  'hobby.pen-tool': 'Каллиграфия',
+  'hobby.camera': 'Фотография',
+  'hobby.music': 'Гитара',
+  'hobby.heart': 'Йога',
+  'hobby.book-open': 'Писательство',
+  'hobby.leaf': 'Садоводство',
   
   // Auth
   'auth.welcomeBack': 'С возвращением',
@@ -260,7 +284,7 @@ const ru: Record<string, string> = {
   
   'planner.chooseHobbyTitle': 'Выбери своё хобби',
   'planner.chooseHobbySubtitle': 'Выбери из популярных или создай своё',
-  'planner.customHobby': 'Или с��оё хобби',
+  'planner.customHobby': 'Или своё хобби',
   'planner.customHobbyLabel': 'Название хобби',
   'planner.customHobbyPlaceholder': 'напр., Шахматы, Оригами, Садоводство...',
   
