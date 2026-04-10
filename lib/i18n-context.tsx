@@ -128,12 +128,19 @@ const en = {
   'planner.startDate': 'Start Date',
   
   'planner.planTasksTitle': 'Plan Your Weekly Tasks',
-  'planner.planTasksSubtitle': 'Break down your goal into weekly milestones',
+  'planner.planTasksSubtitle': 'AI generated tasks based on your goal. Edit them as you like.',
   'planner.week': 'Week',
   'planner.addTask': 'Add Task',
   'planner.taskTitlePlaceholder': 'task title',
   'planner.taskDescPlaceholder': 'Description (optional)',
-  
+
+  'planner.generateTasks': 'Generate Tasks with AI',
+  'planner.generating': 'Generating...',
+  'planner.regenerate': 'Regenerate',
+  'planner.generateHint': 'AI will create a weekly task plan based on your hobby and goal. You can edit the tasks after generation.',
+  'planner.generationError': 'Failed to generate tasks. You can add them manually.',
+  'planner.noTasksForWeek': 'No tasks for this week',
+
   'planner.cancel': 'Cancel',
   'planner.back': 'Back',
   'planner.next': 'Next',
@@ -272,7 +279,7 @@ const ru: Record<string, string> = {
   'dashboard.createFirstPlan': 'Создать первый план',
   
   'dashboard.noCompletedPlans': 'Пока нет завершенных планов',
-  'dashboard.noCompletedPlansSubtitle': 'Выполни все задачи плана, чтобы увидеть его здесь',
+  'dashboard.noCompletedPlansSubtitle': 'Выполни все за��ачи плана, чтобы увидеть его здесь',
   
   'dashboard.noPausedPlans': 'Нет планов на паузе',
   'dashboard.noPausedPlansSubtitle': 'Приостановленные планы появятся здесь',
@@ -294,13 +301,20 @@ const ru: Record<string, string> = {
   'planner.goalPlaceholder': 'напр., Научиться играть 3 песни на гитаре, Освоить базовые техники акварели...',
   'planner.startDate': 'Дата начала',
   
-  'planner.planTasksTitle': 'Спланируй еженедельные задачи',
-  'planner.planTasksSubtitle': 'Разбей цель на еженедельные этапы',
+  'planner.planTasksTitle': 'Еженедельные задачи',
+  'planner.planTasksSubtitle': 'AI сгенерировал задачи на основе твоей цели. Редактируй как хочешь.',
   'planner.week': 'Неделя',
   'planner.addTask': 'Добавить задачу',
   'planner.taskTitlePlaceholder': 'название задачи',
   'planner.taskDescPlaceholder': 'Описание (необязательно)',
-  
+
+  'planner.generateTasks': 'Сгенерировать задачи с AI',
+  'planner.generating': 'Генерирую...',
+  'planner.regenerate': 'Сгенерировать заново',
+  'planner.generateHint': 'AI создаст план задач по неделям на основе твоего хобби и цели. После генерации можно редактировать.',
+  'planner.generationError': 'Не удалось сгенерировать задачи. Можно добавить вручную.',
+  'planner.noTasksForWeek': 'Нет задач на эту неделю',
+
   'planner.cancel': 'Отмена',
   'planner.back': 'Назад',
   'planner.next': 'Далее',
