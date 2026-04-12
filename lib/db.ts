@@ -40,11 +40,15 @@ export interface Task {
   id: string
   plan_id: string
   week_number: number
+  day_index?: number
   title: string
   description: string | null
+  status: 'pending' | 'completed'
   is_completed: boolean
+  due_date?: Date | null
   completed_at: Date | null
   created_at: Date
+  updated_at?: Date
 }
 
 export interface PlanWithHobby extends Plan {
@@ -55,4 +59,13 @@ export interface PlanWithHobby extends Plan {
 export interface PlanWithTasks extends PlanWithHobby {
   tasks: Task[]
   progress: number
+}
+
+export interface Feedback {
+  id: string
+  name: string | null
+  email: string | null
+  message: string
+  type: 'bug' | 'idea' | 'question'
+  created_at: Date
 }
