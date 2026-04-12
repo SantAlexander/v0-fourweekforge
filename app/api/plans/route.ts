@@ -26,9 +26,9 @@ export async function GET() {
         const tasks = await sql`
           SELECT * FROM tasks 
           WHERE plan_id = ${plan.id} 
-          ORDER BY week_number, created_at
+          ORDER BY week_index, created_at
         `
-        const completedTasks = tasks.filter((t: Task) => t.is_completed).length
+        const completedTasks = tasks.filter((t: Task) => t.status === 'completed').length
         const progress = tasks.length > 0 ? Math.round((completedTasks / tasks.length) * 100) : 0
         
         return {
@@ -81,9 +81,10 @@ export async function POST(request: NextRequest) {
     // Create tasks if provided
     if (tasks && Array.isArray(tasks)) {
       for (const task of tasks) {
+        // day_index is required in DB, we set it to 1 by default (tasks are weekly, not daily)
         await sql`
-          INSERT INTO tasks (plan_id, week_number, title, description)
-          VALUES (${planId}, ${task.week_number}, ${task.title}, ${task.description || null})
+          INSERT INTO tasks (plan_id, week_index, day_index, title, description, status)
+          VALUES (${planId}, ${task.week_number}, 1, ${task.title}, ${task.description || null}, 'pending')
         `
       }
     }

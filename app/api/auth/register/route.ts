@@ -1,5 +1,5 @@
 import { sql } from '@/lib/db'
-import { hashPassword, createToken, setAuthCookie } from '@/lib/auth'
+import { hashPassword, createToken } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
@@ -68,14 +68,26 @@ export async function POST(request: NextRequest) {
       RETURNING id, email, name, created_at
     `
 
-    // Create token and set cookie
+    // Create token
     const token = await createToken(newUser[0].id)
-    await setAuthCookie(token)
 
-    return NextResponse.json({
+    // Create response with user data
+    const response = NextResponse.json({
       success: true,
       user: newUser[0]
     })
+
+    // Set auth cookie on the response
+    // Using sameSite: 'none' and secure: true for cross-origin iframe support (v0 preview)
+    response.cookies.set('auth_token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: '/',
+    })
+
+    return response
   } catch (error) {
     console.error('Registration error:', error)
     return NextResponse.json(
