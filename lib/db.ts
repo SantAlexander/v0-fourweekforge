@@ -60,3 +60,12 @@ export interface PlanWithTasks extends PlanWithHobby {
   tasks: Task[]
   progress: number
 }
+
+export interface Feedback {
+  id: string
+  name: string | null
+  email: string | null
+  message: string
+  type: 'bug' | 'idea' | 'question'
+  created_at: Date
+}
