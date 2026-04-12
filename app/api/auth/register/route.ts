@@ -78,10 +78,11 @@ export async function POST(request: NextRequest) {
     })
 
     // Set auth cookie on the response
+    // Using sameSite: 'none' and secure: true for cross-origin iframe support (v0 preview)
     response.cookies.set('auth_token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
       maxAge: 60 * 60 * 24 * 7, // 7 days
       path: '/',
     })
