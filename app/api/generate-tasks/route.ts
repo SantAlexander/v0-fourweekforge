@@ -1,7 +1,13 @@
 import { generateText, Output } from 'ai'
+import { createGroq } from '@ai-sdk/groq'
 import { getCurrentUser } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+
+// Инициализация Groq клиента с API ключом
+const groq = createGroq({
+  apiKey: process.env.GROQ_API_KEY,
+})
 
 // Схема одной задачи
 const TaskSchema = z.object({
@@ -56,9 +62,9 @@ Return all task texts IN ENGLISH.`
 
     console.log('[v0] Generating tasks for hobby:', hobby, 'goal:', goal)
 
-    // Вызов AI с Output.object() — получаем структурированный JSON ответ
+    // Вызов AI через Groq — используем бесплатную модель llama-3.3-70b-versatile
     const result = await generateText({
-      model: 'openai/gpt-4o-mini',
+      model: groq('llama-3.3-70b-versatile'),
       system: systemPrompt,
       prompt: userPrompt,
       output: Output.object({
