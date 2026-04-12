@@ -1,6 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
 
+export async function GET() {
+  try {
+    const rows = await sql`
+      SELECT id, name, email, message, type, created_at
+      FROM feedback
+      ORDER BY created_at DESC
+    `
+    return NextResponse.json({ success: true, feedback: rows })
+  } catch (error) {
+    console.error('[feedback] Error fetching feedback:', error)
+    return NextResponse.json({ success: false, error: 'Failed to fetch feedback' }, { status: 500 })
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
