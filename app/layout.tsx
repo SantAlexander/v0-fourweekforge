@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { AuthProvider } from '@/lib/auth-context'
 import { I18nProvider } from '@/lib/i18n-context'
 import { Toaster } from '@/components/ui/sonner'
+import { FeedbackWidget } from '@/components/feedback-widget'
 import './globals.css'
 
 const _geist = Geist({ subsets: ['latin'] })
@@ -53,6 +54,7 @@ export default function RootLayout({
         <I18nProvider>
           <AuthProvider>
             {children}
+            <FeedbackWidget />
             <Toaster position="bottom-right" />
           </AuthProvider>
         </I18nProvider>

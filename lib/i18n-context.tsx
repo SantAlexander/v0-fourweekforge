@@ -48,6 +48,7 @@ const en = {
   'landing.ctaTitle': 'Ready to Forge Your Skills?',
   'landing.ctaSubtitle': 'Join thousands of learners who have transformed their hobbies into skills. Start your 4-week journey today.',
   'landing.ctaButton': 'Create Free Account',
+  'landing.ctaButtonLoggedIn': 'Go to Your Plans',
   
   'landing.footer': 'Master any hobby in 4 weeks. Built with passion.',
   
@@ -244,6 +245,7 @@ const ru: Record<string, string> = {
   'landing.ctaTitle': 'Готов прокачать навыки?',
   'landing.ctaSubtitle': 'Присоединяйся к тысячам учеников, которые превратили хобби в навыки. Начни свой 4-недельный путь сегодня.',
   'landing.ctaButton': 'Создать аккаунт бесплатно',
+  'landing.ctaButtonLoggedIn': 'Перейти к своим планам',
   
   'landing.footer': 'Освой любое хобби за 4 недели. Создано с любовью.',
   

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { Header } from '@/components/header'
 import { useI18n } from '@/lib/i18n-context'
+import { useAuth } from '@/lib/auth-context'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { 
@@ -32,6 +33,7 @@ const hobbyData = [
 
 export default function HomePage() {
   const { t } = useI18n()
+  const { user } = useAuth()
   
   const features = [
     {
@@ -84,14 +86,16 @@ export default function HomePage() {
               </p>
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <Button asChild size="lg" className="w-full sm:w-auto">
-                  <Link href="/register">
+                  <Link href={user ? "/planner" : "/register"}>
                     {t('landing.cta.start')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
-                  <Link href="/login">{t('landing.cta.signin')}</Link>
-                </Button>
+                {!user && (
+                  <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
+                    <Link href="/login">{t('landing.cta.signin')}</Link>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -169,8 +173,8 @@ export default function HomePage() {
                   {t('landing.ctaSubtitle')}
                 </p>
                 <Button asChild size="lg">
-                  <Link href="/register">
-                    {t('landing.ctaButton')}
+                  <Link href={user ? "/dashboard" : "/register"}>
+                    {user ? t('landing.ctaButtonLoggedIn') : t('landing.ctaButton')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
