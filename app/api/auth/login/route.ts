@@ -1,5 +1,5 @@
 import { sql, User } from '@/lib/db'
-import { verifyPassword, createToken, setAuthCookie } from '@/lib/auth'
+import { verifyPassword, createToken } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
@@ -33,11 +33,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create token and set cookie
+    // Create token
     const token = await createToken(user.id)
-    await setAuthCookie(token)
 
-    return NextResponse.json({
+    // Create response with user data
+    const response = NextResponse.json({
       success: true,
       user: {
         id: user.id,
@@ -46,6 +46,17 @@ export async function POST(request: NextRequest) {
         created_at: user.created_at
       }
     })
+
+    // Set auth cookie on the response
+    response.cookies.set('auth_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: '/',
+    })
+
+    return response
   } catch (error) {
     console.error('Login error:', error)
     return NextResponse.json(
