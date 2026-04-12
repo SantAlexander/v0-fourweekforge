@@ -29,12 +29,15 @@ export async function GET(
     }
 
     const tasks = await sql`
-      SELECT * FROM tasks 
+      SELECT 
+        id, plan_id, week_index as week_number, day_index, title, description, 
+        status, status = 'completed' as is_completed, due_date, completed_at, created_at, updated_at
+      FROM tasks 
       WHERE plan_id = ${id} 
-      ORDER BY week_number, created_at
+      ORDER BY week_index, created_at
     `
 
-    const completedTasks = tasks.filter((t: Task) => t.is_completed).length
+    const completedTasks = tasks.filter((t: Task) => t.status === 'completed').length
     const progress = tasks.length > 0 ? Math.round((completedTasks / tasks.length) * 100) : 0
 
     const planWithTasks: PlanWithTasks = {

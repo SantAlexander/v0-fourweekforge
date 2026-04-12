@@ -26,10 +26,12 @@ export async function PATCH(
       return NextResponse.json({ error: 'Task not found' }, { status: 404 })
     }
 
+    // В БД используется колонка status вместо is_completed
+    const newStatus = is_completed ? 'completed' : 'pending'
     const updated = await sql`
       UPDATE tasks 
       SET 
-        is_completed = ${is_completed},
+        status = ${newStatus},
         completed_at = ${is_completed ? new Date().toISOString() : null}
       WHERE id = ${id}
       RETURNING *

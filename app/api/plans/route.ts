@@ -81,9 +81,10 @@ export async function POST(request: NextRequest) {
     // Create tasks if provided
     if (tasks && Array.isArray(tasks)) {
       for (const task of tasks) {
+        // day_index is required in DB, we set it to 1 by default (tasks are weekly, not daily)
         await sql`
-          INSERT INTO tasks (plan_id, week_index, title, description, status)
-          VALUES (${planId}, ${task.week_number}, ${task.title}, ${task.description || null}, 'pending')
+          INSERT INTO tasks (plan_id, week_index, day_index, title, description, status)
+          VALUES (${planId}, ${task.week_number}, 1, ${task.title}, ${task.description || null}, 'pending')
         `
       }
     }
