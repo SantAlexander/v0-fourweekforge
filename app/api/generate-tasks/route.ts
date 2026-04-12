@@ -54,8 +54,10 @@ Return all task texts IN ENGLISH.`
       ? `Хобби: ${hobby}\nЦель на 4 недели: ${goal}\n\nСоздай подробный план задач по неделям.`
       : `Hobby: ${hobby}\nGoal for 4 weeks: ${goal}\n\nCreate a detailed weekly task plan.`
 
+    console.log('[v0] Generating tasks for hobby:', hobby, 'goal:', goal)
+
     // Вызов AI с Output.object() — получаем структурированный JSON ответ
-    const { object } = await generateText({
+    const result = await generateText({
       model: 'openai/gpt-4o-mini',
       system: systemPrompt,
       prompt: userPrompt,
@@ -64,9 +66,19 @@ Return all task texts IN ENGLISH.`
       }),
     })
 
-    return NextResponse.json({ tasks: object.tasks })
+    console.log('[v0] AI result:', JSON.stringify(result.output, null, 2))
+
+    if (!result.output || !result.output.tasks) {
+      console.error('[v0] No tasks in AI response')
+      return NextResponse.json(
+        { error: 'AI did not return valid tasks' },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json({ tasks: result.output.tasks })
   } catch (error) {
-    console.error('Error generating tasks:', error)
+    console.error('[v0] Error generating tasks:', error)
     return NextResponse.json(
       { error: 'Failed to generate tasks' },
       { status: 500 }
