@@ -189,7 +189,7 @@ export default function PlannerPage() {
    * - value: новое значение
    * 
    * Как работает:
-   * 1. Создаёт коп��ю массива
+   * 1. Создаёт коп����ю массива
    * 2. Обновляет указанное поле у нужной задачи
    * 3. Устанавливает новый массив
    */
@@ -569,8 +569,8 @@ function HobbySelectionStep({
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-2">What hobby do you want to learn?</h2>
-        <p className="text-muted-foreground">Choose from our list or type your own</p>
+        <h2 className="text-2xl font-bold mb-2">{t('planner.hobbyTitle')}</h2>
+        <p className="text-muted-foreground">{t('planner.hobbySubtitle')}</p>
       </div>
 
       {hobbiesLoading ? (
@@ -618,21 +618,21 @@ function HobbySelectionStep({
               <span className="w-full border-t border-muted" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-background px-3 text-sm text-muted-foreground">or</span>
+              <span className="bg-background px-3 text-sm text-muted-foreground">{t('planner.hobbyOr')}</span>
             </div>
           </div>
 
           {/* Поле для своего хобби - если ничего не выбрано */}
           <div className="space-y-2">
-            <Label htmlFor="custom-hobby" className="text-base font-medium">Enter your own hobby</Label>
+            <Label htmlFor="custom-hobby" className="text-base font-medium">{t('planner.hobbyEnterOwn')}</Label>
             <Input
               id="custom-hobby"
-              placeholder="e.g., Photography, Dancing, Cooking..."
+              placeholder={t('planner.hobbyOwnPlaceholder')}
               value={customHobby}
               onChange={(e) => onCustomHobbyChange(e.target.value)}
               className="py-2 text-base"
             />
-            {customHobby && <p className="text-sm text-muted-foreground">Great! We'll create a personalized plan for {customHobby}.</p>}
+            {customHobby && <p className="text-sm text-muted-foreground">{t('planner.hobbyOwnHint').replace('{hobby}', customHobby)}</p>}
           </div>
         </div>
       )}
@@ -660,37 +660,37 @@ function GoalSettingStep({
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-2">Your 4-week journey starts here</h2>
-        <p className="text-muted-foreground">Define your goal and when you want to start</p>
+        <h2 className="text-2xl font-bold mb-2">{t('planner.goalJourneyTitle')}</h2>
+        <p className="text-muted-foreground">{t('planner.goalJourneySubtitle')}</p>
       </div>
 
       <div className="space-y-6">
         {/* Timeline показывающая 4 недели */}
         <div className="bg-muted/30 rounded-lg p-6">
           <div className="mb-4">
-            <p className="text-sm font-semibold text-primary">STRUCTURE</p>
-            <p className="font-medium mt-2">Week 1 → Week 2 → Week 3 → Week 4</p>
-            <p className="text-sm text-muted-foreground mt-1">You'll complete 8-12 tasks over these 4 weeks, building momentum each day.</p>
+            <p className="text-sm font-semibold text-primary">{t('planner.structureLabel')}</p>
+            <p className="font-medium mt-2">{t('planner.structureWeeks')}</p>
+            <p className="text-sm text-muted-foreground mt-1">{t('planner.structureDesc')}</p>
           </div>
         </div>
 
         {/* Goal Input */}
         <div className="space-y-2">
-          <Label htmlFor="goal" className="text-base font-medium">What's your specific goal?</Label>
+          <Label htmlFor="goal" className="text-base font-medium">{t('planner.goalSpecific')}</Label>
           <Textarea
             id="goal"
-            placeholder="e.g., I want to be able to play 5 songs on guitar | I want to create a portfolio with 10 photos"
+            placeholder={t('planner.goalSpecificPlaceholder')}
             value={goal}
             onChange={(e) => onGoalChange(e.target.value)}
             rows={3}
             className="resize-none"
           />
-          {goal && <p className="text-sm text-muted-foreground">AI will use this to generate your personalized tasks.</p>}
+          {goal && <p className="text-sm text-muted-foreground">{t('planner.goalAiHint')}</p>}
         </div>
 
         {/* Start Date */}
         <div className="space-y-2">
-          <Label htmlFor="start-date" className="text-base font-medium">When do you want to start?</Label>
+          <Label htmlFor="start-date" className="text-base font-medium">{t('planner.startDateLabel')}</Label>
           <Input
             id="start-date"
             type="date"
@@ -698,7 +698,7 @@ function GoalSettingStep({
             onChange={(e) => onStartDateChange(e.target.value)}
             className="max-w-xs"
           />
-          <p className="text-sm text-muted-foreground">This marks day 1 of your 4-week learning plan.</p>
+          <p className="text-sm text-muted-foreground">{t('planner.startDateHint')}</p>
         </div>
       </div>
     </div>
@@ -733,8 +733,8 @@ function TaskPlanningStep({
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-2">Your personalized 4-week plan</h2>
-        <p className="text-muted-foreground mb-4">AI-generated tasks. Edit them to fit your style or keep them as is.</p>
+        <h2 className="text-2xl font-bold mb-2">{t('planner.tasksTitle')}</h2>
+        <p className="text-muted-foreground mb-4">{t('planner.tasksSubtitle')}</p>
         {tasksGenerated && !isGenerating && (
           <Button
             type="button"
@@ -743,7 +743,7 @@ function TaskPlanningStep({
             onClick={onGenerateTasks}
           >
             <Wand2 className="mr-2 h-4 w-4" />
-            Regenerate with AI
+            {t('planner.regenerateAi')}
           </Button>
         )}
       </div>
@@ -751,8 +751,8 @@ function TaskPlanningStep({
       {isGenerating ? (
         <div className="flex flex-col items-center justify-center gap-4 py-16">
           <Spinner className="h-10 w-10" />
-          <p className="text-base text-muted-foreground font-medium">Generating your personalized plan...</p>
-          <p className="text-sm text-muted-foreground">This takes about 10 seconds</p>
+          <p className="text-base text-muted-foreground font-medium">{t('planner.generatingPlan')}</p>
+          <p className="text-sm text-muted-foreground">{t('planner.generatingWait')}</p>
         </div>
       ) : (
         <div className="space-y-6">
@@ -761,10 +761,12 @@ function TaskPlanningStep({
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-lg">Week {weekNumber}</CardTitle>
+                    <CardTitle className="text-lg">{t('planner.weekLabel')} {weekNumber}</CardTitle>
                     {tasksByWeek[weekNumber]?.length > 0 && (
                       <CardDescription className="mt-1">
-                        {tasksByWeek[weekNumber].length} task{tasksByWeek[weekNumber].length !== 1 ? 's' : ''}
+                        {tasksByWeek[weekNumber].length === 1
+                          ? t('planner.taskCount').replace('{count}', '1')
+                          : t('planner.taskCountPlural').replace('{count}', String(tasksByWeek[weekNumber].length))}
                       </CardDescription>
                     )}
                   </div>
@@ -775,7 +777,7 @@ function TaskPlanningStep({
                     onClick={() => onAddTask(weekNumber)}
                   >
                     <Plus className="mr-1 h-4 w-4" />
-                    Add task
+                    {t('planner.addTaskBtn')}
                   </Button>
                 </div>
               </CardHeader>
@@ -792,15 +794,15 @@ function TaskPlanningStep({
                             : 'border-border bg-muted/30'
                         )}
                       >
-                        {taskIndex === 0 && <p className="text-xs font-semibold text-primary uppercase">Start here →</p>}
+                        {taskIndex === 0 && <p className="text-xs font-semibold text-primary uppercase">{t('planner.startHere')} →</p>}
                         <Input
-                          placeholder="Task title"
+                          placeholder={t('planner.taskTitleInput')}
                           value={task.title}
                           onChange={(e) => onUpdateTask(index, 'title', e.target.value)}
                           className="border-0 bg-transparent p-0 font-medium shadow-none focus-visible:ring-0 h-auto text-base"
                         />
                         <Input
-                          placeholder="Description (optional)"
+                          placeholder={t('planner.taskDescInput')}
                           value={task.description}
                           onChange={(e) => onUpdateTask(index, 'description', e.target.value)}
                           className="border-0 bg-transparent p-0 text-sm text-muted-foreground shadow-none focus-visible:ring-0 h-auto"
@@ -815,7 +817,7 @@ function TaskPlanningStep({
                               onClick={() => onRemoveTask(index)}
                             >
                               <Trash2 className="h-4 w-4 mr-1" />
-                              Delete
+                              {t('planner.deleteTask')}
                             </Button>
                           </div>
                         )}
@@ -823,7 +825,7 @@ function TaskPlanningStep({
                     ))
                   ) : (
                     <p className="text-sm text-muted-foreground py-4 text-center">
-                      No tasks yet. Click "Add task" to start.
+                      {t('planner.noTasksEmpty')}
                     </p>
                   )}
                 </div>

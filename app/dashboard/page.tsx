@@ -92,8 +92,8 @@ export default function DashboardPage() {
             </h1>
             <p className="text-lg text-muted-foreground">
               {activePlans.length === 0
-                ? "Create your first learning plan to get started"
-                : `You're learning ${firstActivePlan?.hobby?.name || 'a new hobby'}. Keep going!`}
+                ? t('dashboard.startSubtitle')
+                : t('dashboard.learningSubtitle').replace('{hobby}', firstActivePlan?.hobby?.name || '')}
             </p>
           </div>
 
@@ -104,9 +104,9 @@ export default function DashboardPage() {
                 <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10">
                   <Plus className="h-10 w-10 text-primary" />
                 </div>
-                <h2 className="mb-2 text-2xl font-bold">Start Your First Plan</h2>
+                <h2 className="mb-2 text-2xl font-bold">{t('dashboard.createFirstPlanTitle')}</h2>
                 <p className="mb-8 max-w-sm text-muted-foreground">
-                  Choose a hobby and get a personalized 4-week learning plan with AI-generated tasks.
+                  {t('dashboard.createFirstPlanDesc')}
                 </p>
                 <Button size="lg" asChild>
                   <Link href="/planner">{t('header.newPlan')}</Link>
@@ -118,12 +118,12 @@ export default function DashboardPage() {
               <CardContent className="p-6">
                 <div className="flex flex-col gap-4">
                   <div>
-                    <p className="text-sm font-semibold text-primary mb-1">YOUR NEXT TASK</p>
+                    <p className="text-sm font-semibold text-primary mb-1">{t('dashboard.nextTask')}</p>
                     <h2 className="text-2xl font-bold mb-2">{nextIncompleteTask.title}</h2>
                     <p className="text-muted-foreground">{nextIncompleteTask.description}</p>
                   </div>
                   <Button size="lg" asChild className="w-full sm:w-auto">
-                    <Link href={`/dashboard`}>Start Task</Link>
+                    <Link href={`/dashboard`}>{t('dashboard.startTask')}</Link>
                   </Button>
                 </div>
               </CardContent>
@@ -132,8 +132,8 @@ export default function DashboardPage() {
             <Card className="mb-12 border-2 border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent">
               <CardContent className="flex flex-col items-center justify-center py-12 text-center">
                 <CheckCircle2 className="h-12 w-12 text-green-500 mb-4" />
-                <h2 className="text-xl font-bold mb-2">Plan Completed!</h2>
-                <p className="text-muted-foreground mb-6">Great work! Create a new plan to continue learning.</p>
+                <h2 className="text-xl font-bold mb-2">{t('dashboard.planCompletedTitle')}</h2>
+                <p className="text-muted-foreground mb-6">{t('dashboard.planCompletedDesc')}</p>
                 <Button size="lg" asChild>
                   <Link href="/planner">{t('header.newPlan')}</Link>
                 </Button>
@@ -143,13 +143,13 @@ export default function DashboardPage() {
 
           {/* Progress Overview */}
           <div className="mb-12">
-            <h3 className="text-lg font-semibold mb-4">Your Progress</h3>
+            <h3 className="text-lg font-semibold mb-4">{t('dashboard.progressTitle')}</h3>
             <div className="grid gap-4 md:grid-cols-2">
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-end justify-between">
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Active Plans</p>
+                      <p className="text-sm text-muted-foreground mb-1">{t('dashboard.activePlansLabel')}</p>
                       <p className="text-4xl font-bold">{activePlans.length}</p>
                     </div>
                     <Flame className="h-8 w-8 text-primary opacity-20" />
@@ -160,9 +160,9 @@ export default function DashboardPage() {
                 <CardContent className="p-6">
                   <div className="flex items-end justify-between">
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Tasks Completed This Week</p>
+                      <p className="text-sm text-muted-foreground mb-1">{t('dashboard.tasksCompletedWeek')}</p>
                       <p className="text-4xl font-bold">{completedTasks}</p>
-                      <p className="text-xs text-muted-foreground mt-1">of {totalTasks} total</p>
+                      <p className="text-xs text-muted-foreground mt-1">{t('dashboard.tasksTotal').replace('{count}', String(totalTasks))}</p>
                     </div>
                     <CheckCircle2 className="h-8 w-8 text-green-500 opacity-20" />
                   </div>
@@ -189,7 +189,7 @@ export default function DashboardPage() {
                 </div>
               ) : activePlans.length === 0 ? null : (
                 <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground">Learning for 4 weeks, task by task.</p>
+                  <p className="text-sm text-muted-foreground">{t('dashboard.weeklyNote')}</p>
                   <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {activePlans.map(plan => (
                       <PlanCard key={plan.id} plan={plan} />
