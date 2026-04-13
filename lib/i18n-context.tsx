@@ -259,6 +259,9 @@ const en = {
   'planner.taskDescInput': 'Description (optional)',
   'planner.deleteTask': 'Delete',
   'planner.noTasksEmpty': 'No tasks yet. Click "Add task" to start.',
+  'planner.timelineCurrent': 'Current',
+  'planner.timelineUpcoming': 'Upcoming',
+  'planner.timelineFinish': 'Finish!',
 }
 
 // Russian translations
@@ -346,7 +349,7 @@ const ru: Record<string, string> = {
   'dashboard.welcome': 'С возвращением,',
   'dashboard.subtitle': 'Отслеживай прогресс и продолжа�� прокачивать навыки',
   'dashboard.activePlans': 'Активные планы',
-  'dashboard.tasksDone': 'Задач выполнено',
+  'dashboard.tasksDone': 'Задач вып��лнено',
   'dashboard.tasksLeft': 'Задач осталось',
   'dashboard.completed': 'Завершено',
   'dashboard.active': 'Активные',
@@ -508,6 +511,9 @@ const ru: Record<string, string> = {
   'planner.taskDescInput': 'Описание (необязательно)',
   'planner.deleteTask': 'Удалить',
   'planner.noTasksEmpty': 'Нет задач. Нажми "Добавить задачу", чтобы начать.',
+  'planner.timelineCurrent': 'Текущая',
+  'planner.timelineUpcoming': 'Впереди',
+  'planner.timelineFinish': 'Финиш!',
 }
 
 const translations: Record<Locale, Record<string, string>> = { en, ru }
