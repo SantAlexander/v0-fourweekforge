@@ -706,6 +706,55 @@ function GoalSettingStep({
 }
 
 /**
+ * WeekTimeline - визуальный таймлайн 4-х недель
+ * Показывает прогресс по неделям с соединительными линиями
+ */
+function WeekTimeline({ currentWeek, t }: { currentWeek: number; t: (key: string) => string }) {
+  return (
+    <div className="mb-8 px-2">
+      <div className="flex items-center justify-between">
+        {[1, 2, 3, 4].map((week, index) => (
+          <div key={week} className="flex items-center flex-1 last:flex-none">
+            {/* Week circle and label */}
+            <div className="flex flex-col items-center">
+              <div
+                className={cn(
+                  'w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm sm:text-base transition-all',
+                  week <= currentWeek
+                    ? 'bg-primary text-primary-foreground shadow-md'
+                    : 'bg-muted text-muted-foreground'
+                )}
+              >
+                {week}
+              </div>
+              <span className="text-xs mt-2 text-muted-foreground hidden sm:block">
+                {t('planner.weekLabel')} {week}
+              </span>
+              <span className="text-[10px] mt-1 text-muted-foreground/70">
+                {week === 1
+                  ? t('planner.timelineCurrent')
+                  : week === 4
+                  ? t('planner.timelineFinish')
+                  : t('planner.timelineUpcoming')}
+              </span>
+            </div>
+            {/* Connecting line */}
+            {index < 3 && (
+              <div
+                className={cn(
+                  'flex-1 h-1 mx-2 rounded-full transition-all',
+                  week < currentWeek ? 'bg-primary' : 'bg-muted'
+                )}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/**
  * TaskPlanningStep - шаг планирования задач
  * Четкое отображение структуры 4 недель, каждая неделя отдельная карточка
  */
@@ -732,6 +781,9 @@ function TaskPlanningStep({
 }) {
   return (
     <div className="space-y-8">
+      {/* Week Timeline - визуальное отображение 4-недельного пути */}
+      <WeekTimeline currentWeek={1} t={t} />
+      
       <div>
         <h2 className="text-2xl font-bold mb-2">{t('planner.tasksTitle')}</h2>
         <p className="text-muted-foreground mb-4">{t('planner.tasksSubtitle')}</p>

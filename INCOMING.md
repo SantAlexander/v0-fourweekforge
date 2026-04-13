@@ -20,11 +20,12 @@ After UX audit, we identified that:
 
 ---
 
-## WIN 4: Visual Timeline on Planner
+## WIN 4: Visual Timeline on Planner [DONE]
 
 **Priority**: High
 **Complexity**: Medium (2-3 credits)
-**Files to modify**: `/app/planner/page.tsx`, `/lib/i18n-context.tsx`
+**Files modified**: `/app/planner/page.tsx`, `/lib/i18n-context.tsx`
+**Status**: Completed
 
 ### Problem
 On the planner page, users see task cards per week but don't have a visual understanding that this is exactly 4 weeks. The "Week 1, Week 2..." text exists but doesn't feel like a journey.
