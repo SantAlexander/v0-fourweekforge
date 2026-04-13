@@ -189,7 +189,7 @@ export default function PlannerPage() {
    * - value: новое значение
    * 
    * Как работает:
-   * 1. Создаёт копию массива
+   * 1. Создаёт коп����ю массива
    * 2. Обновляет указанное поле у нужной задачи
    * 3. Устанавливает новый массив
    */
@@ -547,7 +547,7 @@ function StepProgress({ step, t }: { step: number; t: (key: string) => string })
 
 /**
  * HobbySelectionStep - шаг выбора хобби
- * Показывает сетку предустановленных хобби и поле для ввода своего
+ * Единственный выбор: из списка ИЛИ ввести своё (не обе одновременно)
  */
 function HobbySelectionStep({
   hobbies,
@@ -567,20 +567,21 @@ function HobbySelectionStep({
   t: (key: string) => string
 }) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('planner.chooseHobbyTitle')}</CardTitle>
-        <CardDescription>{t('planner.chooseHobbySubtitle')}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {hobbiesLoading ? (
-          <div className="flex justify-center py-8">
-            <Spinner className="h-8 w-8" />
-          </div>
-        ) : (
-          <>
-            {/* Сетка предустановленных хобби */}
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-bold mb-2">{t('planner.hobbyTitle')}</h2>
+        <p className="text-muted-foreground">{t('planner.hobbySubtitle')}</p>
+      </div>
+
+      {hobbiesLoading ? (
+        <div className="flex justify-center py-8">
+          <Spinner className="h-8 w-8" />
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {/* Сетка хобби - основной выбор */}
+          <div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
               {hobbies.map((hobby) => {
                 const Icon = getHobbyIcon(hobby.icon)
                 const isSelected = selectedHobby === hobby.id
@@ -591,55 +592,57 @@ function HobbySelectionStep({
                     onClick={() => onHobbySelect(hobby.id)}
                     className={cn(
                       'flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all hover:border-primary/50',
-                      isSelected ? 'border-primary bg-primary/5' : 'border-border'
+                      isSelected ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/30'
                     )}
                   >
                     <div className={cn(
-                      'flex h-12 w-12 items-center justify-center rounded-lg',
+                      'flex h-14 w-14 items-center justify-center rounded-lg transition-all',
                       isSelected
                         ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-muted-foreground'
+                        : 'bg-muted text-muted-foreground group-hover:bg-primary/10'
                     )}>
                       <Icon className="h-6 w-6" />
                     </div>
-                    <span className="text-sm font-medium">
+                    <span className="text-sm font-medium text-center">
                       {hobby.icon ? (t(`hobby.${hobby.icon}`) !== `hobby.${hobby.icon}` ? t(`hobby.${hobby.icon}`) : hobby.name) : hobby.name}
                     </span>
                   </button>
                 )
               })}
             </div>
+          </div>
 
-            {/* Разделитель */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">{t('planner.customHobby')}</span>
-              </div>
+          {/* Разделитель */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-muted" />
             </div>
+            <div className="relative flex justify-center">
+              <span className="bg-background px-3 text-sm text-muted-foreground">{t('planner.hobbyOr')}</span>
+            </div>
+          </div>
 
-            {/* Поле для ввода своего хобби */}
-            <div className="space-y-2">
-              <Label htmlFor="custom-hobby">{t('planner.customHobbyLabel')}</Label>
-              <Input
-                id="custom-hobby"
-                placeholder={t('planner.customHobbyPlaceholder')}
-                value={customHobby}
-                onChange={(e) => onCustomHobbyChange(e.target.value)}
-              />
-            </div>
-          </>
-        )}
-      </CardContent>
-    </Card>
+          {/* Поле для своего хобби - если ничего не выбрано */}
+          <div className="space-y-2">
+            <Label htmlFor="custom-hobby" className="text-base font-medium">{t('planner.hobbyEnterOwn')}</Label>
+            <Input
+              id="custom-hobby"
+              placeholder={t('planner.hobbyOwnPlaceholder')}
+              value={customHobby}
+              onChange={(e) => onCustomHobbyChange(e.target.value)}
+              className="py-2 text-base"
+            />
+            {customHobby && <p className="text-sm text-muted-foreground">{t('planner.hobbyOwnHint').replace('{hobby}', customHobby)}</p>}
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 
 /**
  * GoalSettingStep - шаг установки цели
- * Поля для ввода цели и выбора даты начала
+ * Четкое указание: "Вот ваши 4 недели. Уточните, чего вы хотите достичь"
  */
 function GoalSettingStep({
   goal,
@@ -655,43 +658,56 @@ function GoalSettingStep({
   t: (key: string) => string
 }) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('planner.setGoalTitle')}</CardTitle>
-        <CardDescription>{t('planner.setGoalSubtitle')}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-bold mb-2">{t('planner.goalJourneyTitle')}</h2>
+        <p className="text-muted-foreground">{t('planner.goalJourneySubtitle')}</p>
+      </div>
+
+      <div className="space-y-6">
+        {/* Timeline показывающая 4 недели */}
+        <div className="bg-muted/30 rounded-lg p-6">
+          <div className="mb-4">
+            <p className="text-sm font-semibold text-primary">{t('planner.structureLabel')}</p>
+            <p className="font-medium mt-2">{t('planner.structureWeeks')}</p>
+            <p className="text-sm text-muted-foreground mt-1">{t('planner.structureDesc')}</p>
+          </div>
+        </div>
+
+        {/* Goal Input */}
         <div className="space-y-2">
-          <Label htmlFor="goal">{t('planner.goalLabel')}</Label>
+          <Label htmlFor="goal" className="text-base font-medium">{t('planner.goalSpecific')}</Label>
           <Textarea
             id="goal"
-            placeholder={t('planner.goalPlaceholder')}
+            placeholder={t('planner.goalSpecificPlaceholder')}
             value={goal}
             onChange={(e) => onGoalChange(e.target.value)}
-            rows={4}
+            rows={3}
+            className="resize-none"
           />
+          {goal && <p className="text-sm text-muted-foreground">{t('planner.goalAiHint')}</p>}
         </div>
+
+        {/* Start Date */}
         <div className="space-y-2">
-          <Label htmlFor="start-date">{t('planner.startDate')}</Label>
+          <Label htmlFor="start-date" className="text-base font-medium">{t('planner.startDateLabel')}</Label>
           <Input
             id="start-date"
             type="date"
             value={startDate}
             onChange={(e) => onStartDateChange(e.target.value)}
+            className="max-w-xs"
           />
+          <p className="text-sm text-muted-foreground">{t('planner.startDateHint')}</p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 
 /**
  * TaskPlanningStep - шаг планирования задач
- * 
- * Поведение:
- * 1. При первом открытии — показывает спиннер пока AI генерирует задачи
- * 2. После генерации — показывает редактируемые задачи по неделям
- * 3. Кнопка "Сгенерировать заново" позволяет обновить задачи
+ * Четкое отображение структуры 4 недель, каждая неделя отдельная карточка
  */
 function TaskPlanningStep({
   tasksByWeek,
@@ -715,46 +731,45 @@ function TaskPlanningStep({
   t: (key: string) => string
 }) {
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <CardTitle>{t('planner.planTasksTitle')}</CardTitle>
-            {tasksGenerated && !isGenerating && (
-              <CardDescription className="mt-1">{t('planner.planTasksSubtitle')}</CardDescription>
-            )}
-          </div>
-          {/* Кнопка регенерации — видна только после первой генерации */}
-          {tasksGenerated && !isGenerating && (
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={onGenerateTasks}
-              className="shrink-0"
-            >
-              <Wand2 className="mr-2 h-4 w-4" />
-              {t('planner.regenerate')}
-            </Button>
-          )}
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-bold mb-2">{t('planner.tasksTitle')}</h2>
+        <p className="text-muted-foreground mb-4">{t('planner.tasksSubtitle')}</p>
+        {tasksGenerated && !isGenerating && (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={onGenerateTasks}
+          >
+            <Wand2 className="mr-2 h-4 w-4" />
+            {t('planner.regenerateAi')}
+          </Button>
+        )}
+      </div>
+
+      {isGenerating ? (
+        <div className="flex flex-col items-center justify-center gap-4 py-16">
+          <Spinner className="h-10 w-10" />
+          <p className="text-base text-muted-foreground font-medium">{t('planner.generatingPlan')}</p>
+          <p className="text-sm text-muted-foreground">{t('planner.generatingWait')}</p>
         </div>
-      </CardHeader>
-      <CardContent>
-        {/* Состояние загрузки — идёт генерация AI */}
-        {isGenerating ? (
-          <div className="flex flex-col items-center justify-center gap-4 py-12">
-            <Spinner className="h-8 w-8" />
-            <p className="text-sm text-muted-foreground">{t('planner.generating')}</p>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            {[1, 2, 3, 4].map((weekNumber) => (
-              <div key={weekNumber} className="space-y-3">
-                {/* Заголовок недели с кнопкой добавления задачи */}
+      ) : (
+        <div className="space-y-6">
+          {[1, 2, 3, 4].map((weekNumber) => (
+            <Card key={weekNumber} className="border-l-4 border-l-primary">
+              <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">
-                    {t('planner.week')} {weekNumber}
-                  </h3>
+                  <div>
+                    <CardTitle className="text-lg">{t('planner.weekLabel')} {weekNumber}</CardTitle>
+                    {tasksByWeek[weekNumber]?.length > 0 && (
+                      <CardDescription className="mt-1">
+                        {tasksByWeek[weekNumber].length === 1
+                          ? t('planner.taskCount').replace('{count}', '1')
+                          : t('planner.taskCountPlural').replace('{count}', String(tasksByWeek[weekNumber].length))}
+                      </CardDescription>
+                    )}
+                  </div>
                   <Button
                     type="button"
                     variant="ghost"
@@ -762,54 +777,64 @@ function TaskPlanningStep({
                     onClick={() => onAddTask(weekNumber)}
                   >
                     <Plus className="mr-1 h-4 w-4" />
-                    {t('planner.addTask')}
+                    {t('planner.addTaskBtn')}
                   </Button>
                 </div>
-
-                {/* Список задач недели */}
+              </CardHeader>
+              <CardContent>
                 <div className="space-y-3">
                   {tasksByWeek[weekNumber]?.length > 0 ? (
-                    tasksByWeek[weekNumber].map(({ task, index }) => (
-                      <div key={index} className="flex gap-2">
-                        <div className="flex-1 rounded-lg border bg-muted/30 p-3 space-y-2">
-                          <Input
-                            placeholder={`${t('planner.week')} ${weekNumber} — ${t('planner.taskTitlePlaceholder')}`}
-                            value={task.title}
-                            onChange={(e) => onUpdateTask(index, 'title', e.target.value)}
-                            className="border-0 bg-transparent p-0 font-medium shadow-none focus-visible:ring-0 h-auto"
-                          />
-                          <Input
-                            placeholder={t('planner.taskDescPlaceholder')}
-                            value={task.description}
-                            onChange={(e) => onUpdateTask(index, 'description', e.target.value)}
-                            className="border-0 bg-transparent p-0 text-sm text-muted-foreground shadow-none focus-visible:ring-0 h-auto"
-                          />
-                        </div>
+                    tasksByWeek[weekNumber].map(({ task, index }, taskIndex) => (
+                      <div
+                        key={index}
+                        className={cn(
+                          'p-4 rounded-lg border-2 space-y-2 transition-all',
+                          taskIndex === 0 && tasksByWeek[weekNumber].length > 0
+                            ? 'border-primary/30 bg-primary/5'
+                            : 'border-border bg-muted/30'
+                        )}
+                      >
+                        {taskIndex === 0 && <p className="text-xs font-semibold text-primary uppercase">{t('planner.startHere')} →</p>}
+                        <Input
+                          placeholder={t('planner.taskTitleInput')}
+                          value={task.title}
+                          onChange={(e) => onUpdateTask(index, 'title', e.target.value)}
+                          className="border-0 bg-transparent p-0 font-medium shadow-none focus-visible:ring-0 h-auto text-base"
+                        />
+                        <Input
+                          placeholder={t('planner.taskDescInput')}
+                          value={task.description}
+                          onChange={(e) => onUpdateTask(index, 'description', e.target.value)}
+                          className="border-0 bg-transparent p-0 text-sm text-muted-foreground shadow-none focus-visible:ring-0 h-auto"
+                        />
                         {tasksCount > MIN_TASKS && (
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="shrink-0 text-destructive hover:text-destructive self-start mt-1"
-                            onClick={() => onRemoveTask(index)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                          <div className="pt-2 flex justify-end">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="text-destructive hover:text-destructive"
+                              onClick={() => onRemoveTask(index)}
+                            >
+                              <Trash2 className="h-4 w-4 mr-1" />
+                              {t('planner.deleteTask')}
+                            </Button>
+                          </div>
                         )}
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-muted-foreground py-2 px-1">
-                      {t('planner.noTasksForWeek')}
+                    <p className="text-sm text-muted-foreground py-4 text-center">
+                      {t('planner.noTasksEmpty')}
                     </p>
                   )}
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 

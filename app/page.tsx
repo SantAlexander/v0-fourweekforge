@@ -84,7 +84,18 @@ export default function HomePage() {
               <p className="mb-8 text-pretty text-lg text-muted-foreground md:text-xl">
                 {t('landing.subtitle')}
               </p>
-              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <div className="mb-8 inline-flex flex-col items-center gap-3 rounded-lg border border-border/50 bg-muted/30 px-6 py-4 sm:flex-row sm:gap-6">
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  <span className="text-xl text-primary font-bold">8-12</span>
+                  <span className="text-muted-foreground">{t('landing.tasksLabel')}</span>
+                </div>
+                <div className="hidden h-6 w-px bg-border/50 sm:block" />
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  <span className="text-xl text-primary font-bold">15-30</span>
+                  <span className="text-muted-foreground">{t('landing.dailyLabel')}</span>
+                </div>
+              </div>
+              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row" suppressHydrationWarning>
                 <Button asChild size="lg" className="w-full sm:w-auto">
                   <Link href={user ? "/planner" : "/register"}>
                     {t('landing.cta.start')}
