@@ -93,7 +93,7 @@ export default function DashboardPage() {
             <p className="text-lg text-muted-foreground">
               {activePlans.length === 0
                 ? "Create your first learning plan to get started"
-                : `You're learning ${firstActivePlan?.hobby.name}. Keep going!`}
+                : `You're learning ${firstActivePlan?.hobby?.name || 'a new hobby'}. Keep going!`}
             </p>
           </div>
 
