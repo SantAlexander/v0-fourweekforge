@@ -26,6 +26,8 @@ const en = {
   'landing.title': 'Turn Your Passion Into',
   'landing.titleHighlight': 'Progress',
   'landing.subtitle': 'FourWeekForge helps you create structured learning plans for any hobby. Set weekly goals, track your progress, and transform curiosity into skill.',
+  'landing.tasksLabel': 'tasks per plan',
+  'landing.dailyLabel': 'min per day',
   'landing.cta.start': 'Start Your Journey',
   'landing.cta.signin': 'Sign In',
   
@@ -219,6 +221,7 @@ const en = {
   'dashboard.activePlansLabel': 'Active Plans',
   'dashboard.tasksCompletedWeek': 'Tasks Completed This Week',
   'dashboard.tasksTotal': 'of {count} total',
+  'dashboard.progressMessage': "You're {percent}% done! Keep it up!",
   'dashboard.learningSubtitle': "You're learning {hobby}. Keep going!",
   'dashboard.startSubtitle': 'Create your first learning plan to get started',
   'dashboard.weeklyNote': 'Learning for 4 weeks, task by task.',
@@ -272,6 +275,8 @@ const ru: Record<string, string> = {
   'landing.title': 'Преврати увлечение в',
   'landing.titleHighlight': 'Прогресс',
   'landing.subtitle': 'FourWeekForge поможет создать структурированный план обучения для любого хобби. Ставь еженедельные цели, отслеживай прогресс и превращай любопытство в навык.',
+  'landing.tasksLabel': 'задач на план',
+  'landing.dailyLabel': 'мин в день',
   'landing.cta.start': 'Начать путь',
   'landing.cta.signin': 'Войти',
   
@@ -339,7 +344,7 @@ const ru: Record<string, string> = {
   
   // Dashboard
   'dashboard.welcome': 'С возвращением,',
-  'dashboard.subtitle': 'Отслеживай прогресс и продолжай прокачивать навыки',
+  'dashboard.subtitle': 'Отслеживай прогресс и продолжа�� прокачивать навыки',
   'dashboard.activePlans': 'Активные планы',
   'dashboard.tasksDone': 'Задач выполнено',
   'dashboard.tasksLeft': 'Задач осталось',
@@ -465,6 +470,7 @@ const ru: Record<string, string> = {
   'dashboard.activePlansLabel': 'Активные планы',
   'dashboard.tasksCompletedWeek': 'Задач выполнено',
   'dashboard.tasksTotal': 'из {count} всего',
+  'dashboard.progressMessage': 'Ты на {percent}% пути! Продолжай!',
   'dashboard.learningSubtitle': 'Ты изучаешь {hobby}. Продолжай!',
   'dashboard.startSubtitle': 'Создай первый план обучения, чтобы начать',
   'dashboard.weeklyNote': '4 недели обучения, задача за задачей.',

@@ -31,7 +31,7 @@ export default function RegisterPage() {
     
     if (result.success) {
       toast.success(t('toast.accountCreated'))
-      router.push('/dashboard')
+      router.push('/planner')
     } else {
       // Show localized error message
       const errorKey = `error.${result.error}`

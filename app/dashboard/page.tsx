@@ -162,7 +162,11 @@ export default function DashboardPage() {
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">{t('dashboard.tasksCompletedWeek')}</p>
                       <p className="text-4xl font-bold">{completedTasks}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{t('dashboard.tasksTotal').replace('{count}', String(totalTasks))}</p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {totalTasks > 0
+                      ? t('dashboard.progressMessage').replace('{percent}', String(Math.round((completedTasks / totalTasks) * 100)))
+                      : '—'}
+                  </p>
                     </div>
                     <CheckCircle2 className="h-8 w-8 text-green-500 opacity-20" />
                   </div>
