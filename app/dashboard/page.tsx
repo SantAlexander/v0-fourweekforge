@@ -77,75 +77,102 @@ export default function DashboardPage() {
   const totalTasks = plans.reduce((acc, p) => acc + p.tasks.length, 0)
   const completedTasks = plans.reduce((acc, p) => acc + p.tasks.filter(t => t.is_completed).length, 0)
 
+  const firstActivePlan = activePlans.length > 0 ? activePlans[0] : null
+  const nextIncompleteTask = firstActivePlan?.tasks.find(t => !t.is_completed)
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
       <main className="flex-1">
         <div className="mx-auto max-w-6xl px-4 py-8">
           {/* Welcome Section */}
-          <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight">
-                {t('dashboard.welcome')} {user.name.split(' ')[0]}!
-              </h1>
-              <p className="text-muted-foreground">
-                {t('dashboard.subtitle')}
-              </p>
-            </div>
-            <Button asChild>
-              <Link href="/planner">
-                <Plus className="mr-2 h-4 w-4" />
-                {t('header.newPlan')}
-              </Link>
-            </Button>
+          <div className="mb-12">
+            <h1 className="text-4xl font-bold tracking-tight mb-2">
+              {t('dashboard.welcome')} {user.name.split(' ')[0]}
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              {activePlans.length === 0
+                ? t('dashboard.startSubtitle')
+                : t('dashboard.learningSubtitle').replace('{hobby}', firstActivePlan?.hobby?.name || '')}
+            </p>
           </div>
 
-          {/* Stats Cards */}
-          <div className="mb-8 grid gap-4 md:grid-cols-4">
-            <Card>
-              <CardContent className="flex items-center gap-4 p-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Flame className="h-6 w-6" />
+          {/* Primary CTA Section - "What to do next" */}
+          {activePlans.length === 0 ? (
+            <Card className="mb-12 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+              <CardContent className="flex flex-col items-center justify-center py-16 text-center">
+                <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10">
+                  <Plus className="h-10 w-10 text-primary" />
                 </div>
-                <div>
-                  <p className="text-2xl font-bold">{activePlans.length}</p>
-                  <p className="text-sm text-muted-foreground">{t('dashboard.activePlans')}</p>
+                <h2 className="mb-2 text-2xl font-bold">{t('dashboard.createFirstPlanTitle')}</h2>
+                <p className="mb-8 max-w-sm text-muted-foreground">
+                  {t('dashboard.createFirstPlanDesc')}
+                </p>
+                <Button size="lg" asChild>
+                  <Link href="/planner">{t('header.newPlan')}</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          ) : nextIncompleteTask ? (
+            <Card className="mb-12 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+              <CardContent className="p-6">
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <p className="text-sm font-semibold text-primary mb-1">{t('dashboard.nextTask')}</p>
+                    <h2 className="text-2xl font-bold mb-2">{nextIncompleteTask.title}</h2>
+                    <p className="text-muted-foreground">{nextIncompleteTask.description}</p>
+                  </div>
+                  <Button size="lg" asChild className="w-full sm:w-auto">
+                    <Link href={`/dashboard`}>{t('dashboard.startTask')}</Link>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="flex items-center gap-4 p-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-chart-2/10 text-chart-2">
-                  <CheckCircle2 className="h-6 w-6" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold">{completedTasks}</p>
-                  <p className="text-sm text-muted-foreground">{t('dashboard.tasksDone')}</p>
-                </div>
+          ) : (
+            <Card className="mb-12 border-2 border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent">
+              <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+                <CheckCircle2 className="h-12 w-12 text-green-500 mb-4" />
+                <h2 className="text-xl font-bold mb-2">{t('dashboard.planCompletedTitle')}</h2>
+                <p className="text-muted-foreground mb-6">{t('dashboard.planCompletedDesc')}</p>
+                <Button size="lg" asChild>
+                  <Link href="/planner">{t('header.newPlan')}</Link>
+                </Button>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="flex items-center gap-4 p-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-chart-3/10 text-chart-3">
-                  <Target className="h-6 w-6" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold">{totalTasks - completedTasks}</p>
-                  <p className="text-sm text-muted-foreground">{t('dashboard.tasksLeft')}</p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="flex items-center gap-4 p-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-chart-4/10 text-chart-4">
-                  <Clock className="h-6 w-6" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold">{completedPlans.length}</p>
-                  <p className="text-sm text-muted-foreground">{t('dashboard.completed')}</p>
-                </div>
-              </CardContent>
-            </Card>
+          )}
+
+          {/* Progress Overview */}
+          <div className="mb-12">
+            <h3 className="text-lg font-semibold mb-4">{t('dashboard.progressTitle')}</h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-end justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">{t('dashboard.activePlansLabel')}</p>
+                      <p className="text-4xl font-bold">{activePlans.length}</p>
+                    </div>
+                    <Flame className="h-8 w-8 text-primary opacity-20" />
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-end justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">{t('dashboard.tasksCompletedWeek')}</p>
+                      <p className="text-4xl font-bold">{completedTasks}</p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {totalTasks > 0
+                      ? t('dashboard.progressMessage').replace('{percent}', String(Math.round((completedTasks / totalTasks) * 100)))
+                      : '—'}
+                  </p>
+                    </div>
+                    <CheckCircle2 className="h-8 w-8 text-green-500 opacity-20" />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
           {/* Plans Tabs */}
@@ -157,9 +184,6 @@ export default function DashboardPage() {
               <TabsTrigger value="completed">
                 {t('dashboard.completed')} ({completedPlans.length})
               </TabsTrigger>
-              <TabsTrigger value="paused">
-                {t('dashboard.paused')} ({pausedPlans.length})
-              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="active" className="space-y-4">
@@ -167,29 +191,14 @@ export default function DashboardPage() {
                 <div className="flex justify-center py-12">
                   <Spinner className="h-8 w-8" />
                 </div>
-              ) : activePlans.length === 0 ? (
-                <Card>
-                  <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
-                      <Flame className="h-8 w-8 text-muted-foreground" />
-                    </div>
-                    <h3 className="mb-2 text-lg font-semibold">{t('dashboard.noActivePlans')}</h3>
-                    <p className="mb-6 max-w-sm text-muted-foreground">
-                      {t('dashboard.noActivePlansSubtitle')}
-                    </p>
-                    <Button asChild>
-                      <Link href="/planner">
-                        <Plus className="mr-2 h-4 w-4" />
-                        {t('dashboard.createFirstPlan')}
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {activePlans.map(plan => (
-                    <PlanCard key={plan.id} plan={plan} />
-                  ))}
+              ) : activePlans.length === 0 ? null : (
+                <div className="space-y-4">
+                  <p className="text-sm text-muted-foreground">{t('dashboard.weeklyNote')}</p>
+                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {activePlans.map(plan => (
+                      <PlanCard key={plan.id} plan={plan} />
+                    ))}
+                  </div>
                 </div>
               )}
             </TabsContent>
@@ -198,9 +207,7 @@ export default function DashboardPage() {
               {completedPlans.length === 0 ? (
                 <Card>
                   <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
-                      <CheckCircle2 className="h-8 w-8 text-muted-foreground" />
-                    </div>
+                    <CheckCircle2 className="h-12 w-12 text-muted-foreground mb-4" />
                     <h3 className="mb-2 text-lg font-semibold">{t('dashboard.noCompletedPlans')}</h3>
                     <p className="max-w-sm text-muted-foreground">
                       {t('dashboard.noCompletedPlansSubtitle')}
@@ -210,28 +217,6 @@ export default function DashboardPage() {
               ) : (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {completedPlans.map(plan => (
-                    <PlanCard key={plan.id} plan={plan} />
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="paused" className="space-y-4">
-              {pausedPlans.length === 0 ? (
-                <Card>
-                  <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
-                      <Clock className="h-8 w-8 text-muted-foreground" />
-                    </div>
-                    <h3 className="mb-2 text-lg font-semibold">{t('dashboard.noPausedPlans')}</h3>
-                    <p className="max-w-sm text-muted-foreground">
-                      {t('dashboard.noPausedPlansSubtitle')}
-                    </p>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {pausedPlans.map(plan => (
                     <PlanCard key={plan.id} plan={plan} />
                   ))}
                 </div>
