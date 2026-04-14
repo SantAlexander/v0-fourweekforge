@@ -82,6 +82,7 @@ Already have `planner.weekLabel` ("Week" / "Неделя")
 **Priority**: Medium
 **Complexity**: Medium-High (3-4 credits)
 **Files to modify**: `/app/page.tsx`, `/lib/i18n-context.tsx`
+**Status**: ✅ Completed
 
 ### Problem
 New visitors see "Master any hobby in 4 weeks" but have no idea what a plan actually looks like. They need to see concrete examples before signing up.

@@ -177,6 +177,56 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Example Plans Section */}
+        <section className="border-b border-border py-20">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="mb-12 text-center">
+              <h2 className="mb-4 text-3xl font-bold tracking-tight">{t('landing.examplesTitle')}</h2>
+              <p className="text-muted-foreground">
+                {t('landing.examplesSubtitle')}
+              </p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2 max-w-4xl mx-auto">
+              {EXAMPLE_PLANS.map((plan) => {
+                const isExpanded = expandedPlan === plan.hobby
+                const displayName = locale === 'ru' ? plan.hobbyNameRu : plan.hobbyName
+                const displayGoal = locale === 'ru' ? plan.goalRu : plan.goal
+                
+                return (
+                  <Card 
+                    key={plan.hobby}
+                    className={cn(
+                      "cursor-pointer transition-all hover:border-primary/50",
+                      isExpanded && "ring-2 ring-primary"
+                    )}
+                    onClick={() => setExpandedPlan(isExpanded ? null : plan.hobby)}
+                  >
+                    <CardHeader>
+                      <CardTitle>{displayName}</CardTitle>
+                      <CardDescription>{displayGoal}</CardDescription>
+                    </CardHeader>
+                    {isExpanded && (
+                      <CardContent>
+                        <div className="space-y-2">
+                          {plan.tasks.map((task, i) => {
+                            const displayTaskTitle = locale === 'ru' ? task.titleRu : task.title
+                            return (
+                              <div key={i} className="flex gap-3 text-sm">
+                                <span className="text-primary font-medium min-w-fit">W{task.week}</span>
+                                <span className="text-muted-foreground">{displayTaskTitle}</span>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </CardContent>
+                    )}
+                  </Card>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+
         {/* Popular Hobbies */}
         <section className="border-b border-border py-20">
           <div className="mx-auto max-w-6xl px-4">
