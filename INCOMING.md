@@ -5,25 +5,29 @@ Another v0 session can use this as a guide to implement these changes.
 
 ---
 
-# CURRENT PRIORITY: FINAL REDESIGN — HEAD OF PRODUCT DESIGN LEVEL
+# CURRENT PRIORITY: PHASE 11 — FOCUS & CALM PRODUCT STYLE (FINAL LAYER)
 
 ## Context
 
 You are a Head of Product Design (Linear / Stripe level).
 
-Working on FourWeekForge's FINAL redesign phase.
+Working on FourWeekForge's FINAL polish phase.
 
-**Your goal is NOT to polish UI.**
+**Previous work (PHASE 1-10):** ✅ COMPLETE
+- All 10 phases of design system rebuild completed
+- App is clean, focused, and actionable
+- Now transitioning to premium productivity tool aesthetic
 
-**Your goal is to:**
-- Rebuild clarity
-- Define focus
-- Remove noise
-- Make the product actionable
+**Your goal for PHASE 11:**
+- Transform from "clean UI" → "premium productivity tool"
+- Change color system: red/orange → calm indigo/blue
+- Create unquestionable focus blocks per screen
+- Remove all decision friction
+- Make product feel like a tool you trust daily
 
 ---
 
-## REDESIGN WORK PLAN (10 PHASES)
+# REDESIGN WORK PLAN (11 PHASES)
 
 ### PHASE 1 — VISUAL NOISE REMOVAL (HARD CLEANUP)
 
@@ -362,6 +366,271 @@ Working on FourWeekForge's FINAL redesign phase.
 - ✅ Copy is factual and concise
 - ✅ Typography and spacing normalized
 - ✅ Mobile accessibility verified
+
+---
+
+## PHASE 11 — FOCUS & CALM PRODUCT STYLE (FINAL LAYER)
+
+**Status**: PENDING (Next session)
+**Priority**: CRITICAL
+**Complexity**: High (full redesign pass)
+
+This is the final and most important phase.
+
+### Goal
+
+Transform the product from a "clean interface" into a:
+👉 **calm, focused, premium productivity tool**
+
+Style direction: **Linear / Notion / Stripe level**
+
+---
+
+### 11.1 HARD FOCUS BLOCK (UNCHANGED CORE)
+
+**What**: Create ONE dominant block per main screen
+
+**Dashboard:**
+- Primary block: "Today"
+- Must include: current task, completion state, clear action
+- Visually largest element
+- Highest on screen
+- Strongest contrast
+
+**User must instantly understand:**
+👉 "What do I do right now?"
+
+**Plan Page:**
+- Primary block: "Today's Task"
+- Show current actionable task
+- Make it undeniable
+
+**Landing:**
+- Primary block: "Start Learning" CTA
+- Everything else is supporting
+
+---
+
+### 11.2 NEXT ACTION CLARITY
+
+**At every moment, interface must answer:**
+👉 "What should I do next?"
+
+**If user has to think — redesign.**
+
+**Make next action:**
+- obvious (visually dominant)
+- visible without scanning
+- always accessible
+- never buried in secondary UI
+
+---
+
+### 11.3 AGGRESSIVE DE-EMPHASIS
+
+**Reduce visibility of:**
+- future weeks
+- completed tasks
+- secondary actions
+- stats/progress (support, not lead)
+
+**Use:**
+- lower contrast (30-40%)
+- smaller size
+- muted colors
+- opacity reduction
+
+**Goal:**
+👉 eliminate distraction
+
+**Files to modify:**
+- `components/calendar-view.tsx` — de-emphasize future/past
+- `components/week-tasks.tsx` — de-emphasize completed
+- `app/plan/[id]/page.tsx` — reduce stats visibility
+- `app/dashboard/page.tsx` — move progress to secondary
+
+---
+
+### 11.4 PROGRESS AS SUPPORTING SIGNAL
+
+**Current state**: Progress is too dominant
+
+**What to change:**
+- Progress bar: reduce visual weight
+- Keep it informative, not dominant
+- Use as supporting signal, not hero
+- Place below/beside primary action, not above
+
+**Files to modify:**
+- `app/dashboard/page.tsx`
+- `app/plan/[id]/page.tsx`
+- `components/week-completion-card.tsx`
+
+---
+
+### 11.5 REMOVE DECISION FRICTION
+
+**Eliminate:**
+- competing buttons
+- unclear hierarchy
+- visual noise
+- options that delay decision
+
+**Interface should feel:**
+👉 inevitable and effortless
+
+**User should never:**
+- wonder what to do next
+- see competing CTAs
+- face unclear choices
+
+---
+
+### 11.6 COLOR SYSTEM REBUILD (CALM PRODUCTIVITY)
+
+**Current palette**: Red/Orange-based (aggressive)
+
+**New palette**: Indigo/Blue-based (calm, premium)
+
+#### Color assignments:
+
+**Primary (indigo/blue):**
+- Use: `#4F46E5` or similar (Indigo-600)
+- For: CTAs, active states, focus indicators
+- Feeling: calm, trustworthy, professional
+
+**Neutrals:**
+- Dark: `#0F172A` (Slate-900 - text)
+- Mid: `#334155` (Slate-700 - secondary text)
+- Light: `#F8FAFC` (Slate-50 - backgrounds)
+- Border: `#CBD5E1` (Slate-300 - subtle)
+
+**Success (green):**
+- Use: `#22C55E` (Green-500)
+- For: Completed states ONLY
+- Keep it subtle
+
+**Danger (red):**
+- Use: `#EF4444` (Red-500)
+- For: DELETE actions ONLY
+- Error states
+
+#### Rules:
+- ❌ NO aggressive colors
+- ❌ NO over-saturation
+- ❌ NO gradients
+- ❌ NO unnecessary highlights
+- ✅ Colors support hierarchy
+- ✅ Colors support action clarity
+- ✅ Colors support calm feeling
+
+**Files to modify:**
+- `app/globals.css` — Update color palette
+- All component files using primary color
+
+---
+
+### 11.7 VISUAL TONE ADJUSTMENT
+
+**UI must feel:**
+- calm
+- stable
+- controlled
+- premium
+
+**Reduce:**
+- visual excitement
+- flashy elements
+- unnecessary highlights
+- animation effects (keep essential transitions only)
+
+**Increase:**
+- whitespace balance
+- typography clarity
+- structural consistency
+- breathing room around focus blocks
+
+**Files to modify:**
+- `app/globals.css` — reduce animations, update spacing
+- `components/*` — add breathing room
+
+---
+
+### 11.8 INTERFACE BEHAVIOR FEELING
+
+**The product should feel like:**
+👉 a tool you trust daily
+
+**NOT:**
+- a motivational app
+- a gamified system
+- something that tries too hard
+
+**Shift perception from:**
+❌ "let's get excited!"
+to:
+✅ "let's get things done"
+
+**Remove:**
+- celebratory messages
+- motivational copy
+- reward/streak language
+- progress celebrations
+
+**Add:**
+- factual status updates
+- clear next steps
+- professional tone
+- respect for user time
+
+**Files to modify:**
+- `components/completion-celebration.tsx` — tone down or remove
+- `lib/i18n-context.tsx` — update copy tone
+- All messaging throughout app
+
+---
+
+### Implementation Priority
+
+1. **Color system** (foundation) — `app/globals.css`
+2. **Dashboard restructure** — `app/dashboard/page.tsx`
+3. **Plan page restructure** — `app/plan/[id]/page.tsx`
+4. **De-emphasis passes** — all component files
+5. **Copy tone adjustment** — `lib/i18n-context.tsx`
+6. **Animation cleanup** — `app/globals.css`
+
+---
+
+### Success Criteria
+
+When PHASE 11 is complete:
+
+- [ ] Primary color changed from red/orange to indigo/blue
+- [ ] Dashboard shows "Today" as hero (undeniable focus)
+- [ ] Plan page shows "Today's Task" as hero
+- [ ] Future weeks are visually de-emphasized (30% opacity or less)
+- [ ] Completed tasks are de-emphasized (opacity + gray color)
+- [ ] Progress stats moved below primary action
+- [ ] No celebrating/motivational messaging
+- [ ] All CTAs use calm indigo color
+- [ ] Copy is factual, professional, respectful
+- [ ] User never has to think "what do I do next?"
+- [ ] Product feels like a premium productivity tool (Linear/Notion/Stripe level)
+
+---
+
+### NEXT SESSION INSTRUCTIONS
+
+Use this PHASE 11 as complete specification:
+1. Read all 8 subsections (11.1-11.8)
+2. Modify files in priority order
+3. Test each change on desktop and mobile
+4. Verify color system is consistent
+5. Ensure "what do I do next?" is always obvious
+
+This is the final polish that transforms the app from "good design" to "premium product."
+
+---
 3. **Calm** — Neutral colors, no decoration
 4. **Honest** — Show facts, not feelings
 5. **Respects time** — Dense layout, no filler
@@ -406,7 +675,28 @@ When done:
 
 ---
 
-# PREVIOUS COMPLETED WORK
+# PHASE SUMMARY
+
+✅ **PHASE 1-10: COMPLETE** (Previous session)
+- Visual noise removal ✅
+- Global hierarchy system ✅
+- Dashboard rebuild ✅
+- Calendar rebuild ✅
+- List view optimization ✅
+- Landing page conversion ✅
+- Planner momentum ✅
+- CTA system unification ✅
+- Copy rewrite ✅
+- Final polish & normalization ✅
+
+⏳ **PHASE 11: PENDING** (Next session)
+- Color system rebuild (red → indigo)
+- Focus block creation
+- De-emphasis aggressive elements
+- Premium productivity tone
+- Interface behavior alignment
+
+---
 
 ## Past Wins (7 completed)
 
