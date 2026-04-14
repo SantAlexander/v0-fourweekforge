@@ -471,7 +471,7 @@ const ru: Record<string, string> = {
   'plan.tasksDone': 'Задач выполнено',
   'plan.continue': 'Продолжить',
   'plan.today': 'Сегодня',
-  'plan.nextActionable': 'Следующая неделя'
+  'plan.nextActionable': 'Следующая неделя',
   
   // Toast messages
   'toast.welcomeBack': 'С возвращением!',
