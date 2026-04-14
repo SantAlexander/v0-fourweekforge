@@ -27,9 +27,9 @@ export function WeekCompletionCard({
   return (
     <Card
       className={cn(
-        'border-2 transition-all duration-300',
-        isCurrentWeek && 'border-primary shadow-lg shadow-primary/20 bg-gradient-to-br from-primary/5 to-transparent',
-        isCompleted && 'border-accent bg-gradient-to-br from-accent/5 to-transparent',
+        'border transition-all duration-300',
+        isCurrentWeek && 'border-primary',
+        isCompleted && 'border-accent',
         !isCurrentWeek && !isCompleted && 'border-border opacity-60'
       )}
     >

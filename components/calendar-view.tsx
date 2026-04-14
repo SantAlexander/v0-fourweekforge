@@ -81,7 +81,7 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-1.5 bg-secondary rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500"
+                    className="h-full bg-primary transition-all duration-500"
                     style={{ width: `${weekTasks.length > 0 ? (completedWeekTasks / weekTasks.length) * 100 : 0}%` }}
                   />
                 </div>
@@ -109,12 +109,12 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
                     key={dayIndex}
                     onClick={() => setExpandedDay(isExpandedDay ? null : dayIndex)}
                     className={cn(
-                      'aspect-square rounded-lg p-2 transition-all duration-200 text-center flex flex-col items-center justify-center border-2',
-                      dayIsToday && 'border-primary ring-2 ring-primary ring-offset-2 shadow-lg shadow-primary/20',
-                      !dayIsToday && completedDayTasks === dayTasks.length && dayTasks.length > 0 && 'bg-accent/10 border-accent shadow-md shadow-accent/10',
-                      !dayIsToday && completedDayTasks < dayTasks.length && dayTasks.length > 0 && 'bg-muted border-border hover:border-primary/50 hover:shadow-sm',
+                      'aspect-square rounded-lg p-2 transition-all duration-200 text-center flex flex-col items-center justify-center border',
+                      dayIsToday && 'border-primary bg-primary/5',
+                      !dayIsToday && completedDayTasks === dayTasks.length && dayTasks.length > 0 && 'bg-accent/5 border-accent',
+                      !dayIsToday && completedDayTasks < dayTasks.length && dayTasks.length > 0 && 'bg-muted border-border hover:border-primary/50',
                       dayTasks.length === 0 && 'bg-muted/30 border-border opacity-50',
-                      isExpandedDay && 'ring-2 ring-primary shadow-lg'
+                      isExpandedDay && 'border-primary bg-primary/5'
                     )}
                   >
                     <span className="text-xs font-semibold text-muted-foreground">{dayOfWeekShort}</span>
@@ -134,7 +134,7 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
 
             {/* Expanded Day Tasks */}
             {expandedDay !== null && expandedDay >= weekStart && expandedDay < weekEnd && (
-              <div className="mt-4 p-4 rounded-lg bg-muted border-2 border-primary/20 space-y-3 animate-in fade-in-50 duration-200">
+              <div className="mt-4 p-4 rounded-lg bg-muted border space-y-3">
                 <h4 className="font-semibold text-sm text-foreground">
                   {format(addDays(startDate, expandedDay), 'MMMM d, yyyy')} {locale === 'ru' ? 'Задачи' : 'Tasks'}
                 </h4>

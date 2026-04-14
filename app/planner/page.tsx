@@ -511,7 +511,7 @@ function StepProgress({ step, t }: { step: number; t: (key: string) => string })
           <div key={s} className="flex items-center">
             <div
               className={cn(
-                'flex h-10 w-10 items-center justify-center rounded-full border-2 font-semibold transition-colors',
+                'flex h-10 w-10 items-center justify-center rounded-full border font-semibold transition-colors',
                 step >= s
                   ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-muted-foreground/30 text-muted-foreground'
@@ -591,7 +591,7 @@ function HobbySelectionStep({
                     type="button"
                     onClick={() => onHobbySelect(hobby.id)}
                     className={cn(
-                      'flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all hover:border-primary/50',
+                      'flex flex-col items-center gap-2 rounded-lg border p-4 transition-all hover:border-primary/50',
                       isSelected ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/30'
                     )}
                   >
@@ -721,7 +721,7 @@ function WeekTimeline({ currentWeek, t }: { currentWeek: number; t: (key: string
                 className={cn(
                   'w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm sm:text-base transition-all',
                   week <= currentWeek
-                    ? 'bg-primary text-primary-foreground shadow-md'
+                    ? 'bg-primary text-primary-foreground'
                     : 'bg-muted text-muted-foreground'
                 )}
               >
@@ -840,7 +840,7 @@ function TaskPlanningStep({
                       <div
                         key={index}
                         className={cn(
-                          'p-4 rounded-lg border-2 space-y-2 transition-all',
+                          'p-4 rounded-lg border space-y-2 transition-all',
                           taskIndex === 0 && tasksByWeek[weekNumber].length > 0
                             ? 'border-primary/30 bg-primary/5'
                             : 'border-border bg-muted/30'

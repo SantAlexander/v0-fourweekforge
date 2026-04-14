@@ -101,3 +101,21 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Visual Hierarchy System — 3 levels for clarity */
+@layer components {
+  /* PRIMARY LEVEL — Focus, action-oriented (100% contrast, large) */
+  .hierarchy-primary {
+    @apply text-3xl font-bold text-foreground;
+  }
+
+  /* SECONDARY LEVEL — Context, supporting (70% contrast, medium) */
+  .hierarchy-secondary {
+    @apply text-lg font-semibold text-foreground/70;
+  }
+
+  /* TERTIARY LEVEL — Background, minimal (40% contrast, small) */
+  .hierarchy-tertiary {
+    @apply text-sm text-muted-foreground;
+  }
+}

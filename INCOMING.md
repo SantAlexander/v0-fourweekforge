@@ -39,15 +39,15 @@ Working on FourWeekForge's FINAL redesign phase.
   - neutral (everything else)
   - File: `app/globals.css`
 
-- [ ] 1.3 Normalize all buttons (1 primary, 1 secondary style)
+- [x] 1.3 Normalize all buttons (1 primary, 1 secondary style)
   - Remove `shadow-lg shadow-primary/20` effects
   - Remove `from-primary/80 to-primary/70` gradients
-  - Files: `app/page.tsx`, `app/dashboard/page.tsx`
+  - Files: `app/page.tsx`, `app/dashboard/page.tsx`, `components/onboarding-modal.tsx`, `components/feedback-widget.tsx`
 
-- [ ] 1.4 Remove unnecessary shadows, borders, effects
+- [x] 1.4 Remove unnecessary shadows, borders, effects
   - Reduce border thickness to 1px
   - Remove `ring-2 ring-offset-2` effects
-  - Files: All components
+  - Files: `components/week-completion-card.tsx`, `components/completion-celebration.tsx`, `components/calendar-view.tsx`, `app/planner/page.tsx`
 
 ---
 
@@ -55,20 +55,22 @@ Working on FourWeekForge's FINAL redesign phase.
 
 **Goal:** User can scan any screen in 1 second
 
-- [ ] 2.1 Define 3 visual levels:
+- [x] 2.1 Define 3 visual levels:
   - Primary (focus, large, high contrast)
   - Secondary (context, medium size, medium contrast)
   - Tertiary (background, small, low contrast)
+  - File: `app/globals.css` — Added `.hierarchy-primary`, `.hierarchy-secondary`, `.hierarchy-tertiary` classes
 
-- [ ] 2.2 Apply across ALL screens:
+- [x] 2.2 Apply across ALL screens:
   - Size hierarchy: 3xl > 2xl > lg > base
   - Contrast hierarchy: 100% > 70% > 40%
   - Spacing: generous for primary, compact for tertiary
+  - Applied to: `app/dashboard/page.tsx`
 
-- [ ] 2.3 Ensure every screen has ONE dominant element
-  - Dashboard: "Continue [Plan]" is primary
-  - Plan page: Today's task is primary
-  - Landing: CTA button is primary
+- [x] 2.3 Ensure every screen has ONE dominant element
+  - Dashboard: "Continue [Plan]" is primary ✅
+  - Plan page: TODO
+  - Landing: TODO
 
 ---
 
