@@ -25,18 +25,6 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
     return dayDate.getTime() === today.getTime()
   }
 
-  // Find next actionable day (first day with incomplete tasks)
-  const nextActionableDay = useMemo(() => {
-    for (let i = 0; i < 28; i++) {
-      const dayTasks = tasksByDay[i] || []
-      const hasIncomplete = dayTasks.some(t => !t.is_completed)
-      if (hasIncomplete && !isToday(i)) {
-        return i
-      }
-    }
-    return null
-  }, [tasksByDay, isToday])
-
   // Map tasks by day - use useMemo to prevent recalculation on each render
   // Distribute tasks deterministically based on task index within the week
   const tasksByDay = useMemo(() => {
@@ -68,6 +56,18 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
 
     return result
   }, [plan.tasks])
+
+  // Find next actionable day (first day with incomplete tasks)
+  const nextActionableDay = useMemo(() => {
+    for (let i = 0; i < 28; i++) {
+      const dayTasks = tasksByDay[i] || []
+      const hasIncomplete = dayTasks.some(t => !t.is_completed)
+      if (hasIncomplete && !isToday(i)) {
+        return i
+      }
+    }
+    return null
+  }, [tasksByDay, isToday])
 
   return (
     <div className="space-y-8">
