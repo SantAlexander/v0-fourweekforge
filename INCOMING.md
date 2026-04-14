@@ -5,199 +5,364 @@ Another v0 session can use this as a guide to implement these changes.
 
 ---
 
-# CURRENT PRIORITY: ANTI-DRIBBBLE REDESIGN v3
+# CURRENT PRIORITY: FINAL REDESIGN — HEAD OF PRODUCT DESIGN LEVEL
 
 ## Context
 
-After completing Design System v2 (gradient-heavy, achievement-driven), we received critical feedback:
+You are a Head of Product Design (Linear / Stripe level).
 
-**Problem:** The redesign looks like a "nice startup UI", not a world-class product.
+Working on FourWeekForge's FINAL redesign phase.
 
-It relies too much on:
-- Gradients everywhere
-- Bright colors as decoration
-- Surface-level motivation (streaks, celebrations)
-- Visual noise
+**Your goal is NOT to polish UI.**
 
-**Target:** Transform into Linear/Stripe/Notion quality:
-- Clarity over decoration
-- Hierarchy over effects
-- Purposeful color (meaning, not decoration)
-- Calm, controlled, intelligent feel
+**Your goal is to:**
+- Rebuild clarity
+- Define focus
+- Remove noise
+- Make the product actionable
 
 ---
 
-## ANTI-DRIBBBLE TASK LIST
+## REDESIGN WORK PLAN (10 PHASES)
 
-### PHASE 1: VISUAL CLEANUP (Color & Effects)
+### PHASE 1 — VISUAL NOISE REMOVAL (HARD CLEANUP)
 
-- [ ] **TASK 1.1:** Remove gradient backgrounds from cards
-  - Files: `plan-card.tsx`, `dashboard/page.tsx`, `page.tsx`
-  - Replace `bg-gradient-to-*` with solid `bg-card` or `bg-muted`
+**Goal:** UI should feel calm, not exciting
 
-- [ ] **TASK 1.2:** Simplify button styling
-  - Files: `page.tsx`, `dashboard/page.tsx`, `onboarding-modal.tsx`
-  - Remove `bg-gradient-to-r from-primary to-primary/80`
-  - Replace with simple `bg-primary`
-  - Remove `shadow-lg shadow-primary/20`
+- [ ] 1.1 Remove ALL decorative gradients (landing, cards, backgrounds)
+  - Files: `app/globals.css`, `app/page.tsx`, `app/dashboard/page.tsx`, `components/plan-card.tsx`
+  - Replace `bg-gradient-to-*` with solid colors
 
-- [ ] **TASK 1.3:** Tone down color usage in globals.css
-  - File: `globals.css`
-  - Keep primary for actions only
-  - Use neutral grays for most UI
-  - Accent (green) only for completed states
+- [ ] 1.2 Reduce color palette to THREE colors:
+  - primary (for actions)
+  - success (for completed states)
+  - neutral (everything else)
+  - File: `app/globals.css`
 
-- [ ] **TASK 1.4:** Remove decorative gradients from landing
-  - File: `page.tsx`
-  - Remove gradient text on hero title
-  - Remove gradient separators in example plans
-  - Remove gradient backgrounds from sections
+- [ ] 1.3 Normalize all buttons (1 primary, 1 secondary style)
+  - Remove `shadow-lg shadow-primary/20` effects
+  - Remove `from-primary/80 to-primary/70` gradients
+  - Files: `app/page.tsx`, `app/dashboard/page.tsx`
 
-### PHASE 2: HIERARCHY & CLARITY
+- [ ] 1.4 Remove unnecessary shadows, borders, effects
+  - Reduce border thickness to 1px
+  - Remove `ring-2 ring-offset-2` effects
+  - Files: All components
 
-- [ ] **TASK 2.1:** Simplify dashboard stats
-  - File: `dashboard/page.tsx`
-  - Remove icon decorations
-  - Show only: Active Plans count, Tasks remaining today
-  - Remove "overall progress %" (noise)
+---
 
-- [ ] **TASK 2.2:** Clear "next action" on every screen
-  - Dashboard: "Continue [Hobby Name]" or "Start a Plan"
-  - Plan page: "Next task: [Task Title]"
-  - Make CTA dominant, reduce competing actions
+### PHASE 2 — GLOBAL HIERARCHY SYSTEM
 
-- [ ] **TASK 2.3:** Improve calendar TODAY highlight
-  - File: `calendar-view.tsx`
-  - Make today AGGRESSIVE: larger, bolder, obvious
-  - Dim past days more
-  - Show "Today's tasks" expanded by default
+**Goal:** User can scan any screen in 1 second
 
-- [ ] **TASK 2.4:** Reduce plan-card visual complexity
-  - File: `plan-card.tsx`
-  - Remove emoji badges ("Active", "Done")
-  - Remove 3-column stats grid
-  - Show: Hobby name, progress bar, "X/Y tasks"
+- [ ] 2.1 Define 3 visual levels:
+  - Primary (focus, large, high contrast)
+  - Secondary (context, medium size, medium contrast)
+  - Tertiary (background, small, low contrast)
 
-### PHASE 3: REMOVE GAMIFICATION NOISE
+- [ ] 2.2 Apply across ALL screens:
+  - Size hierarchy: 3xl > 2xl > lg > base
+  - Contrast hierarchy: 100% > 70% > 40%
+  - Spacing: generous for primary, compact for tertiary
 
-- [ ] **TASK 3.1:** Remove or hide StreakBadge
-  - File: `components/streak-badge.tsx`
-  - Either delete or make it subtle text: "7 day streak"
-  - No animated flames
+- [ ] 2.3 Ensure every screen has ONE dominant element
+  - Dashboard: "Continue [Plan]" is primary
+  - Plan page: Today's task is primary
+  - Landing: CTA button is primary
 
-- [ ] **TASK 3.2:** Remove CompletionCelebration
-  - File: `components/completion-celebration.tsx`
-  - Replace with subtle checkmark animation
-  - No confetti, no "Great job!" messages
+---
 
-- [ ] **TASK 3.3:** Simplify onboarding modal
-  - File: `onboarding-modal.tsx`
-  - Remove gradient header icon
-  - Simple text explanation
-  - One clear CTA
+### PHASE 3 — DASHBOARD REBUILD (CRITICAL)
 
-- [ ] **TASK 3.4:** Remove hover scale effects
-  - Files: `page.tsx`, `plan-card.tsx`
-  - Remove `hover:scale-105` and similar
-  - Keep subtle `hover:border-primary/50`
+**Goal:** User sees status and next action immediately
 
-### PHASE 4: COPY IMPROVEMENTS
+- [ ] 3.1 Define ONE primary block: "Current Plan"
+  - Show: Plan name, current week, progress
+  - Make it 50% of screen width on desktop
 
-- [ ] **TASK 4.1:** Rewrite dashboard copy
-  - "Welcome back" -> Just show user's current plan status
-  - Remove motivational fluff
-  - Show specific: "3 tasks today. 22 remaining."
+- [ ] 3.2 Rebuild header:
+  - Remove visual noise (export, pause, delete → move to menu)
+  - Show only: Plan name, week number, progress bar
 
-- [ ] **TASK 4.2:** Rewrite landing page copy
-  - Remove generic "Master any hobby"
-  - Be specific: "Learn guitar in 4 weeks. 8 tasks per week. 15 min per day."
-  - No exclamation marks
+- [ ] 3.3 Add "Next Action" block:
+  - Example: "Today: 1 task remaining"
+  - Make it DOMINANT (large text, primary color)
 
-- [ ] **TASK 4.3:** Calendar labels
-  - "Week 1 (Apr 12 - Apr 18)" is fine
-  - Add: "3 of 8 tasks done" per week (factual, not celebratory)
+- [ ] 3.4 Make progress dominant (not secondary):
+  - Show progress bar clearly
+  - Label: "3 of 7 days completed" (not %)
+  - File: `app/dashboard/page.tsx`
 
-### PHASE 5: FINAL POLISH
+---
 
-- [ ] **TASK 5.1:** Review all animations
-  - File: `globals.css`
-  - Remove `slideInUp`, `fadeInScale` if too flashy
-  - Keep only subtle transitions (opacity, border-color)
+### PHASE 4 — CALENDAR REBUILD (LOGIC, NOT STYLE)
 
-- [ ] **TASK 5.2:** Typography consistency
-  - Reduce heading sizes (5xl -> 3xl max)
-  - Consistent font weights
-  - Better line-height for readability
+**Goal:** Calendar answers: where am I? what next?
 
-- [ ] **TASK 5.3:** Mobile review
-  - Test all screens on small viewport
-  - Ensure hierarchy works on mobile
+- [ ] 4.1 Highlight TODAY strongly:
+  - Border + primary color
+  - Make it unmissable
+
+- [ ] 4.2 Each day must show:
+  - State: empty / planned / completed
+  - Task count: "2 tasks"
+
+- [ ] 4.3 Introduce "Next actionable day":
+  - Highlight day with nearest incomplete tasks
+  - File: `components/calendar-view.tsx`
+
+- [ ] 4.4 Reduce visual weight of:
+  - Future days (make them 30% opacity)
+  - Inactive days (make them 20% opacity)
+
+- [ ] 4.5 Remove color decoration:
+  - Use neutral grays for past/future
+  - Use primary only for today
+  - Use success for completed
+  - File: `components/calendar-view.tsx`
+
+---
+
+### PHASE 5 — LIST VIEW (TASK FLOW)
+
+**Goal:** Completed tasks don't clutter the view
+
+- [ ] 5.1 Collapse completed tasks (reduce visual weight)
+  - Use `line-through` text
+  - Set opacity to 50%
+
+- [ ] 5.2 Replace "Начни здесь" with contextual label:
+  - Current task: "Now"
+  - Next task: "Next"
+
+- [ ] 5.3 Reduce card height (denser layout)
+  - Remove extra padding
+  - Reduce border radius
+  - File: `components/week-tasks.tsx`
+
+- [ ] 5.4 Highlight ONLY current actionable task:
+  - Use border + background color
+  - Other tasks: neutral styling
+
+- [ ] 5.5 Remove unnecessary descriptions preview:
+  - Show only task title
+  - Description in expanded view only
+  - File: `components/week-tasks.tsx`
+
+---
+
+### PHASE 6 — LANDING (CONVERSION FIX)
+
+**Goal:** Visitor understands value in 3 seconds
+
+- [ ] 6.1 Tighten hero section:
+  - Reduce whitespace
+  - Stronger headline hierarchy
+  - Remove decorative gradients on title
+
+- [ ] 6.2 CTA: ONE dominant button
+  - Make it obvious
+  - Remove competing "Learn more" buttons
+  - File: `app/page.tsx`
+
+- [ ] 6.3 Rebuild "How it works" section:
+  - Make steps visually different (numbered 1, 2, 3, 4)
+  - Add progression feeling (arrow between them)
+  - Each step: title + short description
+
+- [ ] 6.4 "Popular hobbies" section:
+  - Reduce noise (too many icons)
+  - Add hierarchy: top 3 vs others
+  - Show top 3 as large cards, rest small
+
+- [ ] 6.5 Remove generic visuals:
+  - Delete placeholder images
+  - Use real hobby examples or icons only
+
+---
+
+### PHASE 7 — PLANNER (FLOW & MOMENTUM)
+
+**Goal:** User feels committed to the 4-week journey
+
+- [ ] 7.1 Make stepper feel like progress:
+  - Strong active step (large, primary color)
+  - Dim inactive steps (40% opacity)
+  - File: `app/planner/page.tsx`
+
+- [ ] 7.2 Reduce empty space:
+  - Tighter padding/margins
+  - Make form feel compact, not sprawling
+
+- [ ] 7.3 Strengthen CTA visibility:
+  - "Continue" button always visible
+  - Large, primary color, high contrast
+
+- [ ] 7.4 Add sense of commitment:
+  - Show message: "You are starting a 4-week journey"
+  - Make it feel official, not casual
+
+- [ ] 7.5 Keep user always moving forward:
+  - No distracting back buttons
+  - Progress feels linear, not cyclical
+
+---
+
+### PHASE 8 — CTA SYSTEM (GLOBAL)
+
+**Goal:** Always clear what to do next
+
+- [ ] 8.1 One primary action per screen:
+  - Dashboard: "Continue plan"
+  - Plan page: "Mark task complete"
+  - Landing: "Start learning"
+
+- [ ] 8.2 Remove competing buttons:
+  - Delete "skip", "learn more", "explore"
+  - Only one obvious next step
+
+- [ ] 8.3 Ensure CTAs are:
+  - Primary color (not secondary)
+  - Full width on mobile
+  - Descriptive text (not generic "OK")
+
+---
+
+### PHASE 9 — COPY SYSTEM (REWRITE)
+
+**Goal:** Short, direct, no fluff
+
+Rewrite ALL UI text using these rules:
+- Short (max 5 words for labels)
+- Direct (no marketing speak)
+- No motivational language
+- Show facts, not feelings
+
+**Examples:**
+
+| Before | After |
+|--------|-------|
+| "Отслеживай прогресс" | "3 из 7 дней завершено" |
+| "Начни путь" | "Создать план" |
+| "You're doing great!" | "4 of 12 tasks completed" |
+| "Keep the momentum going!" | "3 tasks today" |
+| "Master any hobby" | "Learn guitar in 4 weeks" |
+
+- [ ] 9.1 Dashboard copy:
+  - Remove "Welcome back [Name]"
+  - Show: "Continue [Hobby]" + tasks today
+  - File: `app/dashboard/page.tsx`
+
+- [ ] 9.2 Landing page copy:
+  - Remove generic "Master any hobby in 4 weeks"
+  - Be specific: "Learn guitar. 8 tasks. 15 min/day."
+  - File: `app/page.tsx`
+
+- [ ] 9.3 Calendar labels:
+  - "Week 1 (Apr 12 - Apr 18)" → keep as is
+  - Add: "3 of 8 tasks done" (factual)
+  - File: `components/calendar-view.tsx`
+
+- [ ] 9.4 Button copy:
+  - "Create Your First Plan" → "Start Learning"
+  - "Mark as Done" → "Complete"
+  - "Continue" → "Continue" (keep as is)
+
+---
+
+### PHASE 10 — FINAL POLISH (PRODUCT LEVEL)
+
+**Goal:** Everything feels intentional
+
+- [ ] 10.1 Align spacing system (8px grid):
+  - All padding/margins: 8px, 16px, 24px, 32px, 40px
+  - No arbitrary spacing
+  - File: Review all components
+
+- [ ] 10.2 Normalize typography scale:
+  - Headings: 3xl (30px) max
+  - Body: 16px
+  - Small: 14px
+  - File: `app/globals.css`
+
+- [ ] 10.3 Remove inconsistencies:
+  - Audit all buttons (should be identical)
+  - Audit all cards (should be identical)
+  - Audit all text colors (should be 3 options)
+
+- [ ] 10.4 Final mobile review:
+  - Test all screens on 375px width
   - No horizontal scroll
+  - Touch targets: 44px minimum
+  - File: All pages
 
-- [ ] **TASK 5.4:** Final color audit
-  - Primary: actions only
-  - Green: completed only
-  - Gray: everything else
-  - No decorative color usage
-
----
-
-## DESIGN PRINCIPLES (NEW)
-
-1. **Color = Meaning** — Never use color for decoration
-2. **One Action** — Every screen has one dominant CTA
-3. **Instant Clarity** — User knows their status in <1 second
-4. **Calm Confidence** — Premium feel, not startup hype
-5. **Data, Not Motivation** — Show facts, not cheerleading
+- [ ] 10.5 Performance check:
+  - Remove unused animations
+  - Remove unused components
+  - Check bundle size
 
 ---
 
-## BEFORE/AFTER EXAMPLES
+## DESIGN PRINCIPLES (FINAL)
 
-**Button:**
-- Before: `bg-gradient-to-r from-primary to-primary/80 shadow-lg shadow-primary/20`
-- After: `bg-primary hover:bg-primary/90`
-
-**Card:**
-- Before: `border-2 border-primary/30 bg-gradient-to-br from-primary/10 to-accent/5`
-- After: `border border-border bg-card`
-
-**Copy:**
-- Before: "You're doing great! Keep it up!"
-- After: "4 of 12 tasks completed."
-
-**Stats:**
-- Before: 4-card grid with icons, percentages, gradients
-- After: Single line: "2 active plans. 5 tasks today."
+1. **Clarity** — Always clear what to do next
+2. **One action per screen** — Never competing CTAs
+3. **Calm** — Neutral colors, no decoration
+4. **Honest** — Show facts, not feelings
+5. **Respects time** — Dense layout, no filler
+6. **Accessible** — High contrast, readable fonts
 
 ---
 
-## FILES TO MODIFY
+## IMPLEMENTATION NOTES
 
-Priority order:
-1. `app/globals.css` — Color simplification
-2. `components/plan-card.tsx` — Card cleanup
-3. `app/dashboard/page.tsx` — Dashboard simplification
-4. `app/page.tsx` — Landing cleanup
-5. `components/calendar-view.tsx` — Calendar improvements
-6. `components/onboarding-modal.tsx` — Modal simplification
-7. Remove: `streak-badge.tsx`, `completion-celebration.tsx`, `week-completion-card.tsx`
+### Files to modify (priority order):
+1. `app/globals.css` — Color cleanup, typography
+2. `app/dashboard/page.tsx` — Remove noise, add "next action"
+3. `app/page.tsx` — Landing cleanup, copy rewrite
+4. `components/calendar-view.tsx` — Calendar logic rebuild
+5. `components/week-tasks.tsx` — Task list cleanup
+6. `components/plan-card.tsx` — Card simplification
+7. `app/planner/page.tsx` — Stepper improvements
+8. `components/onboarding-modal.tsx` — Remove gamification
+
+### Files to DELETE:
+- `components/streak-badge.tsx`
+- `components/completion-celebration.tsx`
+- `components/week-completion-card.tsx`
+- `app/design-system-v2.md` (no longer relevant)
+
+### Colors to use:
+- Primary: `oklch(0.58 0.22 31)` (orange-red, actions only)
+- Success: `oklch(0.62 0.2 140)` (green, completed only)
+- Neutral: grays and blacks (everything else)
 
 ---
 
-## SUCCESS CRITERIA
+## SUCCESS METRICS
 
-- [ ] No gradients used for decoration
-- [ ] Color used only for meaning (action, success, error)
-- [ ] Every screen has clear "next action"
+When done:
+- [ ] No gradients visible anywhere
+- [ ] Every screen has ONE primary action
 - [ ] Copy is factual, not motivational
-- [ ] Feels like Linear/Notion, not Dribbble
+- [ ] Hierarchy is clear: 1 second to understand
+- [ ] Product feels calm, professional, trustworthy
+- [ ] Desktop AND mobile work equally well
 
 ---
 
-# PREVIOUS CONTEXT (for reference)
+# PREVIOUS COMPLETED WORK
 
-## Context: Why These Changes?
+## Past Wins (7 completed)
+
+- [x] WIN 1: Post-register flow redirect
+- [x] WIN 2: Landing specificity bar
+- [x] WIN 3: Positive progress messaging
+- [x] WIN 4: Visual timeline on planner
+- [x] WIN 5: Example plans section
+- [x] WIN 6: Onboarding modal
+- [x] WIN 7: Calendar view
+- [x] DESIGN SYSTEM v2: Full gradient redesign (now being reversed)
 
 After UX audit, we identified that:
 1. Users don't understand "4 weeks" is a real structure, not marketing
