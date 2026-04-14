@@ -5,6 +5,198 @@ Another v0 session can use this as a guide to implement these changes.
 
 ---
 
+# CURRENT PRIORITY: ANTI-DRIBBBLE REDESIGN v3
+
+## Context
+
+After completing Design System v2 (gradient-heavy, achievement-driven), we received critical feedback:
+
+**Problem:** The redesign looks like a "nice startup UI", not a world-class product.
+
+It relies too much on:
+- Gradients everywhere
+- Bright colors as decoration
+- Surface-level motivation (streaks, celebrations)
+- Visual noise
+
+**Target:** Transform into Linear/Stripe/Notion quality:
+- Clarity over decoration
+- Hierarchy over effects
+- Purposeful color (meaning, not decoration)
+- Calm, controlled, intelligent feel
+
+---
+
+## ANTI-DRIBBBLE TASK LIST
+
+### PHASE 1: VISUAL CLEANUP (Color & Effects)
+
+- [ ] **TASK 1.1:** Remove gradient backgrounds from cards
+  - Files: `plan-card.tsx`, `dashboard/page.tsx`, `page.tsx`
+  - Replace `bg-gradient-to-*` with solid `bg-card` or `bg-muted`
+
+- [ ] **TASK 1.2:** Simplify button styling
+  - Files: `page.tsx`, `dashboard/page.tsx`, `onboarding-modal.tsx`
+  - Remove `bg-gradient-to-r from-primary to-primary/80`
+  - Replace with simple `bg-primary`
+  - Remove `shadow-lg shadow-primary/20`
+
+- [ ] **TASK 1.3:** Tone down color usage in globals.css
+  - File: `globals.css`
+  - Keep primary for actions only
+  - Use neutral grays for most UI
+  - Accent (green) only for completed states
+
+- [ ] **TASK 1.4:** Remove decorative gradients from landing
+  - File: `page.tsx`
+  - Remove gradient text on hero title
+  - Remove gradient separators in example plans
+  - Remove gradient backgrounds from sections
+
+### PHASE 2: HIERARCHY & CLARITY
+
+- [ ] **TASK 2.1:** Simplify dashboard stats
+  - File: `dashboard/page.tsx`
+  - Remove icon decorations
+  - Show only: Active Plans count, Tasks remaining today
+  - Remove "overall progress %" (noise)
+
+- [ ] **TASK 2.2:** Clear "next action" on every screen
+  - Dashboard: "Continue [Hobby Name]" or "Start a Plan"
+  - Plan page: "Next task: [Task Title]"
+  - Make CTA dominant, reduce competing actions
+
+- [ ] **TASK 2.3:** Improve calendar TODAY highlight
+  - File: `calendar-view.tsx`
+  - Make today AGGRESSIVE: larger, bolder, obvious
+  - Dim past days more
+  - Show "Today's tasks" expanded by default
+
+- [ ] **TASK 2.4:** Reduce plan-card visual complexity
+  - File: `plan-card.tsx`
+  - Remove emoji badges ("Active", "Done")
+  - Remove 3-column stats grid
+  - Show: Hobby name, progress bar, "X/Y tasks"
+
+### PHASE 3: REMOVE GAMIFICATION NOISE
+
+- [ ] **TASK 3.1:** Remove or hide StreakBadge
+  - File: `components/streak-badge.tsx`
+  - Either delete or make it subtle text: "7 day streak"
+  - No animated flames
+
+- [ ] **TASK 3.2:** Remove CompletionCelebration
+  - File: `components/completion-celebration.tsx`
+  - Replace with subtle checkmark animation
+  - No confetti, no "Great job!" messages
+
+- [ ] **TASK 3.3:** Simplify onboarding modal
+  - File: `onboarding-modal.tsx`
+  - Remove gradient header icon
+  - Simple text explanation
+  - One clear CTA
+
+- [ ] **TASK 3.4:** Remove hover scale effects
+  - Files: `page.tsx`, `plan-card.tsx`
+  - Remove `hover:scale-105` and similar
+  - Keep subtle `hover:border-primary/50`
+
+### PHASE 4: COPY IMPROVEMENTS
+
+- [ ] **TASK 4.1:** Rewrite dashboard copy
+  - "Welcome back" -> Just show user's current plan status
+  - Remove motivational fluff
+  - Show specific: "3 tasks today. 22 remaining."
+
+- [ ] **TASK 4.2:** Rewrite landing page copy
+  - Remove generic "Master any hobby"
+  - Be specific: "Learn guitar in 4 weeks. 8 tasks per week. 15 min per day."
+  - No exclamation marks
+
+- [ ] **TASK 4.3:** Calendar labels
+  - "Week 1 (Apr 12 - Apr 18)" is fine
+  - Add: "3 of 8 tasks done" per week (factual, not celebratory)
+
+### PHASE 5: FINAL POLISH
+
+- [ ] **TASK 5.1:** Review all animations
+  - File: `globals.css`
+  - Remove `slideInUp`, `fadeInScale` if too flashy
+  - Keep only subtle transitions (opacity, border-color)
+
+- [ ] **TASK 5.2:** Typography consistency
+  - Reduce heading sizes (5xl -> 3xl max)
+  - Consistent font weights
+  - Better line-height for readability
+
+- [ ] **TASK 5.3:** Mobile review
+  - Test all screens on small viewport
+  - Ensure hierarchy works on mobile
+  - No horizontal scroll
+
+- [ ] **TASK 5.4:** Final color audit
+  - Primary: actions only
+  - Green: completed only
+  - Gray: everything else
+  - No decorative color usage
+
+---
+
+## DESIGN PRINCIPLES (NEW)
+
+1. **Color = Meaning** — Never use color for decoration
+2. **One Action** — Every screen has one dominant CTA
+3. **Instant Clarity** — User knows their status in <1 second
+4. **Calm Confidence** — Premium feel, not startup hype
+5. **Data, Not Motivation** — Show facts, not cheerleading
+
+---
+
+## BEFORE/AFTER EXAMPLES
+
+**Button:**
+- Before: `bg-gradient-to-r from-primary to-primary/80 shadow-lg shadow-primary/20`
+- After: `bg-primary hover:bg-primary/90`
+
+**Card:**
+- Before: `border-2 border-primary/30 bg-gradient-to-br from-primary/10 to-accent/5`
+- After: `border border-border bg-card`
+
+**Copy:**
+- Before: "You're doing great! Keep it up!"
+- After: "4 of 12 tasks completed."
+
+**Stats:**
+- Before: 4-card grid with icons, percentages, gradients
+- After: Single line: "2 active plans. 5 tasks today."
+
+---
+
+## FILES TO MODIFY
+
+Priority order:
+1. `app/globals.css` — Color simplification
+2. `components/plan-card.tsx` — Card cleanup
+3. `app/dashboard/page.tsx` — Dashboard simplification
+4. `app/page.tsx` — Landing cleanup
+5. `components/calendar-view.tsx` — Calendar improvements
+6. `components/onboarding-modal.tsx` — Modal simplification
+7. Remove: `streak-badge.tsx`, `completion-celebration.tsx`, `week-completion-card.tsx`
+
+---
+
+## SUCCESS CRITERIA
+
+- [ ] No gradients used for decoration
+- [ ] Color used only for meaning (action, success, error)
+- [ ] Every screen has clear "next action"
+- [ ] Copy is factual, not motivational
+- [ ] Feels like Linear/Notion, not Dribbble
+
+---
+
+# PREVIOUS CONTEXT (for reference)
+
 ## Context: Why These Changes?
 
 After UX audit, we identified that:
