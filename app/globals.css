@@ -106,16 +106,78 @@
 @layer components {
   /* PRIMARY LEVEL — Focus, action-oriented (100% contrast, large) */
   .hierarchy-primary {
-    @apply text-3xl font-bold text-foreground;
+    @apply text-3xl font-bold text-foreground leading-tight;
   }
 
   /* SECONDARY LEVEL — Context, supporting (70% contrast, medium) */
   .hierarchy-secondary {
-    @apply text-lg font-semibold text-foreground/70;
+    @apply text-lg font-semibold text-foreground/70 leading-relaxed;
   }
 
   /* TERTIARY LEVEL — Background, minimal (40% contrast, small) */
   .hierarchy-tertiary {
-    @apply text-sm text-muted-foreground;
+    @apply text-sm text-muted-foreground leading-relaxed;
+  }
+
+  /* Typography Scale (normalized) */
+  h1 {
+    @apply text-4xl font-bold leading-tight tracking-tight;
+  }
+
+  h2 {
+    @apply text-3xl font-bold leading-tight tracking-tight;
+  }
+
+  h3 {
+    @apply text-2xl font-bold leading-snug;
+  }
+
+  h4 {
+    @apply text-xl font-bold leading-snug;
+  }
+
+  h5 {
+    @apply text-lg font-semibold leading-snug;
+  }
+
+  h6 {
+    @apply text-base font-semibold leading-snug;
+  }
+
+  p {
+    @apply text-base leading-relaxed;
+  }
+
+  small {
+    @apply text-sm leading-relaxed;
+  }
+
+  .text-caption {
+    @apply text-xs leading-tight text-muted-foreground;
+  }
+
+  /* Spacing System (8px grid) */
+  .spacing-xs {
+    @apply gap-1 space-y-1;
+  }
+
+  .spacing-sm {
+    @apply gap-2 space-y-2;
+  }
+
+  .spacing-md {
+    @apply gap-3 space-y-3;
+  }
+
+  .spacing-lg {
+    @apply gap-4 space-y-4;
+  }
+
+  .spacing-xl {
+    @apply gap-6 space-y-6;
+  }
+
+  .spacing-2xl {
+    @apply gap-8 space-y-8;
   }
 }
