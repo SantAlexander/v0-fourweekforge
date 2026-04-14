@@ -8,6 +8,7 @@ import { useAuth } from '@/lib/auth-context'
 import { useI18n } from '@/lib/i18n-context'
 import { Header } from '@/components/header'
 import { PlanCard } from '@/components/plan-card'
+import { OnboardingModal } from '@/components/onboarding-modal'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -83,6 +84,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
+      <OnboardingModal />
       <main className="flex-1">
         <div className="mx-auto max-w-6xl px-4 py-8">
           {/* Welcome Section */}

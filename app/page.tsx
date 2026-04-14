@@ -1,11 +1,13 @@
 'use client'
 
 import Link from 'next/link'
+import { useState } from 'react'
 import { Header } from '@/components/header'
 import { useI18n } from '@/lib/i18n-context'
 import { useAuth } from '@/lib/auth-context'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 import { 
   Flame, 
   Target, 
@@ -31,9 +33,42 @@ const hobbyData = [
   { icon: Pencil, key: 'drawing', color: 'bg-chart-1/10 text-chart-1' },
 ]
 
+const EXAMPLE_PLANS = [
+  {
+    hobby: 'guitar',
+    hobbyName: 'Guitar',
+    hobbyNameRu: 'Гитара',
+    goal: 'Play 3 songs from start to finish',
+    goalRu: 'Сыграть 3 песни от начала до конца',
+    tasks: [
+      { week: 1, title: 'Learn basic chords (C, G, D, Am)', titleRu: 'Выучить базовые аккорды (C, G, D, Am)' },
+      { week: 1, title: 'Practice chord transitions', titleRu: 'Практиковать смену аккордов' },
+      { week: 2, title: 'Learn your first song melody', titleRu: 'Выучить мелодию первой песни' },
+      { week: 2, title: 'Practice strumming patterns', titleRu: 'Практиковать ритм-паттерны' },
+      { week: 3, title: 'Learn second song', titleRu: 'Выучить вторую песню' },
+      { week: 4, title: 'Polish and perform all 3 songs', titleRu: 'Отшлифовать и сыграть все 3 песни' },
+    ]
+  },
+  {
+    hobby: 'photography',
+    hobbyName: 'Photography',
+    hobbyNameRu: 'Фотография',
+    goal: 'Create a portfolio with 10 great photos',
+    goalRu: 'Создать портфолио из 10 отличных фото',
+    tasks: [
+      { week: 1, title: 'Learn camera basics (aperture, shutter, ISO)', titleRu: 'Изучить основы камеры (диафрагма, выдержка, ISO)' },
+      { week: 1, title: 'Practice composition rules', titleRu: 'Практиковать правила композиции' },
+      { week: 2, title: 'Golden hour photoshoot', titleRu: 'Фотосессия в золотой час' },
+      { week: 3, title: 'Edit photos in Lightroom', titleRu: 'Обработать фото в Lightroom' },
+      { week: 4, title: 'Curate final portfolio', titleRu: 'Собрать финальное портфолио' },
+    ]
+  }
+]
+
 export default function HomePage() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const { user } = useAuth()
+  const [expandedPlan, setExpandedPlan] = useState<string | null>(null)
   
   const features = [
     {
@@ -138,6 +173,56 @@ export default function HomePage() {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Example Plans Section */}
+        <section className="border-b border-border py-20">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="mb-12 text-center">
+              <h2 className="mb-4 text-3xl font-bold tracking-tight">{t('landing.examplesTitle')}</h2>
+              <p className="text-muted-foreground">
+                {t('landing.examplesSubtitle')}
+              </p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2 max-w-4xl mx-auto">
+              {EXAMPLE_PLANS.map((plan) => {
+                const isExpanded = expandedPlan === plan.hobby
+                const displayName = locale === 'ru' ? plan.hobbyNameRu : plan.hobbyName
+                const displayGoal = locale === 'ru' ? plan.goalRu : plan.goal
+                
+                return (
+                  <Card 
+                    key={plan.hobby}
+                    className={cn(
+                      "cursor-pointer transition-all hover:border-primary/50",
+                      isExpanded && "ring-2 ring-primary"
+                    )}
+                    onClick={() => setExpandedPlan(isExpanded ? null : plan.hobby)}
+                  >
+                    <CardHeader>
+                      <CardTitle>{displayName}</CardTitle>
+                      <CardDescription>{displayGoal}</CardDescription>
+                    </CardHeader>
+                    {isExpanded && (
+                      <CardContent>
+                        <div className="space-y-2">
+                          {plan.tasks.map((task, i) => {
+                            const displayTaskTitle = locale === 'ru' ? task.titleRu : task.title
+                            return (
+                              <div key={i} className="flex gap-3 text-sm">
+                                <span className="text-primary font-medium min-w-fit">W{task.week}</span>
+                                <span className="text-muted-foreground">{displayTaskTitle}</span>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </CardContent>
+                    )}
+                  </Card>
+                )
+              })}
             </div>
           </div>
         </section>
