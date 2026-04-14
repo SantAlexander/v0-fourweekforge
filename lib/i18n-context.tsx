@@ -262,6 +262,10 @@ const en = {
   'planner.timelineCurrent': 'Current',
   'planner.timelineUpcoming': 'Upcoming',
   'planner.timelineFinish': 'Finish!',
+
+  // Landing - Example Plans Section
+  'landing.examplesTitle': 'See what you\'ll get',
+  'landing.examplesSubtitle': 'Real examples of AI-generated plans',
 }
 
 // Russian translations
@@ -514,6 +518,10 @@ const ru: Record<string, string> = {
   'planner.timelineCurrent': 'Текущая',
   'planner.timelineUpcoming': 'Впереди',
   'planner.timelineFinish': 'Финиш!',
+
+  // Landing - Example Plans Section
+  'landing.examplesTitle': 'Посмотри, что ты получишь',
+  'landing.examplesSubtitle': 'Реальные примеры планов от AI',
 }
 
 const translations: Record<Locale, Record<string, string>> = { en, ru }
