@@ -189,6 +189,8 @@ const en = {
   'toast.planCreated': 'plan has been created!',
   
   // Language
+  'language.en': 'English',
+  'language.ru': 'Русский',
   'language.english': 'English',
   'language.russian': 'Russian',
   
@@ -298,10 +300,30 @@ const en = {
   'plan.continue': 'Continue',
   'plan.today': 'Today',
   'plan.nextActionable': 'Next week',
+  
+  // Export
+  'export.title': 'Export Plan',
+  'export.json': 'Download JSON',
+  'export.csv': 'Download CSV',
+  'export.pdf': 'Print / PDF',
+  
+  // Plan Details
+  'plan.duration': 'Duration',
+  'plan.pause': 'Pause',
+  'plan.resume': 'Resume',
+  'plan.delete': 'Delete',
+  
+  // Toast messages
+  'toast.taskMarked': 'Task marked as complete!',
+  'toast.planCreated': 'Plan created!',
 }
 
 // Russian translations
 const ru: Record<string, string> = {
+  // Language
+  'language.en': 'English',
+  'language.ru': 'Русский',
+  
   // Header
   'header.dashboard': 'Панель',
   'header.newPlan': 'Новый план',
@@ -483,10 +505,6 @@ const ru: Record<string, string> = {
   'toast.planDeleted': 'План удален',
   'toast.planCreated': 'план создан!',
   
-  // Language
-  'language.english': 'English',
-  'language.russian': 'Русский',
-  
   // Registration errors
   'error.NAME_REQUIRED': 'Пожалуйста, введите имя',
   'error.NAME_TOO_SHORT': 'Имя должно содержать минимум 2 символа',
@@ -587,8 +605,29 @@ const ru: Record<string, string> = {
   'plan.thu': 'Чт',
   'plan.fri': 'Пт',
   'plan.sat': 'Сб',
-  'plan.taskCount': 'задач',
+  'plan.weekCompleted': 'Неделя завершена',
+  'plan.tasksDone': 'Задач выполнено',
+  'plan.continue': 'Продолжить',
+  'plan.today': 'Сегодня',
+  'plan.nextActionable': 'Следующая неделя',
+  
+  // Export
+  'export.title': 'Экспортировать план',
+  'export.json': 'Скачать JSON',
+  'export.csv': 'Скачать CSV',
+  'export.pdf': 'Печать / PDF',
+  
+  // Plan Details
+  'plan.duration': 'Продолжительность',
+  'plan.pause': 'Пауза',
+  'plan.resume': 'Возобновить',
+  'plan.delete': 'Удалить',
+  
+  // Toast messages
+  'toast.taskMarked': 'Задача отмечена как выполненная!',
+  'toast.planCreated': 'план создан!',
 }
+
 
 const translations: Record<Locale, Record<string, string>> = { en, ru }
 

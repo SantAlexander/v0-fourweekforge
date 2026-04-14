@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
+import { useEffect, useState } from 'react'
 
 const languages: { code: Locale; name: string; flag: string }[] = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -15,7 +16,12 @@ const languages: { code: Locale; name: string; flag: string }[] = [
 ]
 
 export function LanguageSwitcher() {
-  const { locale, setLocale, t } = useI18n()
+  const { locale, setLocale } = useI18n()
+  const [mounted, setMounted] = useState(false)
+  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   
   const currentLang = languages.find(l => l.code === locale) || languages[0]
 
@@ -24,7 +30,7 @@ export function LanguageSwitcher() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-2 px-2">
           <span className="text-lg leading-none">{currentLang.flag}</span>
-          <span className="sr-only">{t('language.' + locale)}</span>
+          {mounted && <span className="sr-only">{currentLang.name}</span>}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[140px]">
