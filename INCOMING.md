@@ -191,7 +191,8 @@ function ExamplePlansSection() {
 
 **Priority**: Medium
 **Complexity**: Medium (2-3 credits)
-**Files to modify**: `/app/dashboard/page.tsx` or create `/components/onboarding-modal.tsx`
+**Files modified**: `/app/dashboard/page.tsx`, `/components/onboarding-modal.tsx`, `/lib/i18n-context.tsx`
+**Status**: ✅ Completed
 
 ### Problem
 First-time users land on dashboard and don't understand the flow.

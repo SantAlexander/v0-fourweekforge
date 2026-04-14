@@ -266,6 +266,15 @@ const en = {
   // Landing - Example Plans Section
   'landing.examplesTitle': 'See what you\'ll get',
   'landing.examplesSubtitle': 'Real examples of AI-generated plans',
+
+  // Onboarding Modal
+  'onboarding.title': 'Welcome to FourWeekForge',
+  'onboarding.subtitle': 'Master any hobby in just 4 weeks with AI-generated plans',
+  'onboarding.step1': 'Choose a hobby you want to learn',
+  'onboarding.step2': 'Set a specific goal for the 4 weeks',
+  'onboarding.step3': 'Complete tasks and track your progress',
+  'onboarding.createPlan': 'Create Your First Plan',
+  'onboarding.skip': 'Skip for now',
 }
 
 // Russian translations
@@ -522,6 +531,15 @@ const ru: Record<string, string> = {
   // Landing - Example Plans Section
   'landing.examplesTitle': 'Посмотри, что ты получишь',
   'landing.examplesSubtitle': 'Реальные примеры планов от AI',
+
+  // Onboarding Modal
+  'onboarding.title': 'Добро пожаловать в FourWeekForge',
+  'onboarding.subtitle': 'Изучи любое хобби за 4 недели с помощью AI',
+  'onboarding.step1': 'Выбери хобби, которое хочешь изучить',
+  'onboarding.step2': 'Поставь конкретную цель на 4 недели',
+  'onboarding.step3': 'Выполняй задачи и отслеживай прогресс',
+  'onboarding.createPlan': 'Создать первый план',
+  'onboarding.skip': 'Пропустить',
 }
 
 const translations: Record<Locale, Record<string, string>> = { en, ru }
