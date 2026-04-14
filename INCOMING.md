@@ -69,8 +69,8 @@ Working on FourWeekForge's FINAL redesign phase.
 
 - [x] 2.3 Ensure every screen has ONE dominant element
   - Dashboard: "Continue [Plan]" is primary ✅
-  - Plan page: TODO
-  - Landing: TODO
+  - Plan page: "Today's Task" is primary ✅
+  - Landing: "Start Learning" CTA button is primary ✅
 
 ---
 

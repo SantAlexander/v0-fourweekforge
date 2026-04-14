@@ -102,36 +102,46 @@ export default function DashboardPage() {
 
           {/* PRIMARY SECTION — Continue Plan / Create Plan */}
           {activePlans.length === 0 ? (
-            <div className="mb-12 p-8 rounded-lg border text-center space-y-4">
+            <div className="mb-12 p-10 md:p-12 rounded-lg border bg-primary/5 text-center space-y-4 max-w-2xl">
               <h2 className="hierarchy-primary">{t('dashboard.createFirst') || 'Ready to start learning?'}</h2>
-              <p className="text-muted-foreground max-w-md mx-auto">
+              <p className="hierarchy-secondary max-w-md mx-auto">
                 {t('dashboard.createFirstDesc') || 'Choose any hobby and we\'ll create a 4-week learning plan just for you.'}
               </p>
               <Link href="/planner">
-                <Button size="lg" className="gap-2">
+                <Button size="lg" className="gap-2 mt-4">
                   <Plus className="h-5 w-5" />
                   {t('dashboard.createPlan') || 'Create Your First Plan'}
                 </Button>
               </Link>
             </div>
           ) : (
-            <div className="mb-12 p-8 rounded-lg border bg-primary/5 space-y-6">
-              <div>
-                <h2 className="hierarchy-primary mb-1">{firstActivePlan?.hobby?.name || 'Learning Plan'}</h2>
-                <p className="hierarchy-tertiary">Week {Math.ceil((firstActivePlan?.tasks.filter(t => !t.is_completed).length || 1) / 7)} of 4</p>
+            <div className="mb-12 p-10 md:p-12 rounded-lg border-2 border-primary bg-primary/5 space-y-6 max-w-2xl">
+              <div className="space-y-1">
+                <h2 className="hierarchy-primary mb-2">{firstActivePlan?.hobby?.name || 'Learning Plan'}</h2>
+                <p className="hierarchy-secondary">
+                  Week {Math.ceil((firstActivePlan?.tasks.filter(t => !t.is_completed).length || 1) / 7)} of 4 • {firstActivePlan?.progress || 0}% complete
+                </p>
               </div>
+              
+              {/* Progress bar */}
+              <div className="space-y-2">
+                <Progress value={firstActivePlan?.progress || 0} className="h-3" />
+              </div>
+
               {nextIncompleteTask && (
-                <div className="space-y-2">
-                  <p className="hierarchy-tertiary">Next task:</p>
-                  <p className="text-xl font-semibold">{nextIncompleteTask.title}</p>
+                <div className="space-y-3 pt-4 border-t border-primary/20">
+                  <p className="hierarchy-tertiary">Today's task</p>
+                  <p className="text-xl font-bold">{nextIncompleteTask.title}</p>
                   {nextIncompleteTask.description && (
                     <p className="text-sm text-muted-foreground">{nextIncompleteTask.description}</p>
                   )}
                 </div>
               )}
+              
               <Link href={`/plan/${firstActivePlan?.id}`}>
-                <Button size="lg" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full gap-2">
                   Continue Learning
+                  <ArrowRight className="h-5 w-5" />
                 </Button>
               </Link>
             </div>

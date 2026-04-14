@@ -106,40 +106,46 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="relative overflow-hidden border-b border-border">
           <div className="relative mx-auto max-w-6xl px-4 py-20 md:py-32">
-            <div className="mx-auto max-w-3xl text-center">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/8 px-4 py-2 text-sm font-medium text-primary">
-                <Flame className="h-4 w-4 animate-pulse" />
-                <span>{t('landing.badge')}</span>
+            <div className="mx-auto max-w-3xl text-center space-y-8">
+              <div className="space-y-4">
+                <p className="hierarchy-tertiary inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/8 px-4 py-2">
+                  <Flame className="h-4 w-4" />
+                  <span>{t('landing.badge')}</span>
+                </p>
+                <h1 className="hierarchy-primary text-balance">
+                  {t('landing.title')}{' '}
+                  <span className="text-primary">
+                    {t('landing.titleHighlight')}
+                  </span>
+                </h1>
+                <p className="hierarchy-secondary max-w-2xl mx-auto">
+                  {t('landing.subtitle')}
+                </p>
               </div>
-              <h1 className="mb-6 text-balance text-5xl font-bold tracking-tight md:text-6xl lg:text-7xl">
-                {t('landing.title')}{' '}
-                <span className="text-primary">
-                  {t('landing.titleHighlight')}
-                </span>
-              </h1>
-              <p className="mb-10 text-pretty text-lg text-muted-foreground md:text-xl leading-relaxed">
-                {t('landing.subtitle')}
-              </p>
-              <div className="mb-8 inline-flex flex-col items-center gap-3 rounded-lg border border-border/50 bg-muted/30 px-6 py-4 sm:flex-row sm:gap-6">
-                <div className="flex items-center gap-2 text-sm font-medium">
-                  <span className="text-xl text-primary font-bold">8-12</span>
+
+              {/* Stats Bar */}
+              <div className="inline-flex flex-col items-center gap-3 rounded-lg border border-border/50 bg-muted/30 px-6 py-4 sm:flex-row sm:gap-6 text-sm">
+                <div className="flex items-center gap-2 font-medium">
+                  <span className="text-lg text-primary font-bold">8-12</span>
                   <span className="text-muted-foreground">{t('landing.tasksLabel')}</span>
                 </div>
                 <div className="hidden h-6 w-px bg-border/50 sm:block" />
-                <div className="flex items-center gap-2 text-sm font-medium">
-                  <span className="text-xl text-primary font-bold">15-30</span>
+                <div className="flex items-center gap-2 font-medium">
+                  <span className="text-lg text-primary font-bold">15-30</span>
                   <span className="text-muted-foreground">{t('landing.dailyLabel')}</span>
                 </div>
               </div>
-              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <Button asChild size="lg" className="gap-2">
+
+              {/* PRIMARY CTA */}
+              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row pt-4">
+                <Button asChild size="lg" className="gap-2 px-8">
                   <Link href={user ? "/planner" : "/register"}>
                     {t('landing.cta.start')}
                     <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>
                 {!user && (
-                  <Button asChild variant="outline" size="lg" className="gap-2">
+                  <Button asChild variant="outline" size="lg">
                     <Link href="/login">{t('landing.cta.signin')}</Link>
                   </Button>
                 )}
@@ -152,10 +158,11 @@ export default function HomePage() {
         <section className="border-b border-border py-20 md:py-24">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-16 text-center space-y-3">
+              <p className="hierarchy-tertiary">How it works</p>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
                 {t('landing.howItWorks')}
               </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <p className="hierarchy-secondary max-w-2xl mx-auto">
                 {t('landing.howItWorksSubtitle')}
               </p>
             </div>
@@ -190,10 +197,11 @@ export default function HomePage() {
         <section className="border-b border-border py-20 md:py-24">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-16 text-center space-y-3">
+              <p className="hierarchy-tertiary">Learning examples</p>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
                 {t('landing.examplesTitle')}
               </h2>
-              <p className="text-lg text-muted-foreground">
+              <p className="hierarchy-secondary max-w-2xl mx-auto">
                 {t('landing.examplesSubtitle')}
               </p>
             </div>
@@ -266,10 +274,11 @@ export default function HomePage() {
         <section className="border-b border-border py-20 md:py-24">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-16 text-center space-y-3">
+              <p className="hierarchy-tertiary">Choose what excites you</p>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
                 {t('landing.popularHobbies')}
               </h2>
-              <p className="text-lg text-muted-foreground">
+              <p className="hierarchy-secondary max-w-2xl mx-auto">
                 {t('landing.popularHobbiesSubtitle')}
               </p>
             </div>
@@ -300,14 +309,14 @@ export default function HomePage() {
                   <Flame className="h-10 w-10" />
                 </div>
                 <div className="space-y-3">
-                  <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+                  <h2 className="hierarchy-primary">
                     {t('landing.ctaTitle')}
                   </h2>
-                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                  <p className="hierarchy-secondary max-w-2xl mx-auto">
                     {t('landing.ctaSubtitle')}
                   </p>
                 </div>
-                <Button asChild size="lg" className="gap-2 mt-4">
+                <Button asChild size="lg" className="gap-2 mt-4 px-8">
                   <Link href={user ? "/dashboard" : "/register"}>
                     {user ? t('landing.ctaButtonLoggedIn') : t('landing.ctaButton')}
                     <ArrowRight className="h-5 w-5" />
