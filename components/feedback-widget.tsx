@@ -112,7 +112,7 @@ export function FeedbackWidget() {
         {!isOpen && (
           <Button
             onClick={handleOpen}
-            className="flex items-center gap-2 shadow-lg px-4 py-2 rounded-full"
+            className="flex items-center gap-2 px-4 py-2 rounded-full"
             aria-label={buttonLabel}
           >
             <MessageSquare className="h-4 w-4" />

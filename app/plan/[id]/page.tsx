@@ -196,84 +196,66 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
                     <Icon className="h-7 w-7" />
                   </div>
                   <div>
-                    <div className="flex items-center gap-3">
-                      <CardTitle className="text-2xl">{plan.hobby_name}</CardTitle>
-                      <Badge variant="outline" className={statusColors[plan.status]}>
-                        {plan.status}
-                      </Badge>
-                    </div>
+                    <h1 className="hierarchy-tertiary mb-1">Learning Plan</h1>
+                    <p className="text-2xl font-bold">{plan.hobby_name}</p>
                     <p className="mt-1 text-muted-foreground">{plan.goal}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <ExportDropdown planId={id} planName={plan.hobby_name} />
-                  {plan.status === 'active' && (
-                    <Button variant="outline" size="sm" onClick={() => handleStatusChange('paused')}>
-                      <Pause className="mr-2 h-4 w-4" />
-                      {t('plan.pause')}
-                    </Button>
-                  )}
-                  {plan.status === 'paused' && (
-                    <Button variant="outline" size="sm" onClick={() => handleStatusChange('active')}>
-                      <Play className="mr-2 h-4 w-4" />
-                      {t('plan.resume')}
-                    </Button>
-                  )}
-                  {plan.status !== 'completed' && plan.progress === 100 && (
-                    <Button size="sm" onClick={() => handleStatusChange('completed')}>
-                      <CheckCircle2 className="mr-2 h-4 w-4" />
-                      {t('plan.markComplete')}
-                    </Button>
-                  )}
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="outline" size="sm" className="text-destructive hover:text-destructive">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>{t('plan.deletePlan')}</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          {t('plan.deleteConfirm')}
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>{t('plan.deleteCancel')}</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                          {t('plan.delete')}
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <Badge variant="outline" className={statusColors[plan.status]}>
+                    {plan.status}
+                  </Badge>
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
+          </Card>
+
+          {/* PRIMARY SECTION — Today's Task */}
+          {plan.tasks.filter(t => !t.is_completed).length > 0 && (
+            <div className="mb-8 p-8 rounded-lg border bg-primary/5 space-y-4">
+              <p className="hierarchy-tertiary">Today's task</p>
+              <div>
+                <h2 className="hierarchy-primary mb-2">
+                  {plan.tasks.find(t => !t.is_completed)?.title || 'No tasks today'}
+                </h2>
+                {plan.tasks.find(t => !t.is_completed)?.description && (
+                  <p className="text-muted-foreground">
+                    {plan.tasks.find(t => !t.is_completed)?.description}
+                  </p>
+                )}
+              </div>
+              <div className="flex items-center justify-between">
+                <Button
+                  onClick={() => {
+                    const task = plan.tasks.find(t => !t.is_completed)
+                    if (task) handleTaskToggle(task.id, true)
+                  }}
+                  className="gap-2"
+                >
+                  <CheckCircle2 className="h-5 w-5" />
+                  Mark Complete
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Stats */}
+          <Card className="mb-6">
+            <CardContent className="p-6">
               <div className="grid gap-6 md:grid-cols-3">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
-                    <Calendar className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">{t('plan.duration')}</p>
-                    <p className="font-medium">
-                      {format(startDate, 'MMM d')} - {format(endDate, 'MMM d, yyyy')}
-                    </p>
-                  </div>
+                <div className="space-y-2">
+                  <p className="hierarchy-tertiary">{t('plan.duration')}</p>
+                  <p className="font-medium">
+                    {format(startDate, 'MMM d')} - {format(endDate, 'MMM d, yyyy')}
+                  </p>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
-                    <Target className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">{t('plan.currentWeek')}</p>
-                    <p className="font-medium">{t('planner.week')} {currentWeek} {t('plan.weekOf')}</p>
-                  </div>
+                <div className="space-y-2">
+                  <p className="hierarchy-tertiary">{t('plan.currentWeek')}</p>
+                  <p className="font-medium">Week {currentWeek} of 4</p>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">{t('plan.overallProgress')}</span>
+                    <span className="hierarchy-tertiary">{t('plan.overallProgress')}</span>
                     <span className="font-medium">{plan.progress}%</span>
                   </div>
                   <Progress value={plan.progress} className="h-3" />

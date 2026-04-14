@@ -25,6 +25,18 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
     return dayDate.getTime() === today.getTime()
   }
 
+  // Find next actionable day (first day with incomplete tasks)
+  const nextActionableDay = useMemo(() => {
+    for (let i = 0; i < 28; i++) {
+      const dayTasks = tasksByDay[i] || []
+      const hasIncomplete = dayTasks.some(t => !t.is_completed)
+      if (hasIncomplete && !isToday(i)) {
+        return i
+      }
+    }
+    return null
+  }, [tasksByDay, isToday])
+
   // Map tasks by day - use useMemo to prevent recalculation on each render
   // Distribute tasks deterministically based on task index within the week
   const tasksByDay = useMemo(() => {
@@ -81,7 +93,7 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-1.5 bg-secondary rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500"
+                    className="h-full bg-primary transition-all duration-500"
                     style={{ width: `${weekTasks.length > 0 ? (completedWeekTasks / weekTasks.length) * 100 : 0}%` }}
                   />
                 </div>
@@ -109,22 +121,31 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
                     key={dayIndex}
                     onClick={() => setExpandedDay(isExpandedDay ? null : dayIndex)}
                     className={cn(
-                      'aspect-square rounded-lg p-2 transition-all duration-200 text-center flex flex-col items-center justify-center border-2',
-                      dayIsToday && 'border-primary ring-2 ring-primary ring-offset-2 shadow-lg shadow-primary/20',
-                      !dayIsToday && completedDayTasks === dayTasks.length && dayTasks.length > 0 && 'bg-accent/10 border-accent shadow-md shadow-accent/10',
-                      !dayIsToday && completedDayTasks < dayTasks.length && dayTasks.length > 0 && 'bg-muted border-border hover:border-primary/50 hover:shadow-sm',
-                      dayTasks.length === 0 && 'bg-muted/30 border-border opacity-50',
-                      isExpandedDay && 'ring-2 ring-primary shadow-lg'
+                      'aspect-square rounded-lg p-2 transition-all duration-200 text-center flex flex-col items-center justify-center border',
+                      dayIsToday && 'border-2 border-primary bg-primary text-primary-foreground font-bold',
+                      !dayIsToday && completedDayTasks === dayTasks.length && dayTasks.length > 0 && 'bg-accent/10 border-accent opacity-100',
+                      !dayIsToday && completedDayTasks < dayTasks.length && dayTasks.length > 0 && 'bg-muted border-border hover:border-primary/50',
+                      nextActionableDay === dayIndex && !dayIsToday && 'border-primary/60 bg-primary/8',
+                      dayTasks.length === 0 && !dayIsToday && !isToday(dayIndex + 1) && 'bg-muted/30 border-border opacity-40',
+                      isExpandedDay && !dayIsToday && 'border-primary bg-primary/5'
                     )}
                   >
-                    <span className="text-xs font-semibold text-muted-foreground">{dayOfWeekShort}</span>
-                    <span className="text-sm font-bold">{format(dayDate, 'd')}</span>
+                    <span className={cn(
+                      'text-xs font-semibold',
+                      dayIsToday ? 'text-primary-foreground' : 'text-muted-foreground'
+                    )}>{dayOfWeekShort}</span>
+                    <span className={cn(
+                      'text-sm font-bold mt-1',
+                      dayIsToday && 'text-primary-foreground'
+                    )}>{format(dayDate, 'd')}</span>
                     {dayTasks.length > 0 && (
                       <span className={cn(
-                        'text-xs font-semibold mt-1 px-1.5 py-0.5 rounded',
-                        completedDayTasks === dayTasks.length ? 'bg-accent/20 text-accent' : 'bg-primary/20 text-primary'
+                        'text-xs font-semibold mt-1 px-2 py-0.5 rounded text-center',
+                        dayIsToday && 'bg-primary-foreground text-primary',
+                        !dayIsToday && completedDayTasks === dayTasks.length && 'bg-accent text-accent-foreground',
+                        !dayIsToday && completedDayTasks < dayTasks.length && 'bg-primary text-primary-foreground'
                       )}>
-                        {completedDayTasks}/{dayTasks.length}
+                        {dayTasks.length}
                       </span>
                     )}
                   </button>
@@ -134,7 +155,7 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
 
             {/* Expanded Day Tasks */}
             {expandedDay !== null && expandedDay >= weekStart && expandedDay < weekEnd && (
-              <div className="mt-4 p-4 rounded-lg bg-muted border-2 border-primary/20 space-y-3 animate-in fade-in-50 duration-200">
+              <div className="mt-4 p-4 rounded-lg bg-muted border space-y-3">
                 <h4 className="font-semibold text-sm text-foreground">
                   {format(addDays(startDate, expandedDay), 'MMMM d, yyyy')} {locale === 'ru' ? 'Задачи' : 'Tasks'}
                 </h4>

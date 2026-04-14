@@ -479,6 +479,16 @@ export default function PlannerPage() {
             />
           )}
 
+          {/* Commitment message before final step */}
+          {step === 3 && (
+            <div className="mt-8 p-6 rounded-lg border border-primary/30 bg-primary/3 space-y-2">
+              <p className="text-sm font-semibold text-primary">You're about to start a 4-week journey</p>
+              <p className="text-sm text-muted-foreground">
+                {tasks.length} tasks. 15-30 minutes daily. Structured learning plan from day one.
+              </p>
+            </div>
+          )}
+
           {/* Кнопки навигации */}
           <NavigationButtons
             step={step}
@@ -511,33 +521,35 @@ function StepProgress({ step, t }: { step: number; t: (key: string) => string })
           <div key={s} className="flex items-center">
             <div
               className={cn(
-                'flex h-10 w-10 items-center justify-center rounded-full border-2 font-semibold transition-colors',
-                step >= s
-                  ? 'border-primary bg-primary text-primary-foreground'
-                  : 'border-muted-foreground/30 text-muted-foreground'
+                'flex h-12 w-12 items-center justify-center rounded-full font-bold transition-all',
+                step === s
+                  ? 'border-2 border-primary bg-primary text-primary-foreground text-base'
+                  : step > s
+                    ? 'border-2 border-accent bg-accent text-accent-foreground text-sm'
+                    : 'border-2 border-muted-foreground/30 bg-muted text-muted-foreground text-sm opacity-40'
               )}
             >
-              {step > s ? <Check className="h-5 w-5" /> : s}
+              {step > s ? <Check className="h-6 w-6" /> : s}
             </div>
             {s < 3 && (
               <div
                 className={cn(
-                  'h-0.5 w-24 sm:w-32 md:w-40 transition-colors',
-                  step > s ? 'bg-primary' : 'bg-muted-foreground/30'
+                  'h-1 w-24 sm:w-32 md:w-40 transition-all',
+                  step > s ? 'bg-accent' : step === s ? 'bg-primary' : 'bg-muted-foreground/30'
                 )}
               />
             )}
           </div>
         ))}
       </div>
-      <div className="mt-2 flex justify-between text-sm">
-        <span className={step >= 1 ? 'text-primary font-medium' : 'text-muted-foreground'}>
+      <div className="mt-4 flex justify-between text-xs font-semibold uppercase tracking-wide">
+        <span className={step === 1 ? 'text-primary' : step > 1 ? 'text-accent' : 'text-muted-foreground opacity-50'}>
           {t('planner.chooseHobby')}
         </span>
-        <span className={step >= 2 ? 'text-primary font-medium' : 'text-muted-foreground'}>
+        <span className={step === 2 ? 'text-primary' : step > 2 ? 'text-accent' : 'text-muted-foreground opacity-50'}>
           {t('planner.setGoal')}
         </span>
-        <span className={step >= 3 ? 'text-primary font-medium' : 'text-muted-foreground'}>
+        <span className={step === 3 ? 'text-primary' : 'text-muted-foreground opacity-50'}>
           {t('planner.planTasks')}
         </span>
       </div>
@@ -591,7 +603,7 @@ function HobbySelectionStep({
                     type="button"
                     onClick={() => onHobbySelect(hobby.id)}
                     className={cn(
-                      'flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all hover:border-primary/50',
+                      'flex flex-col items-center gap-2 rounded-lg border p-4 transition-all hover:border-primary/50',
                       isSelected ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/30'
                     )}
                   >
@@ -721,7 +733,7 @@ function WeekTimeline({ currentWeek, t }: { currentWeek: number; t: (key: string
                 className={cn(
                   'w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm sm:text-base transition-all',
                   week <= currentWeek
-                    ? 'bg-primary text-primary-foreground shadow-md'
+                    ? 'bg-primary text-primary-foreground'
                     : 'bg-muted text-muted-foreground'
                 )}
               >
@@ -840,7 +852,7 @@ function TaskPlanningStep({
                       <div
                         key={index}
                         className={cn(
-                          'p-4 rounded-lg border-2 space-y-2 transition-all',
+                          'p-4 rounded-lg border space-y-2 transition-all',
                           taskIndex === 0 && tasksByWeek[weekNumber].length > 0
                             ? 'border-primary/30 bg-primary/5'
                             : 'border-border bg-muted/30'
@@ -911,21 +923,24 @@ function NavigationButtons({
   t: (key: string) => string
 }) {
   return (
-    <div className="mt-6 flex justify-between">
-      <Button variant="outline" onClick={onPrevious}>
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        {step === 1 ? t('planner.cancel') : t('planner.back')}
-      </Button>
+    <div className="mt-8 pt-6 border-t border-border flex justify-between items-center">
+      {step > 1 && (
+        <Button variant="ghost" onClick={onPrevious} className="gap-2">
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </Button>
+      )}
+      <div className="flex-1" />
       
       {step < TOTAL_STEPS ? (
-        <Button onClick={onNext} disabled={!canProceed}>
-          {t('planner.next')}
-          <ArrowRight className="ml-2 h-4 w-4" />
+        <Button size="lg" onClick={onNext} disabled={!canProceed} className="gap-2 px-8">
+          Next
+          <ArrowRight className="h-4 w-4" />
         </Button>
       ) : (
-        <Button onClick={onSubmit} disabled={!canProceed || isSubmitting}>
-          {isSubmitting && <Spinner className="mr-2" />}
-          {t('planner.createPlan')}
+        <Button size="lg" onClick={onSubmit} disabled={!canProceed || isSubmitting} className="gap-2 px-8">
+          {isSubmitting && <Spinner className="h-4 w-4 mr-1" />}
+          Create plan
         </Button>
       )}
     </div>

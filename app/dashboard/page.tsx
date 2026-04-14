@@ -88,213 +88,107 @@ export default function DashboardPage() {
       <OnboardingModal />
       <main className="flex-1">
         <div className="mx-auto max-w-6xl px-4 py-12">
-          {/* Welcome Section with Achievement Stats */}
-          <div className="mb-12 space-y-6">
-            <div>
-              <h1 className="text-4xl font-bold tracking-tight mb-2">
-                {t('dashboard.welcome')} {user.name.split(' ')[0]}
-              </h1>
-              <p className="text-lg text-muted-foreground">
-                {activePlans.length === 0
-                  ? t('dashboard.startSubtitle')
-                  : t('dashboard.learningSubtitle').replace('{hobby}', firstActivePlan?.hobby?.name || '')}
-              </p>
-            </div>
-
-            {/* Achievement Stats Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <Card className="border-border">
-                <CardContent className="pt-6">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-2xl font-bold text-primary">{activePlans.length}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{t('dashboard.activePlans') || 'Active Plans'}</p>
-                    </div>
-                    <TrendingUp className="h-5 w-5 text-primary" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-border">
-                <CardContent className="pt-6">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-2xl font-bold text-accent">{completedPlans.length}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{t('dashboard.completedPlans') || 'Completed'}</p>
-                    </div>
-                    <CheckCircle2 className="h-5 w-5 text-accent" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-border">
-                <CardContent className="pt-6">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-2xl font-bold">{completedTasks}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{t('dashboard.tasksCompleted') || 'Tasks Done'}</p>
-                    </div>
-                    <CheckCircle2 className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-border">
-                <CardContent className="pt-6">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-2xl font-bold">{totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0}%</p>
-                      <p className="text-xs text-muted-foreground mt-1">{t('dashboard.progress') || 'Overall'}</p>
-                    </div>
-                    <Target className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+          {/* Welcome Section — Tertiary Level (small, context) */}
+          <div className="mb-12 space-y-2">
+            <h1 className="hierarchy-tertiary">
+              Learning progress
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              {activePlans.length === 0
+                ? 'No plans yet. Start one to begin.'
+                : `${completedTasks} of ${totalTasks} tasks completed`}
+            </p>
           </div>
 
-          {/* Create Plan CTA */}
-          {activePlans.length === 0 && (
-            <div className="mb-12 p-8 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg border-2 border-primary/20 text-center space-y-4">
-              <h2 className="text-2xl font-bold">{t('dashboard.createFirst') || 'Ready to start learning?'}</h2>
-              <p className="text-muted-foreground max-w-md mx-auto">
-                {t('dashboard.createFirstDesc') || 'Choose any hobby and we\'ll create a 4-week learning plan just for you.'}
+          {/* PRIMARY SECTION — Continue Plan / Create Plan */}
+          {activePlans.length === 0 ? (
+            <div className="mb-12 p-10 md:p-12 rounded-lg border bg-primary/5 text-center space-y-4 max-w-2xl">
+              <h2 className="hierarchy-primary">Start learning</h2>
+              <p className="hierarchy-secondary max-w-md mx-auto">
+                Choose any hobby and we'll create a 4-week learning plan for you.
               </p>
               <Link href="/planner">
-                <Button size="lg" className="gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary hover:to-primary/70">
+                <Button size="lg" className="gap-2 mt-4">
                   <Plus className="h-5 w-5" />
-                  {t('dashboard.createPlan') || 'Create Your First Plan'}
+                  Create plan
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="mb-12 p-10 md:p-12 rounded-lg border-2 border-primary bg-primary/5 space-y-6 max-w-2xl">
+              <div className="space-y-1">
+                <h2 className="hierarchy-primary mb-2">{firstActivePlan?.hobby?.name || 'Learning'}</h2>
+                <p className="hierarchy-secondary">
+                  Week {Math.ceil((firstActivePlan?.tasks.filter(t => !t.is_completed).length || 1) / 7)} of 4 • {nextIncompleteTask ? `${(firstActivePlan?.tasks.filter(t => !t.is_completed).length || 0)} task${(firstActivePlan?.tasks.filter(t => !t.is_completed).length || 0) !== 1 ? 's' : ''} left` : 'Complete'}
+                </p>
+              </div>
+              
+              {nextIncompleteTask && (
+                <div className="space-y-2 pt-4 border-t border-primary/20">
+                  <p className="hierarchy-tertiary">Today</p>
+                  <p className="text-lg font-bold">{nextIncompleteTask.title}</p>
+                </div>
+              )}
+              
+              <Link href={`/plan/${firstActivePlan?.id}`} className="block">
+                <Button size="lg" className="w-full">
+                  Continue
                 </Button>
               </Link>
             </div>
           )}
 
-          {/* Primary CTA Section - "What to do next" */}
-          {activePlans.length === 0 ? (
-            <Card className="mb-12 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-              <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-                <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10">
-                  <Plus className="h-10 w-10 text-primary" />
+          {/* Achievement Stats Grid — SECONDARY Level */}
+          {activePlans.length > 0 && (
+            <div className="mb-12">
+              <p className="hierarchy-tertiary mb-4">Stats</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="p-4 rounded-lg border bg-muted/50 space-y-2">
+                  <p className="text-lg font-bold text-primary">{activePlans.length}</p>
+                  <p className="text-xs text-muted-foreground">Active</p>
                 </div>
-                <h2 className="mb-2 text-2xl font-bold">{t('dashboard.createFirstPlanTitle')}</h2>
-                <p className="mb-8 max-w-sm text-muted-foreground">
-                  {t('dashboard.createFirstPlanDesc')}
-                </p>
-                <Button size="lg" asChild>
-                  <Link href="/planner">{t('header.newPlan')}</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          ) : nextIncompleteTask ? (
-            <Card className="mb-12 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-              <CardContent className="p-6">
-                <div className="flex flex-col gap-4">
-                  <div>
-                    <p className="text-sm font-semibold text-primary mb-1">{t('dashboard.nextTask')}</p>
-                    <h2 className="text-2xl font-bold mb-2">{nextIncompleteTask.title}</h2>
-                    <p className="text-muted-foreground">{nextIncompleteTask.description}</p>
-                  </div>
-                  <Button size="lg" asChild className="w-full sm:w-auto">
-                    <Link href={`/dashboard`}>{t('dashboard.startTask')}</Link>
-                  </Button>
+
+                <div className="p-4 rounded-lg border bg-muted/50 space-y-2">
+                  <p className="text-lg font-bold text-accent">{completedPlans.length}</p>
+                  <p className="text-xs text-muted-foreground">Completed</p>
                 </div>
-              </CardContent>
-            </Card>
-          ) : (
-            <Card className="mb-12 border-2 border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent">
-              <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-                <CheckCircle2 className="h-12 w-12 text-green-500 mb-4" />
-                <h2 className="text-xl font-bold mb-2">{t('dashboard.planCompletedTitle')}</h2>
-                <p className="text-muted-foreground mb-6">{t('dashboard.planCompletedDesc')}</p>
-                <Button size="lg" asChild>
-                  <Link href="/planner">{t('header.newPlan')}</Link>
-                </Button>
-              </CardContent>
-            </Card>
+
+                <div className="p-4 rounded-lg border bg-muted/50 space-y-2">
+                  <p className="text-lg font-bold">{completedTasks}</p>
+                  <p className="text-xs text-muted-foreground">Tasks done</p>
+                </div>
+
+                <div className="p-4 rounded-lg border bg-muted/50 space-y-2">
+                  <p className="text-lg font-bold">{totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0}%</p>
+                  <p className="text-xs text-muted-foreground">Overall</p>
+                </div>
+              </div>
+            </div>
           )}
 
-          {/* Progress Overview */}
-          <div className="mb-12">
-            <h3 className="text-lg font-semibold mb-4">{t('dashboard.progressTitle')}</h3>
-            <div className="grid gap-4 md:grid-cols-2">
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-end justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">{t('dashboard.activePlansLabel')}</p>
-                      <p className="text-4xl font-bold">{activePlans.length}</p>
-                    </div>
-                    <Flame className="h-8 w-8 text-primary opacity-20" />
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-end justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">{t('dashboard.tasksCompletedWeek')}</p>
-                      <p className="text-4xl font-bold">{completedTasks}</p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {totalTasks > 0
-                      ? t('dashboard.progressMessage').replace('{percent}', String(Math.round((completedTasks / totalTasks) * 100)))
-                      : '—'}
-                  </p>
-                    </div>
-                    <CheckCircle2 className="h-8 w-8 text-green-500 opacity-20" />
-                  </div>
-                </CardContent>
-              </Card>
+          {/* Active Plans Grid — TERTIARY Level */}
+          {activePlans.length > 1 && (
+            <div className="mb-12">
+              <p className="hierarchy-tertiary mb-4">Other plans</p>
+              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+                {activePlans.slice(1).map(plan => (
+                  <PlanCard key={plan.id} plan={plan} />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Plans Tabs */}
-          <Tabs defaultValue="active" className="space-y-6">
-            <TabsList>
-              <TabsTrigger value="active">
-                {t('dashboard.active')} ({activePlans.length})
-              </TabsTrigger>
-              <TabsTrigger value="completed">
-                {t('dashboard.completed')} ({completedPlans.length})
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="active" className="space-y-4">
-              {plansLoading ? (
-                <div className="flex justify-center py-12">
-                  <Spinner className="h-8 w-8" />
-                </div>
-              ) : activePlans.length === 0 ? null : (
-                <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground">{t('dashboard.weeklyNote')}</p>
-                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {activePlans.map(plan => (
-                      <PlanCard key={plan.id} plan={plan} />
-                    ))}
-                  </div>
-                </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="completed" className="space-y-4">
-              {completedPlans.length === 0 ? (
-                <Card>
-                  <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-                    <CheckCircle2 className="h-12 w-12 text-muted-foreground mb-4" />
-                    <h3 className="mb-2 text-lg font-semibold">{t('dashboard.noCompletedPlans')}</h3>
-                    <p className="max-w-sm text-muted-foreground">
-                      {t('dashboard.noCompletedPlansSubtitle')}
-                    </p>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {completedPlans.map(plan => (
-                    <PlanCard key={plan.id} plan={plan} />
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-          </Tabs>
+          {/* Completed Plans */}
+          {completedPlans.length > 0 && (
+            <div>
+              <p className="hierarchy-tertiary mb-4">Completed</p>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {completedPlans.map(plan => (
+                  <PlanCard key={plan.id} plan={plan} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>
