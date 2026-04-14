@@ -9,12 +9,13 @@ import { useI18n } from '@/lib/i18n-context'
 import { Header } from '@/components/header'
 import { PlanCard } from '@/components/plan-card'
 import { OnboardingModal } from '@/components/onboarding-modal'
+import { StreakBadge } from '@/components/streak-badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Spinner } from '@/components/ui/spinner'
 import { PlanWithTasks } from '@/lib/db'
-import { Plus, Flame, Target, CheckCircle2, Clock } from 'lucide-react'
+import { Plus, Flame, Target, CheckCircle2, Clock, TrendingUp } from 'lucide-react'
 
 const fetcher = (url: string) => fetch(url).then(res => res.json())
 
@@ -86,18 +87,87 @@ export default function DashboardPage() {
       <Header />
       <OnboardingModal />
       <main className="flex-1">
-        <div className="mx-auto max-w-6xl px-4 py-8">
-          {/* Welcome Section */}
-          <div className="mb-12">
-            <h1 className="text-4xl font-bold tracking-tight mb-2">
-              {t('dashboard.welcome')} {user.name.split(' ')[0]}
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              {activePlans.length === 0
-                ? t('dashboard.startSubtitle')
-                : t('dashboard.learningSubtitle').replace('{hobby}', firstActivePlan?.hobby?.name || '')}
-            </p>
+        <div className="mx-auto max-w-6xl px-4 py-12">
+          {/* Welcome Section with Achievement Stats */}
+          <div className="mb-12 space-y-6">
+            <div>
+              <h1 className="text-4xl font-bold tracking-tight mb-2">
+                {t('dashboard.welcome')} {user.name.split(' ')[0]}
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                {activePlans.length === 0
+                  ? t('dashboard.startSubtitle')
+                  : t('dashboard.learningSubtitle').replace('{hobby}', firstActivePlan?.hobby?.name || '')}
+              </p>
+            </div>
+
+            {/* Achievement Stats Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <Card className="border-border">
+                <CardContent className="pt-6">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-2xl font-bold text-primary">{activePlans.length}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{t('dashboard.activePlans') || 'Active Plans'}</p>
+                    </div>
+                    <TrendingUp className="h-5 w-5 text-primary" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border">
+                <CardContent className="pt-6">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-2xl font-bold text-accent">{completedPlans.length}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{t('dashboard.completedPlans') || 'Completed'}</p>
+                    </div>
+                    <CheckCircle2 className="h-5 w-5 text-accent" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border">
+                <CardContent className="pt-6">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-2xl font-bold">{completedTasks}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{t('dashboard.tasksCompleted') || 'Tasks Done'}</p>
+                    </div>
+                    <CheckCircle2 className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border">
+                <CardContent className="pt-6">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-2xl font-bold">{totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0}%</p>
+                      <p className="text-xs text-muted-foreground mt-1">{t('dashboard.progress') || 'Overall'}</p>
+                    </div>
+                    <Target className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
+
+          {/* Create Plan CTA */}
+          {activePlans.length === 0 && (
+            <div className="mb-12 p-8 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg border-2 border-primary/20 text-center space-y-4">
+              <h2 className="text-2xl font-bold">{t('dashboard.createFirst') || 'Ready to start learning?'}</h2>
+              <p className="text-muted-foreground max-w-md mx-auto">
+                {t('dashboard.createFirstDesc') || 'Choose any hobby and we\'ll create a 4-week learning plan just for you.'}
+              </p>
+              <Link href="/planner">
+                <Button size="lg" className="gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary hover:to-primary/70">
+                  <Plus className="h-5 w-5" />
+                  {t('dashboard.createPlan') || 'Create Your First Plan'}
+                </Button>
+              </Link>
+            </div>
+          )}
 
           {/* Primary CTA Section - "What to do next" */}
           {activePlans.length === 0 ? (
