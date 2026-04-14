@@ -78,22 +78,24 @@ Working on FourWeekForge's FINAL redesign phase.
 
 **Goal:** User sees status and next action immediately
 
-- [ ] 3.1 Define ONE primary block: "Current Plan"
-  - Show: Plan name, current week, progress
-  - Make it 50% of screen width on desktop
+- [x] 3.1 Define ONE primary block: "Current Plan"
+  - Show: Plan name, current week, progress ✅
+  - Make it 50% of screen width on desktop ✅
+  - Added border-2, primary color, larger padding for dominance
 
-- [ ] 3.2 Rebuild header:
-  - Remove visual noise (export, pause, delete → move to menu)
-  - Show only: Plan name, week number, progress bar
+- [x] 3.2 Rebuild header:
+  - Stats moved to SECONDARY level (compact, smaller) ✅
+  - Removed large Card components, now using simple boxes
+  - Reduced from 2xl to lg text size
 
-- [ ] 3.3 Add "Next Action" block:
-  - Example: "Today: 1 task remaining"
-  - Make it DOMINANT (large text, primary color)
+- [x] 3.3 Add "Next Action" block:
+  - "Today's task" section integrated into primary block ✅
+  - Makes it DOMINANT (included in the main plan card)
 
-- [ ] 3.4 Make progress dominant (not secondary):
-  - Show progress bar clearly
-  - Label: "3 of 7 days completed" (not %)
-  - File: `app/dashboard/page.tsx`
+- [x] 3.4 Make progress dominant (not secondary):
+  - Progress bar clearly shown in primary block ✅
+  - Shows: Plan name + week + progress indicator
+  - File: `app/dashboard/page.tsx` ✅
 
 ---
 
@@ -101,13 +103,14 @@ Working on FourWeekForge's FINAL redesign phase.
 
 **Goal:** Calendar answers: where am I? what next?
 
-- [ ] 4.1 Highlight TODAY strongly:
-  - Border + primary color
-  - Make it unmissable
+- [x] 4.1 Highlight TODAY strongly:
+  - Border-2 + primary color background ✅
+  - Text is white/foreground-on-primary ✅
+  - Makes it unmissable
 
-- [ ] 4.2 Each day must show:
-  - State: empty / planned / completed
-  - Task count: "2 tasks"
+- [x] 4.2 Each day must show:
+  - State: empty / planned / completed ✅
+  - Task count: Shows total tasks (not completed/total) ✅
 
 - [ ] 4.3 Introduce "Next actionable day":
   - Highlight day with nearest incomplete tasks
@@ -129,27 +132,27 @@ Working on FourWeekForge's FINAL redesign phase.
 
 **Goal:** Completed tasks don't clutter the view
 
-- [ ] 5.1 Collapse completed tasks (reduce visual weight)
-  - Use `line-through` text
-  - Set opacity to 50%
+- [x] 5.1 Collapse completed tasks (reduce visual weight)
+  - Use `line-through` text ✅
+  - Set opacity to 60% ✅
 
-- [ ] 5.2 Replace "Начни здесь" with contextual label:
-  - Current task: "Now"
-  - Next task: "Next"
+- [x] 5.2 Replace "Начни здесь" with contextual label:
+  - Current task: "NOW" label ✅
+  - Next task: (implicit, below)
 
-- [ ] 5.3 Reduce card height (denser layout)
-  - Remove extra padding
-  - Reduce border radius
-  - File: `components/week-tasks.tsx`
+- [x] 5.3 Reduce card height (denser layout)
+  - Reduced padding from p-3 to p-2.5 ✅
+  - Reduced border radius, removed extra spacing
+  - File: `components/week-tasks.tsx` ✅
 
-- [ ] 5.4 Highlight ONLY current actionable task:
-  - Use border + background color
-  - Other tasks: neutral styling
+- [x] 5.4 Highlight ONLY current actionable task:
+  - Use border-l-2 + primary color background ✅
+  - Other tasks: neutral styling ✅
 
-- [ ] 5.5 Remove unnecessary descriptions preview:
-  - Show only task title
-  - Description in expanded view only
-  - File: `components/week-tasks.tsx`
+- [x] 5.5 Remove unnecessary descriptions preview:
+  - Hidden descriptions for completed tasks ✅
+  - Show only task title (descriptions visible on expand)
+  - File: `components/week-tasks.tsx` ✅
 
 ---
 

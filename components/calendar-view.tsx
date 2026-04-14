@@ -110,21 +110,29 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
                     onClick={() => setExpandedDay(isExpandedDay ? null : dayIndex)}
                     className={cn(
                       'aspect-square rounded-lg p-2 transition-all duration-200 text-center flex flex-col items-center justify-center border',
-                      dayIsToday && 'border-primary bg-primary/5',
-                      !dayIsToday && completedDayTasks === dayTasks.length && dayTasks.length > 0 && 'bg-accent/5 border-accent',
+                      dayIsToday && 'border-2 border-primary bg-primary text-primary-foreground font-bold',
+                      !dayIsToday && completedDayTasks === dayTasks.length && dayTasks.length > 0 && 'bg-accent/10 border-accent opacity-100',
                       !dayIsToday && completedDayTasks < dayTasks.length && dayTasks.length > 0 && 'bg-muted border-border hover:border-primary/50',
-                      dayTasks.length === 0 && 'bg-muted/30 border-border opacity-50',
-                      isExpandedDay && 'border-primary bg-primary/5'
+                      dayTasks.length === 0 && !dayIsToday && 'bg-muted/30 border-border opacity-40',
+                      isExpandedDay && !dayIsToday && 'border-primary bg-primary/5'
                     )}
                   >
-                    <span className="text-xs font-semibold text-muted-foreground">{dayOfWeekShort}</span>
-                    <span className="text-sm font-bold">{format(dayDate, 'd')}</span>
+                    <span className={cn(
+                      'text-xs font-semibold',
+                      dayIsToday ? 'text-primary-foreground' : 'text-muted-foreground'
+                    )}>{dayOfWeekShort}</span>
+                    <span className={cn(
+                      'text-sm font-bold mt-1',
+                      dayIsToday && 'text-primary-foreground'
+                    )}>{format(dayDate, 'd')}</span>
                     {dayTasks.length > 0 && (
                       <span className={cn(
-                        'text-xs font-semibold mt-1 px-1.5 py-0.5 rounded',
-                        completedDayTasks === dayTasks.length ? 'bg-accent/20 text-accent' : 'bg-primary/20 text-primary'
+                        'text-xs font-semibold mt-1 px-2 py-0.5 rounded text-center',
+                        dayIsToday && 'bg-primary-foreground text-primary',
+                        !dayIsToday && completedDayTasks === dayTasks.length && 'bg-accent text-accent-foreground',
+                        !dayIsToday && completedDayTasks < dayTasks.length && 'bg-primary text-primary-foreground'
                       )}>
-                        {completedDayTasks}/{dayTasks.length}
+                        {dayTasks.length}
                       </span>
                     )}
                   </button>

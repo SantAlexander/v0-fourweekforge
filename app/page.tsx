@@ -170,22 +170,24 @@ export default function HomePage() {
               {features.map((feature, i) => {
                 const Icon = feature.icon
                 return (
-                  <div key={i} className="group relative">
-                    <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <Card className="relative border-border hover:border-primary/50 transition-all duration-300">
-                      <CardHeader>
-                        <div className="flex items-start justify-between mb-2">
-                          <div className="p-2 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20">
-                            <Icon className="h-6 w-6 text-primary" />
+                  <div key={i} className="relative">
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
+                        {i + 1}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-start gap-2 mb-2">
+                          <div className="p-2 rounded-lg bg-muted">
+                            <Icon className="h-5 w-5 text-primary" />
                           </div>
-                          <span className="text-sm font-bold text-primary/60">{String(i + 1).padStart(2, '0')}</span>
+                          <h3 className="text-lg font-bold mt-1">{feature.title}</h3>
                         </div>
-                        <CardTitle className="text-xl">{feature.title}</CardTitle>
-                      </CardHeader>
-                      <CardContent>
                         <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </div>
+                    {i < features.length - 1 && (
+                      <div className="ml-5 h-6 w-0.5 bg-primary/20 my-2" />
+                    )}
                   </div>
                 )
               })}
