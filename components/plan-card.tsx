@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import { getHobbyIcon } from '@/lib/hobby-icons'
+import { cn } from '@/lib/utils'
 import { Calendar, CheckCircle2, Circle } from 'lucide-react'
 import { PlanWithTasks } from '@/lib/db'
 
@@ -17,60 +18,67 @@ interface PlanCardProps {
 export function PlanCard({ plan }: PlanCardProps) {
   const { t } = useI18n()
   const Icon = getHobbyIcon(plan.hobby_icon)
-  const statusColors = {
-    active: 'bg-chart-2/10 text-chart-2 border-chart-2/20',
-    completed: 'bg-chart-1/10 text-chart-1 border-chart-1/20',
-    paused: 'bg-muted text-muted-foreground border-muted',
+  const statusConfig = {
+    active: { bg: 'bg-gradient-to-br from-primary/10 to-accent/5', border: 'border-primary/30', text: 'text-primary' },
+    completed: { bg: 'bg-gradient-to-br from-accent/10 to-primary/5', border: 'border-accent/30', text: 'text-accent' },
+    paused: { bg: 'bg-muted', border: 'border-border', text: 'text-muted-foreground' },
   }
 
+  const config = statusConfig[plan.status]
   const completedTasks = plan.tasks.filter(t => t.is_completed).length
   const totalTasks = plan.tasks.length
+  const isCompleted = plan.status === 'completed'
 
   return (
     <Link href={`/plan/${plan.id}`}>
-      <Card className="group transition-all hover:shadow-lg hover:border-primary/30 cursor-pointer">
-        <CardHeader className="pb-3">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Icon className="h-5 w-5" />
+      <Card className={`group transition-all duration-300 hover:shadow-lg hover:scale-105 cursor-pointer border-2 ${config.border} ${config.bg}`}>
+        <CardHeader className="pb-4">
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex items-center gap-4">
+              <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 ${config.text}`}>
+                <Icon className="h-6 w-6" />
               </div>
               <div>
-                <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                <CardTitle className={`text-xl font-bold group-hover:${config.text} transition-colors`}>
                   {plan.hobby_name}
                 </CardTitle>
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <Calendar className="h-3.5 w-3.5" />
+                <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                  <Calendar className="h-4 w-4" />
                   <span>{format(new Date(plan.start_date), 'MMM d, yyyy')}</span>
                 </div>
               </div>
             </div>
-            <Badge variant="outline" className={statusColors[plan.status]}>
-              {plan.status}
+            <Badge variant="outline" className={cn('font-semibold border-2', config.text, isCompleted && 'bg-accent/20', !isCompleted && plan.status === 'active' && 'bg-primary/20')}>
+              {plan.status === 'active' && '🔥 Active'}
+              {plan.status === 'completed' && '✓ Done'}
+              {plan.status === 'paused' && '⏸ Paused'}
             </Badge>
           </div>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground line-clamp-2">{plan.goal}</p>
+        <CardContent className="space-y-5">
+          <p className="text-sm text-muted-foreground line-clamp-2 font-medium">{plan.goal}</p>
           
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">{t('planCard.progress')}</span>
-              <span className="font-medium">{plan.progress}%</span>
+              <span className="font-semibold text-foreground">{t('planCard.progress')}</span>
+              <span className="font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{plan.progress}%</span>
             </div>
-            <Progress value={plan.progress} className="h-2" />
+            <Progress value={plan.progress} className="h-2.5 bg-secondary" />
           </div>
 
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-chart-2" />
-              <span>{completedTasks}</span>
+          <div className="grid grid-cols-3 gap-3 text-sm pt-2 border-t border-border/50">
+            <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background/50">
+              <span className="text-xs text-muted-foreground mb-1">Completed</span>
+              <span className="text-lg font-bold text-accent">{completedTasks}</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <Circle className="h-4 w-4" />
-              <span>{totalTasks - completedTasks}</span>
+            <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background/50">
+              <span className="text-xs text-muted-foreground mb-1">Remaining</span>
+              <span className="text-lg font-bold text-primary">{totalTasks - completedTasks}</span>
             </div>
-            <span>{t('planCard.tasks')}</span>
+            <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background/50">
+              <span className="text-xs text-muted-foreground mb-1">Total</span>
+              <span className="text-lg font-bold">{totalTasks}</span>
+            </div>
           </div>
         </CardContent>
       </Card>
