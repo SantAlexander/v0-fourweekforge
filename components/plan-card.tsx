@@ -31,11 +31,11 @@ export function PlanCard({ plan }: PlanCardProps) {
 
   return (
     <Link href={`/plan/${plan.id}`}>
-      <Card className={`group transition-all duration-300 hover:shadow-lg hover:scale-105 cursor-pointer border-2 ${config.border} ${config.bg}`}>
+      <Card className={`group transition-all duration-300 cursor-pointer border ${config.border}`}>
         <CardHeader className="pb-4">
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-4">
-              <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 ${config.text}`}>
+              <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 ${config.text}`}>
                 <Icon className="h-6 w-6" />
               </div>
               <div>
@@ -61,7 +61,7 @@ export function PlanCard({ plan }: PlanCardProps) {
           <div className="space-y-3">
             <div className="flex items-center justify-between text-sm">
               <span className="font-semibold text-foreground">{t('planCard.progress')}</span>
-              <span className="font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{plan.progress}%</span>
+              <span className="font-bold text-primary">{plan.progress}%</span>
             </div>
             <Progress value={plan.progress} className="h-2.5 bg-secondary" />
           </div>

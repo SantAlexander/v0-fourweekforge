@@ -155,13 +155,13 @@ export default function DashboardPage() {
 
           {/* Create Plan CTA */}
           {activePlans.length === 0 && (
-            <div className="mb-12 p-8 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg border-2 border-primary/20 text-center space-y-4">
+            <div className="mb-12 p-8 rounded-lg border text-center space-y-4">
               <h2 className="text-2xl font-bold">{t('dashboard.createFirst') || 'Ready to start learning?'}</h2>
               <p className="text-muted-foreground max-w-md mx-auto">
                 {t('dashboard.createFirstDesc') || 'Choose any hobby and we\'ll create a 4-week learning plan just for you.'}
               </p>
               <Link href="/planner">
-                <Button size="lg" className="gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary hover:to-primary/70">
+                <Button size="lg" className="gap-2">
                   <Plus className="h-5 w-5" />
                   {t('dashboard.createPlan') || 'Create Your First Plan'}
                 </Button>
@@ -171,7 +171,7 @@ export default function DashboardPage() {
 
           {/* Primary CTA Section - "What to do next" */}
           {activePlans.length === 0 ? (
-            <Card className="mb-12 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+            <Card className="mb-12 border">
               <CardContent className="flex flex-col items-center justify-center py-16 text-center">
                 <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10">
                   <Plus className="h-10 w-10 text-primary" />
@@ -186,7 +186,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           ) : nextIncompleteTask ? (
-            <Card className="mb-12 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+            <Card className="mb-12 border">
               <CardContent className="p-6">
                 <div className="flex flex-col gap-4">
                   <div>
@@ -201,9 +201,9 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           ) : (
-            <Card className="mb-12 border-2 border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent">
+            <Card className="mb-12 border">
               <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-                <CheckCircle2 className="h-12 w-12 text-green-500 mb-4" />
+                <CheckCircle2 className="h-12 w-12 text-accent mb-4" />
                 <h2 className="text-xl font-bold mb-2">{t('dashboard.planCompletedTitle')}</h2>
                 <p className="text-muted-foreground mb-6">{t('dashboard.planCompletedDesc')}</p>
                 <Button size="lg" asChild>

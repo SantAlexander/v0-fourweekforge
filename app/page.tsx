@@ -105,7 +105,6 @@ export default function HomePage() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative overflow-hidden border-b border-border">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-accent/8" />
           <div className="relative mx-auto max-w-6xl px-4 py-20 md:py-32">
             <div className="mx-auto max-w-3xl text-center">
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/8 px-4 py-2 text-sm font-medium text-primary">
@@ -114,7 +113,7 @@ export default function HomePage() {
               </div>
               <h1 className="mb-6 text-balance text-5xl font-bold tracking-tight md:text-6xl lg:text-7xl">
                 {t('landing.title')}{' '}
-                <span className="bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
+                <span className="text-primary">
                   {t('landing.titleHighlight')}
                 </span>
               </h1>
@@ -132,8 +131,8 @@ export default function HomePage() {
                   <span className="text-muted-foreground">{t('landing.dailyLabel')}</span>
                 </div>
               </div>
-              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row" suppressHydrationWarning>
-                <Button asChild size="lg" className="gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary hover:to-primary/70 shadow-lg shadow-primary/20">
+              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <Button asChild size="lg" className="gap-2">
                   <Link href={user ? "/planner" : "/register"}>
                     {t('landing.cta.start')}
                     <ArrowRight className="h-5 w-5" />
@@ -165,7 +164,7 @@ export default function HomePage() {
                 const Icon = feature.icon
                 return (
                   <div key={i} className="group relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <Card className="relative border-border hover:border-primary/50 transition-all duration-300">
                       <CardHeader>
                         <div className="flex items-start justify-between mb-2">
@@ -188,7 +187,7 @@ export default function HomePage() {
         </section>
 
         {/* Example Plans Section */}
-        <section className="border-b border-border py-20 md:py-24 bg-gradient-to-b from-transparent to-muted/30">
+        <section className="border-b border-border py-20 md:py-24">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-16 text-center space-y-3">
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
@@ -208,10 +207,10 @@ export default function HomePage() {
                   <Card 
                     key={plan.hobby}
                     className={cn(
-                      'cursor-pointer transition-all border-2 group overflow-hidden',
+                      'cursor-pointer transition-all border group overflow-hidden',
                       isExpanded 
-                        ? 'border-primary shadow-lg shadow-primary/20 ring-2 ring-primary' 
-                        : 'border-border hover:border-primary/50 hover:shadow-md'
+                        ? 'border-primary' 
+                        : 'border-border hover:border-primary/50'
                     )}
                     onClick={() => setExpandedPlan(isExpanded ? null : plan.hobby)}
                   >
@@ -229,7 +228,7 @@ export default function HomePage() {
                           <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
                         </div>
                       </div>
-                      <div className="w-12 h-1 bg-gradient-to-r from-primary to-accent rounded-full" />
+                      <div className="w-12 h-1 bg-primary rounded-full" />
                     </CardHeader>
                     {isExpanded && (
                       <CardContent className="space-y-4 border-t border-border pt-4">
@@ -295,9 +294,9 @@ export default function HomePage() {
         {/* CTA Section */}
         <section className="py-20 md:py-28">
           <div className="mx-auto max-w-6xl px-4">
-            <Card className="bg-gradient-to-br from-primary/15 via-background to-accent/10 border-2 border-primary/30 shadow-xl">
+            <Card className="border">
               <CardContent className="flex flex-col items-center justify-center p-12 md:p-16 text-center space-y-6">
-                <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-lg shadow-primary/30">
+                <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-primary text-primary-foreground">
                   <Flame className="h-10 w-10" />
                 </div>
                 <div className="space-y-3">
@@ -308,7 +307,7 @@ export default function HomePage() {
                     {t('landing.ctaSubtitle')}
                   </p>
                 </div>
-                <Button asChild size="lg" className="gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary hover:to-primary/70 shadow-lg shadow-primary/20 mt-4">
+                <Button asChild size="lg" className="gap-2 mt-4">
                   <Link href={user ? "/dashboard" : "/register"}>
                     {user ? t('landing.ctaButtonLoggedIn') : t('landing.ctaButton')}
                     <ArrowRight className="h-5 w-5" />

@@ -29,11 +29,11 @@ Working on FourWeekForge's FINAL redesign phase.
 
 **Goal:** UI should feel calm, not exciting
 
-- [ ] 1.1 Remove ALL decorative gradients (landing, cards, backgrounds)
+- [x] 1.1 Remove ALL decorative gradients (landing, cards, backgrounds)
   - Files: `app/globals.css`, `app/page.tsx`, `app/dashboard/page.tsx`, `components/plan-card.tsx`
   - Replace `bg-gradient-to-*` with solid colors
 
-- [ ] 1.2 Reduce color palette to THREE colors:
+- [x] 1.2 Reduce color palette to THREE colors:
   - primary (for actions)
   - success (for completed states)
   - neutral (everything else)

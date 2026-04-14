@@ -43,9 +43,9 @@ export function OnboardingModal() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-lg border-2 border-primary/30">
+      <DialogContent className="sm:max-w-lg border">
         <DialogHeader className="space-y-3">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent text-primary-foreground">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
             <CheckCircle2 className="h-8 w-8" />
           </div>
           <div className="space-y-2">
@@ -79,7 +79,7 @@ export function OnboardingModal() {
           </Button>
           <Button
             onClick={handleCreatePlan}
-            className="flex-1 gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary hover:to-primary/70"
+            className="flex-1 gap-2"
           >
             {t('onboarding.createPlan')}
           </Button>
@@ -97,7 +97,7 @@ interface OnboardingStepProps {
 function OnboardingStep({ number, title }: OnboardingStepProps) {
   return (
     <div className="flex items-start gap-4 group">
-      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-sm shadow-md shadow-primary/20">
+      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-sm">
         {number}
       </div>
       <div className="flex flex-1 items-center pt-1">
