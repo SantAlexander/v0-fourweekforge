@@ -275,6 +275,18 @@ const en = {
   'onboarding.step3': 'Complete tasks and track your progress',
   'onboarding.createPlan': 'Create Your First Plan',
   'onboarding.skip': 'Skip for now',
+
+  // Calendar View
+  'plan.listView': 'List View',
+  'plan.calendarView': 'Calendar View',
+  'plan.sun': 'Sun',
+  'plan.mon': 'Mon',
+  'plan.tue': 'Tue',
+  'plan.wed': 'Wed',
+  'plan.thu': 'Thu',
+  'plan.fri': 'Fri',
+  'plan.sat': 'Sat',
+  'plan.taskCount': 'tasks',
 }
 
 // Russian translations
@@ -369,7 +381,7 @@ const ru: Record<string, string> = {
   'dashboard.paused': 'На паузе',
   
   'dashboard.noActivePlans': 'Нет активных планов',
-  'dashboard.noActivePlansSubtitle': 'Начни путь, создав новый 4-недельный план для любого хобби',
+  'dashboard.noActivePlansSubtitle': 'Начни путь, создав новый 4-нед��льный план для любого хобби',
   'dashboard.createFirstPlan': 'Создать первый план',
   
   'dashboard.noCompletedPlans': 'Пока нет завершенных планов',
@@ -540,6 +552,18 @@ const ru: Record<string, string> = {
   'onboarding.step3': 'Выполняй задачи и отслеживай прогресс',
   'onboarding.createPlan': 'Создать первый план',
   'onboarding.skip': 'Пропустить',
+
+  // Calendar View
+  'plan.listView': 'Список',
+  'plan.calendarView': 'Календарь',
+  'plan.sun': 'Вс',
+  'plan.mon': 'Пн',
+  'plan.tue': 'Вт',
+  'plan.wed': 'Ср',
+  'plan.thu': 'Чт',
+  'plan.fri': 'Пт',
+  'plan.sat': 'Сб',
+  'plan.taskCount': 'задач',
 }
 
 const translations: Record<Locale, Record<string, string>> = { en, ru }

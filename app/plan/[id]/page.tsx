@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, use } from 'react'
+import { useEffect, use, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import useSWR from 'swr'
@@ -9,6 +9,7 @@ import { useAuth } from '@/lib/auth-context'
 import { useI18n } from '@/lib/i18n-context'
 import { Header } from '@/components/header'
 import { WeekTasks } from '@/components/week-tasks'
+import { CalendarView } from '@/components/calendar-view'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
@@ -29,6 +30,7 @@ import { toast } from 'sonner'
 import { getHobbyIcon } from '@/lib/hobby-icons'
 import { PlanWithTasks } from '@/lib/db'
 import { ExportDropdown } from '@/components/export-dropdown'
+import { cn } from '@/lib/utils'
 import { ArrowLeft, Calendar, Target, Trash2, Pause, Play, CheckCircle2 } from 'lucide-react'
 
 const fetcher = (url: string) => fetch(url).then(res => res.json())
@@ -38,6 +40,7 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
   const router = useRouter()
   const { user, isLoading: authLoading } = useAuth()
   const { t } = useI18n()
+  const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list')
   
   const { data, isLoading, mutate } = useSWR<{ plan: PlanWithTasks }>(
     user ? `/api/plans/${id}` : null,
@@ -279,17 +282,40 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
             </CardContent>
           </Card>
 
-          {/* Weekly Tasks */}
-          <div className="grid gap-4 md:grid-cols-2">
-            {[1, 2, 3, 4].map((weekNumber) => (
-              <WeekTasks
-                key={weekNumber}
-                weekNumber={weekNumber}
-                tasks={plan.tasks.filter(t => t.week_number === weekNumber)}
-                onTaskToggle={handleTaskToggle}
-              />
-            ))}
+          {/* View Toggle */}
+          <div className="mb-6 flex gap-2">
+            <Button
+              variant={viewMode === 'list' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setViewMode('list')}
+            >
+              {t('plan.listView')}
+            </Button>
+            <Button
+              variant={viewMode === 'calendar' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setViewMode('calendar')}
+            >
+              <Calendar className="mr-2 h-4 w-4" />
+              {t('plan.calendarView')}
+            </Button>
           </div>
+
+          {/* Weekly Tasks or Calendar View */}
+          {viewMode === 'list' ? (
+            <div className="grid gap-4 md:grid-cols-2">
+              {[1, 2, 3, 4].map((weekNumber) => (
+                <WeekTasks
+                  key={weekNumber}
+                  weekNumber={weekNumber}
+                  tasks={plan.tasks.filter(t => t.week_number === weekNumber)}
+                  onTaskToggle={handleTaskToggle}
+                />
+              ))}
+            </div>
+          ) : (
+            <CalendarView plan={plan} onTaskToggle={handleTaskToggle} />
+          )}
         </div>
       </main>
     </div>

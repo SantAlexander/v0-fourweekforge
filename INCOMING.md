@@ -254,7 +254,8 @@ function OnboardingModal() {
 
 **Priority**: Low
 **Complexity**: High (4-5 credits)
-**Files to modify**: `/app/plan/[id]/page.tsx`, possibly new component
+**Files modified**: `/app/plan/[id]/page.tsx`, `/components/calendar-view.tsx`, `/lib/i18n-context.tsx`
+**Status**: ✅ Completed
 
 ### Problem
 Users see tasks as a list but don't visualize when each task should be done.
@@ -264,18 +265,14 @@ Add optional "Calendar View" toggle on plan page showing 28 days with tasks plac
 
 ### Implementation Details
 
-1. **Add view toggle**: List View | Calendar View
+1. **View toggle**: List View | Calendar View
 2. **Calendar grid**: 4 rows (weeks) x 7 columns (days)
-3. **Tasks placed on days** based on `due_date` or calculated from `start_date + week_index`
-4. **Click on day** → expand to see task details
+3. **Tasks placed on days** - distributed across the week
+4. **Click on day** → expand to see task details and complete tasks
 5. **Today highlighted** with accent color
+6. **Mobile responsive** with proper spacing
 
-This is a larger change and may require:
-- Storing `due_date` for each task (already in schema)
-- Calculating dates from plan `start_date`
-- Building responsive calendar grid
-
-**Recommendation**: Implement this last, after wins 4-6 are complete.
+The calendar provides a visual representation of the 28-day plan, helping users understand task distribution and timing better. Tasks can be completed directly from expanded day cells.
 
 ---
 
