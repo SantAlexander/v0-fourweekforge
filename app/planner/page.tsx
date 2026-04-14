@@ -479,6 +479,16 @@ export default function PlannerPage() {
             />
           )}
 
+          {/* Commitment message before final step */}
+          {step === 3 && (
+            <div className="mt-8 p-6 rounded-lg border border-primary/30 bg-primary/3 space-y-2">
+              <p className="text-sm font-semibold text-primary">You're about to start a 4-week journey</p>
+              <p className="text-sm text-muted-foreground">
+                {tasks.length} tasks. 15-30 minutes daily. Structured learning plan from day one.
+              </p>
+            </div>
+          )}
+
           {/* Кнопки навигации */}
           <NavigationButtons
             step={step}
@@ -913,21 +923,24 @@ function NavigationButtons({
   t: (key: string) => string
 }) {
   return (
-    <div className="mt-6 flex justify-between">
-      <Button variant="outline" onClick={onPrevious}>
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        {step === 1 ? t('planner.cancel') : t('planner.back')}
-      </Button>
+    <div className="mt-8 pt-6 border-t border-border flex justify-between items-center">
+      {step > 1 && (
+        <Button variant="ghost" onClick={onPrevious} className="gap-2">
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </Button>
+      )}
+      <div className="flex-1" />
       
       {step < TOTAL_STEPS ? (
-        <Button onClick={onNext} disabled={!canProceed}>
-          {t('planner.next')}
-          <ArrowRight className="ml-2 h-4 w-4" />
+        <Button size="lg" onClick={onNext} disabled={!canProceed} className="gap-2 px-8">
+          Next
+          <ArrowRight className="h-4 w-4" />
         </Button>
       ) : (
-        <Button onClick={onSubmit} disabled={!canProceed || isSubmitting}>
-          {isSubmitting && <Spinner className="mr-2" />}
-          {t('planner.createPlan')}
+        <Button size="lg" onClick={onSubmit} disabled={!canProceed || isSubmitting} className="gap-2 px-8">
+          {isSubmitting && <Spinner className="h-4 w-4 mr-1" />}
+          Create plan
         </Button>
       )}
     </div>
