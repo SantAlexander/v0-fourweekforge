@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { addDays, format, startOfDay } from 'date-fns'
 import { useI18n } from '@/lib/i18n-context'
 import { Task, PlanWithTasks } from '@/lib/db'
@@ -15,7 +15,7 @@ interface CalendarViewProps {
 }
 
 export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const [expandedDay, setExpandedDay] = useState<number | null>(null)
 
   const startDate = new Date(plan.start_date)
@@ -25,22 +25,37 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
     return dayDate.getTime() === today.getTime()
   }
 
-  // Map tasks by day (based on week_number and approximate day distribution)
-  const tasksByDay: Record<number, Task[]> = {}
-  for (let i = 0; i < 28; i++) {
-    tasksByDay[i] = []
-  }
-
-  plan.tasks.forEach((task) => {
-    // Distribute tasks across days in their week
-    // Week 1 = days 0-6, Week 2 = days 7-13, etc.
-    const weekIndex = task.week_number - 1
-    const dayInWeek = Math.floor(Math.random() * 7) // Simple distribution
-    const dayIndex = weekIndex * 7 + dayInWeek
-    if (dayIndex < 28) {
-      tasksByDay[dayIndex].push(task)
+  // Map tasks by day - use useMemo to prevent recalculation on each render
+  // Distribute tasks deterministically based on task index within the week
+  const tasksByDay = useMemo(() => {
+    const result: Record<number, Task[]> = {}
+    for (let i = 0; i < 28; i++) {
+      result[i] = []
     }
-  })
+
+    // Group tasks by week first
+    const tasksByWeek: Record<number, Task[]> = { 1: [], 2: [], 3: [], 4: [] }
+    plan.tasks.forEach((task) => {
+      if (tasksByWeek[task.week_number]) {
+        tasksByWeek[task.week_number].push(task)
+      }
+    })
+
+    // Distribute tasks evenly across days in each week
+    Object.entries(tasksByWeek).forEach(([weekNum, weekTasks]) => {
+      const weekIndex = parseInt(weekNum) - 1
+      weekTasks.forEach((task, idx) => {
+        // Spread tasks across the week based on their index
+        const dayInWeek = idx % 7
+        const dayIndex = weekIndex * 7 + dayInWeek
+        if (dayIndex < 28) {
+          result[dayIndex].push(task)
+        }
+      })
+    })
+
+    return result
+  }, [plan.tasks])
 
   const days = Array.from({ length: 28 }, (_, i) => i)
   const dayLabels = [t('plan.sun'), t('plan.mon'), t('plan.tue'), t('plan.wed'), t('plan.thu'), t('plan.fri'), t('plan.sat')]
@@ -56,7 +71,7 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
         return (
           <div key={weekIdx}>
             <h3 className="mb-3 font-semibold text-sm text-muted-foreground">
-              {t('plan.weekOf')} {weekIdx + 1} ({format(addDays(startDate, weekStart), 'MMM d')} - {format(addDays(startDate, weekEnd - 1), 'MMM d')})
+              {locale === 'ru' ? `Неделя ${weekIdx + 1}` : `Week ${weekIdx + 1}`} ({format(addDays(startDate, weekStart), 'MMM d')} - {format(addDays(startDate, weekEnd - 1), 'MMM d')})
             </h3>
             <div className="grid grid-cols-7 gap-2 md:gap-3">
               {weekDays.map((dayIdx) => {
