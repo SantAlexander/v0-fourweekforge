@@ -110,29 +110,29 @@ export default function HomePage() {
               <div className="space-y-4">
                 <p className="hierarchy-tertiary inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/8 px-4 py-2">
                   <Flame className="h-4 w-4" />
-                  <span>{t('landing.badge')}</span>
+                  <span>Master any hobby</span>
                 </p>
                 <h1 className="hierarchy-primary text-balance">
-                  {t('landing.title')}{' '}
+                  Learn any skill in {' '}
                   <span className="text-primary">
-                    {t('landing.titleHighlight')}
+                    4 weeks
                   </span>
                 </h1>
                 <p className="hierarchy-secondary max-w-2xl mx-auto">
-                  {t('landing.subtitle')}
+                  8-12 tasks. 15-30 minutes daily. Structured learning plans from day one.
                 </p>
               </div>
 
               {/* Stats Bar */}
               <div className="inline-flex flex-col items-center gap-3 rounded-lg border border-border/50 bg-muted/30 px-6 py-4 sm:flex-row sm:gap-6 text-sm">
                 <div className="flex items-center gap-2 font-medium">
-                  <span className="text-lg text-primary font-bold">8-12</span>
-                  <span className="text-muted-foreground">{t('landing.tasksLabel')}</span>
+                  <span className="text-lg text-primary font-bold">4</span>
+                  <span className="text-muted-foreground">Weeks</span>
                 </div>
                 <div className="hidden h-6 w-px bg-border/50 sm:block" />
                 <div className="flex items-center gap-2 font-medium">
                   <span className="text-lg text-primary font-bold">15-30</span>
-                  <span className="text-muted-foreground">{t('landing.dailyLabel')}</span>
+                  <span className="text-muted-foreground">Minutes daily</span>
                 </div>
               </div>
 
@@ -140,13 +140,13 @@ export default function HomePage() {
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row pt-4">
                 <Button asChild size="lg" className="gap-2 px-8">
                   <Link href={user ? "/planner" : "/register"}>
-                    {t('landing.cta.start')}
+                    Start learning
                     <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>
                 {!user && (
                   <Button asChild variant="outline" size="lg">
-                    <Link href="/login">{t('landing.cta.signin')}</Link>
+                    <Link href="/login">Sign in</Link>
                   </Button>
                 )}
               </div>
@@ -158,12 +158,12 @@ export default function HomePage() {
         <section className="border-b border-border py-20 md:py-24">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-16 text-center space-y-3">
-              <p className="hierarchy-tertiary">How it works</p>
+              <p className="hierarchy-tertiary">The process</p>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                {t('landing.howItWorks')}
+                Learn in 4 weeks
               </h2>
               <p className="hierarchy-secondary max-w-2xl mx-auto">
-                {t('landing.howItWorksSubtitle')}
+                Structured daily tasks that build momentum
               </p>
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -276,29 +276,45 @@ export default function HomePage() {
         <section className="border-b border-border py-20 md:py-24">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-16 text-center space-y-3">
-              <p className="hierarchy-tertiary">Choose what excites you</p>
+              <p className="hierarchy-tertiary">Popular hobbies</p>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                {t('landing.popularHobbies')}
+                Pick your passion
               </h2>
               <p className="hierarchy-secondary max-w-2xl mx-auto">
-                {t('landing.popularHobbiesSubtitle')}
+                30+ learning plans available
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-              {hobbies.map((hobby) => (
-                <Card key={hobby.key} className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-primary hover:scale-105">
-                  <CardContent className="flex flex-col items-center justify-center p-6">
-                    <div className={`mb-4 flex h-16 w-16 items-center justify-center rounded-2xl ${hobby.color} transition-all group-hover:shadow-lg group-hover:scale-110`}>
-                      <hobby.icon className="h-8 w-8" />
-                    </div>
-                    <span className="text-sm font-semibold text-foreground text-center">{hobby.name}</span>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="space-y-6">
+              {/* Top 3 — Large */}
+              <div className="grid gap-4 md:grid-cols-3">
+                {hobbies.slice(0, 3).map((hobby) => (
+                  <Card key={hobby.key} className="group cursor-pointer transition-all border hover:border-primary/50">
+                    <CardContent className="flex flex-col items-center justify-center p-8">
+                      <div className={`mb-6 flex h-20 w-20 items-center justify-center rounded-2xl ${hobby.color}`}>
+                        <hobby.icon className="h-10 w-10" />
+                      </div>
+                      <span className="text-base font-bold text-foreground text-center">{hobby.name}</span>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Rest — Small */}
+              {hobbies.length > 3 && (
+                <div className="grid gap-3 md:grid-cols-6">
+                  {hobbies.slice(3).map((hobby) => (
+                    <Card key={hobby.key} className="group cursor-pointer transition-all border hover:border-primary/50">
+                      <CardContent className="flex flex-col items-center justify-center p-4">
+                        <div className={`mb-3 flex h-12 w-12 items-center justify-center rounded-lg ${hobby.color}`}>
+                          <hobby.icon className="h-6 w-6" />
+                        </div>
+                        <span className="text-xs font-semibold text-foreground text-center">{hobby.name}</span>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </div>
-            <p className="mt-8 text-center text-base text-muted-foreground font-medium">
-              {t('landing.moreHobbies')}
-            </p>
           </div>
         </section>
 
@@ -312,15 +328,15 @@ export default function HomePage() {
                 </div>
                 <div className="space-y-3">
                   <h2 className="hierarchy-primary">
-                    {t('landing.ctaTitle')}
+                    Ready to start?
                   </h2>
                   <p className="hierarchy-secondary max-w-2xl mx-auto">
-                    {t('landing.ctaSubtitle')}
+                    Join thousands learning new skills in 4 weeks
                   </p>
                 </div>
                 <Button asChild size="lg" className="gap-2 mt-4 px-8">
                   <Link href={user ? "/dashboard" : "/register"}>
-                    {user ? t('landing.ctaButtonLoggedIn') : t('landing.ctaButton')}
+                    {user ? 'Go to dashboard' : 'Create account'}
                     <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>

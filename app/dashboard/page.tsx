@@ -91,111 +91,96 @@ export default function DashboardPage() {
           {/* Welcome Section — Tertiary Level (small, context) */}
           <div className="mb-12 space-y-2">
             <h1 className="hierarchy-tertiary">
-              {t('dashboard.welcome')} {user.name.split(' ')[0]}
+              Learning progress
             </h1>
             <p className="text-sm text-muted-foreground">
               {activePlans.length === 0
-                ? t('dashboard.startSubtitle')
-                : t('dashboard.learningSubtitle').replace('{hobby}', firstActivePlan?.hobby?.name || '')}
+                ? 'No plans yet. Start one to begin.'
+                : `${completedTasks} of ${totalTasks} tasks completed`}
             </p>
           </div>
 
           {/* PRIMARY SECTION — Continue Plan / Create Plan */}
           {activePlans.length === 0 ? (
             <div className="mb-12 p-10 md:p-12 rounded-lg border bg-primary/5 text-center space-y-4 max-w-2xl">
-              <h2 className="hierarchy-primary">{t('dashboard.createFirst') || 'Ready to start learning?'}</h2>
+              <h2 className="hierarchy-primary">Start learning</h2>
               <p className="hierarchy-secondary max-w-md mx-auto">
-                {t('dashboard.createFirstDesc') || 'Choose any hobby and we\'ll create a 4-week learning plan just for you.'}
+                Choose any hobby and we'll create a 4-week learning plan for you.
               </p>
               <Link href="/planner">
                 <Button size="lg" className="gap-2 mt-4">
                   <Plus className="h-5 w-5" />
-                  {t('dashboard.createPlan') || 'Create Your First Plan'}
+                  Create plan
                 </Button>
               </Link>
             </div>
           ) : (
             <div className="mb-12 p-10 md:p-12 rounded-lg border-2 border-primary bg-primary/5 space-y-6 max-w-2xl">
               <div className="space-y-1">
-                <h2 className="hierarchy-primary mb-2">{firstActivePlan?.hobby?.name || 'Learning Plan'}</h2>
+                <h2 className="hierarchy-primary mb-2">{firstActivePlan?.hobby?.name || 'Learning'}</h2>
                 <p className="hierarchy-secondary">
-                  Week {Math.ceil((firstActivePlan?.tasks.filter(t => !t.is_completed).length || 1) / 7)} of 4 • {firstActivePlan?.progress || 0}% complete
+                  Week {Math.ceil((firstActivePlan?.tasks.filter(t => !t.is_completed).length || 1) / 7)} of 4 • {nextIncompleteTask ? `${(firstActivePlan?.tasks.filter(t => !t.is_completed).length || 0)} task${(firstActivePlan?.tasks.filter(t => !t.is_completed).length || 0) !== 1 ? 's' : ''} left` : 'Complete'}
                 </p>
               </div>
               
-              {/* Progress bar */}
-              <div className="space-y-2">
-                <Progress value={firstActivePlan?.progress || 0} className="h-3" />
-              </div>
-
               {nextIncompleteTask && (
-                <div className="space-y-3 pt-4 border-t border-primary/20">
-                  <p className="hierarchy-tertiary">Today's task</p>
-                  <p className="text-xl font-bold">{nextIncompleteTask.title}</p>
-                  {nextIncompleteTask.description && (
-                    <p className="text-sm text-muted-foreground">{nextIncompleteTask.description}</p>
-                  )}
+                <div className="space-y-2 pt-4 border-t border-primary/20">
+                  <p className="hierarchy-tertiary">Today</p>
+                  <p className="text-lg font-bold">{nextIncompleteTask.title}</p>
                 </div>
               )}
               
-              <Link href={`/plan/${firstActivePlan?.id}`}>
-                <Button size="lg" className="w-full gap-2">
-                  Continue Learning
-                  <ArrowRight className="h-5 w-5" />
+              <Link href={`/plan/${firstActivePlan?.id}`} className="block">
+                <Button size="lg" className="w-full">
+                  Continue
                 </Button>
               </Link>
             </div>
           )}
 
-          {/* Achievement Stats Grid — SECONDARY Level (smaller, supporting) */}
+          {/* Achievement Stats Grid — SECONDARY Level */}
           {activePlans.length > 0 && (
             <div className="mb-12">
-              <p className="hierarchy-tertiary mb-4">Your progress</p>
+              <p className="hierarchy-tertiary mb-4">Stats</p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div className="p-4 rounded-lg border bg-muted/50 space-y-2">
                   <p className="text-lg font-bold text-primary">{activePlans.length}</p>
-                  <p className="text-xs text-muted-foreground">{t('dashboard.activePlans') || 'Plans'}</p>
+                  <p className="text-xs text-muted-foreground">Active</p>
                 </div>
 
                 <div className="p-4 rounded-lg border bg-muted/50 space-y-2">
                   <p className="text-lg font-bold text-accent">{completedPlans.length}</p>
-                  <p className="text-xs text-muted-foreground">{t('dashboard.completedPlans') || 'Done'}</p>
+                  <p className="text-xs text-muted-foreground">Completed</p>
                 </div>
 
                 <div className="p-4 rounded-lg border bg-muted/50 space-y-2">
                   <p className="text-lg font-bold">{completedTasks}</p>
-                  <p className="text-xs text-muted-foreground">{t('dashboard.tasksCompleted') || 'Tasks'}</p>
+                  <p className="text-xs text-muted-foreground">Tasks done</p>
                 </div>
 
                 <div className="p-4 rounded-lg border bg-muted/50 space-y-2">
                   <p className="text-lg font-bold">{totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0}%</p>
-                  <p className="text-xs text-muted-foreground">{t('dashboard.progress') || 'Total'}</p>
+                  <p className="text-xs text-muted-foreground">Overall</p>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Active Plans Grid — TERTIARY Level (supporting detail) */}
-          {activePlans.length > 0 && (
+          {/* Active Plans Grid — TERTIARY Level */}
+          {activePlans.length > 1 && (
             <div className="mb-12">
-              <p className="hierarchy-tertiary mb-4">Other plans in progress</p>
-              {activePlans.length > 1 ? (
-                <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-                  {activePlans.slice(1).map(plan => (
-                    <PlanCard key={plan.id} plan={plan} />
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground">{t('dashboard.nothingElse') || 'No other plans yet'}</p>
-              )}
-            </div>
-          )}
+              <p className="hierarchy-tertiary mb-4">Other plans</p>
+              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+                {activePlans.slice(1).map(plan => (
+                  <PlanCard key={plan.id} plan={plan} />
+                ))}
+              </div>
             </div>
           )}
 
           {/* Completed Plans */}
           {completedPlans.length > 0 && (
-            <div className="mb-12">
+            <div>
               <p className="hierarchy-tertiary mb-4">Completed</p>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {completedPlans.map(plan => (

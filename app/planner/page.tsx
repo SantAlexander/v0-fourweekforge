@@ -511,33 +511,35 @@ function StepProgress({ step, t }: { step: number; t: (key: string) => string })
           <div key={s} className="flex items-center">
             <div
               className={cn(
-                'flex h-10 w-10 items-center justify-center rounded-full border font-semibold transition-colors',
-                step >= s
-                  ? 'border-primary bg-primary text-primary-foreground'
-                  : 'border-muted-foreground/30 text-muted-foreground'
+                'flex h-12 w-12 items-center justify-center rounded-full font-bold transition-all',
+                step === s
+                  ? 'border-2 border-primary bg-primary text-primary-foreground text-base'
+                  : step > s
+                    ? 'border-2 border-accent bg-accent text-accent-foreground text-sm'
+                    : 'border-2 border-muted-foreground/30 bg-muted text-muted-foreground text-sm opacity-40'
               )}
             >
-              {step > s ? <Check className="h-5 w-5" /> : s}
+              {step > s ? <Check className="h-6 w-6" /> : s}
             </div>
             {s < 3 && (
               <div
                 className={cn(
-                  'h-0.5 w-24 sm:w-32 md:w-40 transition-colors',
-                  step > s ? 'bg-primary' : 'bg-muted-foreground/30'
+                  'h-1 w-24 sm:w-32 md:w-40 transition-all',
+                  step > s ? 'bg-accent' : step === s ? 'bg-primary' : 'bg-muted-foreground/30'
                 )}
               />
             )}
           </div>
         ))}
       </div>
-      <div className="mt-2 flex justify-between text-sm">
-        <span className={step >= 1 ? 'text-primary font-medium' : 'text-muted-foreground'}>
+      <div className="mt-4 flex justify-between text-xs font-semibold uppercase tracking-wide">
+        <span className={step === 1 ? 'text-primary' : step > 1 ? 'text-accent' : 'text-muted-foreground opacity-50'}>
           {t('planner.chooseHobby')}
         </span>
-        <span className={step >= 2 ? 'text-primary font-medium' : 'text-muted-foreground'}>
+        <span className={step === 2 ? 'text-primary' : step > 2 ? 'text-accent' : 'text-muted-foreground opacity-50'}>
           {t('planner.setGoal')}
         </span>
-        <span className={step >= 3 ? 'text-primary font-medium' : 'text-muted-foreground'}>
+        <span className={step === 3 ? 'text-primary' : 'text-muted-foreground opacity-50'}>
           {t('planner.planTasks')}
         </span>
       </div>
