@@ -159,6 +159,15 @@ const en = {
   // Plan Card
   'planCard.progress': 'progress',
   'planCard.tasks': 'tasks',
+  'planCard.statusActive': 'Active',
+  'planCard.statusDone': 'Done',
+  'planCard.statusPaused': 'Paused',
+  'planCard.completed': 'Completed',
+  'planCard.remaining': 'Remaining',
+  'planCard.total': 'Total',
+  
+  // Dashboard stats
+  'dashboard.of': 'of',
   
   // Week Tasks
   'weekTasks.allDone': 'All tasks completed!',
@@ -495,6 +504,15 @@ const ru: Record<string, string> = {
   // Plan Card
   'planCard.progress': 'прогресс',
   'planCard.tasks': 'задач',
+  'planCard.statusActive': 'Активен',
+  'planCard.statusDone': 'Завершён',
+  'planCard.statusPaused': 'На паузе',
+  'planCard.completed': 'Выполнено',
+  'planCard.remaining': 'Осталось',
+  'planCard.total': 'Всего',
+  
+  // Dashboard stats
+  'dashboard.of': 'из',
   
   // Week Tasks
   'weekTasks.allDone': 'Все задачи выполнены!',

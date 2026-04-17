@@ -120,7 +120,13 @@ export default function DashboardPage() {
               </div>
               
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <span>{firstActivePlan?.hobby_name}</span>
+                <span>
+                  {firstActivePlan && (
+                    t(`hobby.${firstActivePlan.hobby_icon}`) !== `hobby.${firstActivePlan.hobby_icon}`
+                      ? t(`hobby.${firstActivePlan.hobby_icon}`)
+                      : firstActivePlan.hobby_name
+                  )}
+                </span>
                 <span className="w-1 h-1 rounded-full bg-border" />
                 <span>{(firstActivePlan?.tasks.filter(t => !t.is_completed).length || 0)} {t('dashboard.tasksLeft')}</span>
               </div>
@@ -136,7 +142,7 @@ export default function DashboardPage() {
           {/* Stats — Minimal, supporting signal only */}
           {activePlans.length > 0 && (
             <div className="mb-12 flex items-center gap-6 text-sm text-muted-foreground">
-              <span>{completedTasks} of {totalTasks} {t('planCard.tasks')}</span>
+              <span>{completedTasks} {t('dashboard.of')} {totalTasks} {t('planCard.tasks')}</span>
               <span className="w-1 h-1 rounded-full bg-border" />
               <span>{activePlans.length} {activePlans.length === 1 ? t('dashboard.activePlan') : t('dashboard.activePlans')}</span>
               {completedPlans.length > 0 && (

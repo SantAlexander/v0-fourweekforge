@@ -40,7 +40,7 @@ export function PlanCard({ plan }: PlanCardProps) {
               </div>
               <div>
                 <CardTitle className={`text-xl font-bold group-hover:${config.text} transition-colors`}>
-                  {plan.hobby_name}
+                  {t(`hobby.${plan.hobby_icon}`) !== `hobby.${plan.hobby_icon}` ? t(`hobby.${plan.hobby_icon}`) : plan.hobby_name}
                 </CardTitle>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
                   <Calendar className="h-4 w-4" />
@@ -49,9 +49,9 @@ export function PlanCard({ plan }: PlanCardProps) {
               </div>
             </div>
             <Badge variant="outline" className={cn('font-semibold border-2', config.text, isCompleted && 'bg-accent/20', !isCompleted && plan.status === 'active' && 'bg-primary/20')}>
-              {plan.status === 'active' && '🔥 Active'}
-              {plan.status === 'completed' && '✓ Done'}
-              {plan.status === 'paused' && '⏸ Paused'}
+              {plan.status === 'active' && `🔥 ${t('planCard.statusActive')}`}
+              {plan.status === 'completed' && `✓ ${t('planCard.statusDone')}`}
+              {plan.status === 'paused' && `⏸ ${t('planCard.statusPaused')}`}
             </Badge>
           </div>
         </CardHeader>
@@ -68,15 +68,15 @@ export function PlanCard({ plan }: PlanCardProps) {
 
           <div className="grid grid-cols-3 gap-3 text-sm pt-2 border-t border-border/50">
             <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background/50">
-              <span className="text-xs text-muted-foreground mb-1">Completed</span>
+              <span className="text-xs text-muted-foreground mb-1">{t('planCard.completed')}</span>
               <span className="text-lg font-bold text-accent">{completedTasks}</span>
             </div>
             <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background/50">
-              <span className="text-xs text-muted-foreground mb-1">Remaining</span>
+              <span className="text-xs text-muted-foreground mb-1">{t('planCard.remaining')}</span>
               <span className="text-lg font-bold text-primary">{totalTasks - completedTasks}</span>
             </div>
             <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background/50">
-              <span className="text-xs text-muted-foreground mb-1">Total</span>
+              <span className="text-xs text-muted-foreground mb-1">{t('planCard.total')}</span>
               <span className="text-lg font-bold">{totalTasks}</span>
             </div>
           </div>
