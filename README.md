@@ -62,14 +62,6 @@ tasks (id, plan_id, week_index, day_index, title, description, status, due_date,
 feedback (id, name, email, message, type, created_at)
 ```
 
-## Environment Variables
-
-```
-DATABASE_URL=postgresql://...    # Neon PostgreSQL connection string
-JWT_SECRET=...                   # JWT signing secret
-GROQ_API_KEY=...                 # Groq API key for AI generation
-```
-
 ## Key User Flows
 
 1. **Registration** → Redirects to `/planner` (not dashboard) to start first plan immediately
@@ -102,4 +94,3 @@ pnpm install
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)

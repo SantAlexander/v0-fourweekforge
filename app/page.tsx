@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { 
-  Flame, 
   Target, 
   Calendar, 
   CheckCircle2, 
@@ -20,7 +19,8 @@ import {
   Code,
   ChefHat,
   Pencil,
-  ArrowRight
+  ArrowRight,
+  Flame
 } from 'lucide-react'
 
 const featureIcons = [Target, Calendar, CheckCircle2, TrendingUp]
@@ -103,91 +103,56 @@ export default function HomePage() {
       <Header />
       
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden border-b border-border">
-          <div className="relative mx-auto max-w-6xl px-4 py-20 md:py-32">
-            <div className="mx-auto max-w-3xl text-center space-y-8">
+        {/* Hero Section — Calm, focused */}
+        <section className="border-b border-border">
+          <div className="mx-auto max-w-6xl px-4 py-20 md:py-28">
+            <div className="mx-auto max-w-2xl text-center space-y-8">
               <div className="space-y-4">
-                <p className="hierarchy-tertiary inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/8 px-4 py-2">
-                  <Flame className="h-4 w-4" />
-                  <span>Master any hobby</span>
-                </p>
-                <h1 className="hierarchy-primary text-balance">
-                  Learn any skill in {' '}
-                  <span className="text-primary">
-                    4 weeks
-                  </span>
+                <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight text-balance">
+                  {t('landing.heroTitle')}
                 </h1>
-                <p className="hierarchy-secondary max-w-2xl mx-auto">
-                  8-12 tasks. 15-30 minutes daily. Structured learning plans from day one.
+                <p className="text-lg text-muted-foreground max-w-xl mx-auto">
+                  {t('landing.heroSubtitle')}
                 </p>
               </div>
 
-              {/* Stats Bar */}
-              <div className="inline-flex flex-col items-center gap-3 rounded-lg border border-border/50 bg-muted/30 px-6 py-4 sm:flex-row sm:gap-6 text-sm">
-                <div className="flex items-center gap-2 font-medium">
-                  <span className="text-lg text-primary font-bold">4</span>
-                  <span className="text-muted-foreground">Weeks</span>
-                </div>
-                <div className="hidden h-6 w-px bg-border/50 sm:block" />
-                <div className="flex items-center gap-2 font-medium">
-                  <span className="text-lg text-primary font-bold">15-30</span>
-                  <span className="text-muted-foreground">Minutes daily</span>
-                </div>
-              </div>
-
-              {/* PRIMARY CTA */}
-              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row pt-4">
-                <Button asChild size="lg" className="gap-2 px-8">
+              {/* Single CTA */}
+              <div className="flex flex-col items-center gap-4 pt-4">
+                <Button asChild size="lg" className="px-8">
                   <Link href={user ? "/planner" : "/register"}>
-                    Start learning
-                    <ArrowRight className="h-5 w-5" />
+                    {t('landing.startLearning')}
                   </Link>
                 </Button>
                 {!user && (
-                  <Button asChild variant="outline" size="lg">
-                    <Link href="/login">Sign in</Link>
-                  </Button>
+                  <p className="text-sm text-muted-foreground">
+                    {t('landing.alreadyHaveAccount')} <Link href="/login" className="text-primary hover:underline">{t('landing.signIn')}</Link>
+                  </p>
                 )}
               </div>
             </div>
           </div>
         </section>
 
-        {/* How It Works */}
-        <section className="border-b border-border py-20 md:py-24">
-          <div className="mx-auto max-w-6xl px-4">
-            <div className="mb-16 text-center space-y-3">
-              <p className="hierarchy-tertiary">The process</p>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                Learn in 4 weeks
+        {/* How It Works — Clean, minimal */}
+        <section className="border-b border-border py-16 md:py-20">
+          <div className="mx-auto max-w-4xl px-4">
+            <div className="mb-12 text-center">
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
+                {t('landing.howItWorks')}
               </h2>
-              <p className="hierarchy-secondary max-w-2xl mx-auto">
-                Structured daily tasks that build momentum
-              </p>
             </div>
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 md:grid-cols-4">
               {features.map((feature, i) => {
                 const Icon = feature.icon
                 return (
-                  <div key={i} className="relative">
-                    <div className="flex items-start gap-4">
-                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
-                        {i + 1}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-start gap-2 mb-2">
-                          <div className="p-2 rounded-lg bg-muted">
-                            <Icon className="h-5 w-5 text-primary" />
-                          </div>
-                          <h3 className="text-lg font-bold mt-1">{feature.title}</h3>
-                        </div>
-                        <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
+                  <div key={i} className="text-center space-y-3">
+                    <div className="flex items-center justify-center">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+                        <Icon className="h-5 w-5" />
                       </div>
                     </div>
-                    {i < features.length - 1 && (
-                      <div className="ml-5 h-6 w-0.5 bg-primary/20 my-2" />
-                    )}
+                    <h3 className="font-semibold">{feature.title}</h3>
+                    <p className="text-sm text-muted-foreground">{feature.description}</p>
                   </div>
                 )
               })}
@@ -199,9 +164,9 @@ export default function HomePage() {
         <section className="border-b border-border py-20 md:py-24">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-16 text-center space-y-3">
-              <p className="hierarchy-tertiary">Learning examples</p>
+              <p className="hierarchy-tertiary">{t('landing.examplesTitle')}</p>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                {t('landing.examplesTitle')}
+                {t('landing.learningExamples')}
               </h2>
               <p className="hierarchy-secondary max-w-2xl mx-auto">
                 {t('landing.examplesSubtitle')}
@@ -276,12 +241,12 @@ export default function HomePage() {
         <section className="border-b border-border py-20 md:py-24">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-16 text-center space-y-3">
-              <p className="hierarchy-tertiary">Popular hobbies</p>
+              <p className="hierarchy-tertiary">{t('landing.popularHobbies')}</p>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                Pick your passion
+                {t('landing.pickYourPassion')}
               </h2>
               <p className="hierarchy-secondary max-w-2xl mx-auto">
-                30+ learning plans available
+                {t('landing.plansAvailable')}
               </p>
             </div>
             <div className="space-y-6">
@@ -318,30 +283,20 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-20 md:py-28">
-          <div className="mx-auto max-w-6xl px-4">
-            <Card className="border">
-              <CardContent className="flex flex-col items-center justify-center p-12 md:p-16 text-center space-y-6">
-                <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-primary text-primary-foreground">
-                  <Flame className="h-10 w-10" />
-                </div>
-                <div className="space-y-3">
-                  <h2 className="hierarchy-primary">
-                    Ready to start?
-                  </h2>
-                  <p className="hierarchy-secondary max-w-2xl mx-auto">
-                    Join thousands learning new skills in 4 weeks
-                  </p>
-                </div>
-                <Button asChild size="lg" className="gap-2 mt-4 px-8">
-                  <Link href={user ? "/dashboard" : "/register"}>
-                    {user ? 'Go to dashboard' : 'Create account'}
-                    <ArrowRight className="h-5 w-5" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
+        {/* CTA Section — Simple, direct */}
+        <section className="py-16 md:py-20">
+          <div className="mx-auto max-w-xl px-4 text-center space-y-6">
+            <h2 className="text-2xl md:text-3xl font-bold">
+              {t('landing.readyToStart')}
+            </h2>
+            <p className="text-muted-foreground">
+              {t('landing.getStructuredPlan')}
+            </p>
+            <Button asChild size="lg" className="px-8">
+              <Link href={user ? "/dashboard" : "/register"}>
+                {user ? t('landing.goToDashboard') : t('landing.createAccount')}
+              </Link>
+            </Button>
           </div>
         </section>
       </main>
@@ -354,7 +309,7 @@ export default function HomePage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
                 <Flame className="h-4 w-4 text-primary-foreground" />
               </div>
-              <span className="font-semibold">FourWeekForge</span>
+              <span className="font-semibold">{t('landing.productName')}</span>
             </div>
             <p className="text-sm text-muted-foreground">
               {t('landing.footer')}

@@ -31,9 +31,6 @@ const en = {
   'landing.cta.start': 'Start learning',
   'landing.cta.signin': 'Sign in',
   
-  'landing.howItWorks': 'The process',
-  'landing.howItWorksSubtitle': 'Four simple steps to master a new hobby',
-  
   'landing.feature1.title': 'Choose a hobby',
   'landing.feature1.description': 'Pick any hobby from our list or create your own.',
   'landing.feature2.title': 'Set your goal',
@@ -42,17 +39,6 @@ const en = {
   'landing.feature3.description': 'AI creates 28 structured tasks across 4 weeks.',
   'landing.feature4.title': 'Learn daily',
   'landing.feature4.description': '15-30 minutes a day and master the skill in a month.',
-  
-  'landing.popularHobbies': 'Pick your passion',
-  'landing.popularHobbiesSubtitle': '30+ learning plans available',
-  'landing.moreHobbies': 'And many more...',
-  
-  'landing.ctaTitle': 'Ready to start?',
-  'landing.ctaSubtitle': 'Join thousands who mastered new skills in 4 weeks',
-  'landing.ctaButton': 'Create account',
-  'landing.ctaButtonLoggedIn': 'Go to dashboard',
-  
-  'landing.footer': 'Master any hobby in 4 weeks. Built with passion.',
   
   // Hobby names (by icon key from DB)
   'hobby.guitar': 'Guitar',
@@ -173,6 +159,15 @@ const en = {
   // Plan Card
   'planCard.progress': 'progress',
   'planCard.tasks': 'tasks',
+  'planCard.statusActive': 'Active',
+  'planCard.statusDone': 'Done',
+  'planCard.statusPaused': 'Paused',
+  'planCard.completed': 'Completed',
+  'planCard.remaining': 'Remaining',
+  'planCard.total': 'Total',
+  
+  // Dashboard stats
+  'dashboard.of': 'of',
   
   // Week Tasks
   'weekTasks.allDone': 'All tasks completed!',
@@ -316,6 +311,39 @@ const en = {
   // Toast messages
   'toast.taskMarked': 'Task marked as complete!',
   'toast.planCreated': 'Plan created!',
+
+  // Phase 11 - New UI strings
+  'dashboard.getStarted': 'Get started',
+  'dashboard.startLearning': 'Start learning',
+  'dashboard.chooseAnyHobby': 'Choose any hobby. We create a 4-week plan.',
+  'dashboard.today': 'Today',
+  'dashboard.continue': 'Continue',
+  'dashboard.tasksLeft': 'tasks left',
+  'dashboard.activePlan': 'active plan',
+  'dashboard.activePlans': 'active plans',
+  'dashboard.completed': 'completed',
+  'dashboard.otherActivePlans': 'Other active plans',
+  'dashboard.allTasksDone': 'All tasks done',
+  
+  'plan.nextTask': 'Next task',
+  'plan.markComplete': 'Mark complete',
+  'plan.weekOf': 'of 4',
+  
+  'landing.heroTitle': 'Learn any skill in 4 weeks',
+  'landing.heroSubtitle': 'Structured daily tasks. 15-30 minutes. Clear progress from day one.',
+  'landing.startLearning': 'Start learning',
+  'landing.alreadyHaveAccount': 'Already have an account?',
+  'landing.signIn': 'Sign in',
+  'landing.howItWorks': 'How it works',
+  'landing.pickYourPassion': 'Pick your passion',
+  'landing.plansAvailable': '30+ learning plans available',
+  'landing.readyToStart': 'Ready to start?',
+  'landing.getStructuredPlan': 'Pick a hobby. Get a structured plan. Start today.',
+  'landing.createAccount': 'Create account',
+  'landing.goToDashboard': 'Go to dashboard',
+  'landing.learningExamples': 'Learning examples',
+  'landing.popularHobbies': 'Popular hobbies',
+  'landing.productName': 'FourWeekForge',
 }
 
 // Russian translations
@@ -341,9 +369,6 @@ const ru: Record<string, string> = {
   'landing.cta.start': 'Начать обучение',
   'landing.cta.signin': 'Войти',
   
-  'landing.howItWorks': 'Процесс',
-  'landing.howItWorksSubtitle': 'Четыре простых шага к освоению нового хобби',
-  
   'landing.feature1.title': 'Выбери хобби',
   'landing.feature1.description': 'Выбери любое хобби из списка или создай своё.',
   'landing.feature2.title': 'Постав цель',
@@ -353,16 +378,12 @@ const ru: Record<string, string> = {
   'landing.feature4.title': 'Учись каждый день',
   'landing.feature4.description': '15-30 минут в день — и за месяц ты освоишь навык.',
   
-  'landing.popularHobbies': 'Выбери своё увлечение',
-  'landing.popularHobbiesSubtitle': 'Более 30 готовых планов обучения',
-  'landing.moreHobbies': 'И многое другое...',
-  
   'landing.ctaTitle': 'Готов начать?',
   'landing.ctaSubtitle': 'Присоединяйся к тысячам, кто освоил новые навыки за 4 недели',
   'landing.ctaButton': 'Создать аккаунт',
   'landing.ctaButtonLoggedIn': 'Перейти в панель',
   
-  'landing.footer': 'Освой любое хобби за 4 недели. Создано с любовью.',
+  'landing.footer': 'Освой любое хобби за 4 недели. ��оздано с любовью.',
   
   // Hobby names (by icon key from DB)
   'hobby.guitar': 'Гитара',
@@ -483,6 +504,15 @@ const ru: Record<string, string> = {
   // Plan Card
   'planCard.progress': 'прогресс',
   'planCard.tasks': 'задач',
+  'planCard.statusActive': 'Активен',
+  'planCard.statusDone': 'Завершён',
+  'planCard.statusPaused': 'На паузе',
+  'planCard.completed': 'Выполнено',
+  'planCard.remaining': 'Осталось',
+  'planCard.total': 'Всего',
+  
+  // Dashboard stats
+  'dashboard.of': 'из',
   
   // Week Tasks
   'weekTasks.allDone': 'Все задачи выполнены!',
@@ -523,70 +553,7 @@ const ru: Record<string, string> = {
   'export.csv': 'Скачать CSV',
   'export.pdf': 'Печать / PDF',
 
-  // Dashboard - updated for PHASE 9
-  'dashboard.createFirstPlanTitle': 'Начни обучение',
-  'dashboard.createFirstPlanDesc': 'Выбери хобби и получи персональный 4-недельный план.',
-  'dashboard.nextTask': 'СЕГОДНЯ',
-  'dashboard.startTask': 'Начать',
-  'dashboard.planCompletedTitle': 'План завершен!',
-  'dashboard.planCompletedDesc': 'Отличная работа! Создай новый план, чтобы продолжить.',
-  'dashboard.progressTitle': 'Статистика',
-  'dashboard.activePlansLabel': 'Активные',
-  'dashboard.tasksCompletedWeek': 'Задач выполнено',
-  'dashboard.tasksTotal': 'из {count}',
-  'dashboard.progressMessage': '{percent}% выполнено',
-  'dashboard.learningSubtitle': 'Неделя {week} из 4',
-  'dashboard.startSubtitle': 'Создай первый план обучения',
-  'dashboard.weeklyNote': 'Структурированный план на 4 недели',
-  'dashboard.completedPlans': 'Завершённые',
-  'dashboard.stats': 'Статистика',
-  'dashboard.activePlansCopy': 'Активные',
-  'dashboard.completedPlansCopy': 'Завершено',
-  'dashboard.tasksDoneCopy': 'Задач сделано',
-  'dashboard.progressOverallCopy': 'Всего',
-
-  // Planner - updated for PHASE 9
-  'planner.hobbyTitle': 'Какое хобби хочешь освоить?',
-  'planner.hobbySubtitle': 'Выбери из списка или введи своё',
-  'planner.hobbyOr': 'или',
-  'planner.hobbyEnterOwn': 'Введи своё хобби',
-  'planner.hobbyOwnPlaceholder': 'напр., Фотография, Танцы, Кулинария...',
-  'planner.hobbyOwnHint': 'Отлично! Создадим персональный план для {hobby}.',
-
-  'planner.goalJourneyTitle': 'Начинаем 4-недельный путь',
-  'planner.goalJourneySubtitle': 'Постави цель и дату начала',
-  'planner.structureLabel': 'ПЛАН',
-  'planner.structureWeeks': 'Неделя 1 → Неделя 2 → Неделя 3 → Неделя 4',
-  'planner.structureDesc': '8-12 задач на 4 недели. 15-30 минут в день.',
-  'planner.goalSpecific': 'Твоя цель?',
-  'planner.goalSpecificPlaceholder': 'Хочу уметь играть 5 песен на гитаре | Создать портфолио из 10 фото',
-  'planner.goalAiHint': 'Создадим персональный план на основе твоей цели.',
-  'planner.startDateLabel': 'Когда начать?',
-  'planner.startDateHint': 'День 1 твоего плана.',
-
-  'planner.tasksTitle': 'Твой 4-недельный план',
-  'planner.tasksSubtitle': 'Персональные задачи. Редактируй как хочешь.',
-  'planner.regenerateAi': 'Заново с AI',
-  'planner.generatingPlan': 'Создаём план...',
-  'planner.generatingWait': 'Подождите 10 секунд',
-  'planner.weekLabel': 'Неделя',
-  'planner.taskCount': '{count} задача',
-  'planner.taskCountPlural': '{count} задач',
-  'planner.addTaskBtn': 'Добавить задачу',
-  'planner.startHere': 'СЕЙЧАС',
-  'planner.taskTitleInput': 'Название задачи',
-  'planner.taskDescInput': 'Описание (необязательно)',
-  'planner.deleteTask': 'Удалить',
-  'planner.noTasksEmpty': 'Нет задач. Добавь первую.',
-  'planner.timelineCurrent': 'Текущая',
-  'planner.timelineUpcoming': 'Впереди',
-  'planner.timelineFinish': 'Финиш!',
-
-  // Landing - Example Plans Section
-  'landing.examplesTitle': 'Посмотри, что получишь',
-  'landing.examplesSubtitle': 'Реальные примеры персональных планов',
-
-  // Onboarding Modal
+  // Onboarding
   'onboarding.title': 'Добро пожаловать в FourWeekForge',
   'onboarding.subtitle': 'Освой любое хобби за 4 недели',
   'onboarding.step1': 'Выбери хобби',
@@ -605,27 +572,42 @@ const ru: Record<string, string> = {
   'plan.thu': 'Чт',
   'plan.fri': 'Пт',
   'plan.sat': 'Сб',
-  'plan.weekCompleted': 'Неделя завершена',
-  'plan.tasksDone': 'Задач выполнено',
-  'plan.continue': 'Продолжить',
-  'plan.today': 'Сегодня',
-  'plan.nextActionable': 'Следующая неделя',
   
-  // Export
-  'export.title': 'Экспортировать план',
-  'export.json': 'Скачать JSON',
-  'export.csv': 'Скачать CSV',
-  'export.pdf': 'Печать / PDF',
+  // Phase 11 - New UI strings (Russian)
+  'dashboard.getStarted': 'Начать',
+  'dashboard.startLearning': 'Начать обучение',
+  'dashboard.chooseAnyHobby': 'Выбери любое хобби. Мы создадим план на 4 недели.',
+  'dashboard.today': 'Сегодня',
+  'dashboard.continue': 'Продолжить',
+  'dashboard.tasksLeft': 'задач осталось',
+  'dashboard.activePlan': 'активный план',
+  'dashboard.activePlans': 'активные планы',
+  'dashboard.completed': 'завершено',
+  'dashboard.otherActivePlans': 'Другие активные планы',
+  'dashboard.allTasksDone': 'Все задачи выполнены',
   
-  // Plan Details
-  'plan.duration': 'Продолжительность',
-  'plan.pause': 'Пауза',
-  'plan.resume': 'Возобновить',
-  'plan.delete': 'Удалить',
+  'plan.nextTask': 'Следующая задача',
+  'plan.markComplete': 'Отметить выполненным',
+  'plan.weekOf': 'из 4',
   
-  // Toast messages
-  'toast.taskMarked': 'Задача отмечена как выполненная!',
-  'toast.planCreated': 'план создан!',
+  'landing.examplesTitle': 'Примеры обучения',
+  'landing.examplesSubtitle': 'Реальные примеры персонализированных планов',
+  
+  'landing.heroTitle': 'Научись любому навыку за 4 недели',
+  'landing.heroSubtitle': 'Структурированные ежедневные задачи. 15-30 минут. Виден прогресс с первого дня.',
+  'landing.startLearning': 'Начать обучение',
+  'landing.alreadyHaveAccount': 'Уже есть аккаунт?',
+  'landing.signIn': 'Войти',
+  'landing.howItWorks': 'Как это работает',
+  'landing.pickYourPassion': 'Выбери своё увлечение',
+  'landing.plansAvailable': 'Более 30 готовых планов обучения',
+  'landing.readyToStart': 'Готов начать?',
+  'landing.getStructuredPlan': 'Выбери хобби. Получи структурированный план. Начни сегодня.',
+  'landing.createAccount': 'Создать аккаунт',
+  'landing.goToDashboard': 'Перейти в панель',
+  'landing.learningExamples': 'Примеры обучения',
+  'landing.popularHobbies': 'Популярные хобби',
+  'landing.productName': 'FourWeekForge',
 }
 
 
