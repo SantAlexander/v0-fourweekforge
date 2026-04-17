@@ -92,25 +92,25 @@ export default function DashboardPage() {
           {activePlans.length === 0 ? (
             <div className="mb-16 p-8 md:p-12 rounded-xl border-2 border-primary/20 bg-card space-y-6 max-w-xl">
               <div className="space-y-3">
-                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Get started</p>
-                <h1 className="text-3xl md:text-4xl font-bold text-foreground">Start learning</h1>
+                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">{t('dashboard.getStarted')}</p>
+                <h1 className="text-3xl md:text-4xl font-bold text-foreground">{t('dashboard.startLearning')}</h1>
                 <p className="text-muted-foreground">
-                  Choose any hobby. We create a 4-week plan.
+                  {t('dashboard.chooseAnyHobby')}
                 </p>
               </div>
               <Link href="/planner">
                 <Button size="lg" className="gap-2">
                   <Plus className="h-5 w-5" />
-                  Create plan
+                  {t('dashboard.createFirstPlan')}
                 </Button>
               </Link>
             </div>
           ) : (
             <div className="mb-16 p-8 md:p-12 rounded-xl border-2 border-primary bg-card space-y-6 max-w-xl">
               <div className="space-y-1">
-                <p className="text-sm font-medium text-primary uppercase tracking-wide">Today</p>
+                <p className="text-sm font-medium text-primary uppercase tracking-wide">{t('dashboard.today')}</p>
                 <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                  {nextIncompleteTask?.title || 'All tasks done'}
+                  {nextIncompleteTask?.title || t('dashboard.allTasksDone')}
                 </h1>
                 {nextIncompleteTask?.description && (
                   <p className="text-muted-foreground mt-2">
@@ -122,12 +122,12 @@ export default function DashboardPage() {
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <span>{firstActivePlan?.hobby_name}</span>
                 <span className="w-1 h-1 rounded-full bg-border" />
-                <span>{(firstActivePlan?.tasks.filter(t => !t.is_completed).length || 0)} tasks left</span>
+                <span>{(firstActivePlan?.tasks.filter(t => !t.is_completed).length || 0)} {t('dashboard.tasksLeft')}</span>
               </div>
               
               <Link href={`/plan/${firstActivePlan?.id}`} className="block">
                 <Button size="lg" className="w-full">
-                  Continue
+                  {t('dashboard.continue')}
                 </Button>
               </Link>
             </div>
@@ -136,13 +136,13 @@ export default function DashboardPage() {
           {/* Stats — Minimal, supporting signal only */}
           {activePlans.length > 0 && (
             <div className="mb-12 flex items-center gap-6 text-sm text-muted-foreground">
-              <span>{completedTasks} of {totalTasks} tasks</span>
+              <span>{completedTasks} of {totalTasks} {t('planCard.tasks')}</span>
               <span className="w-1 h-1 rounded-full bg-border" />
-              <span>{activePlans.length} active plan{activePlans.length !== 1 ? 's' : ''}</span>
+              <span>{activePlans.length} {activePlans.length === 1 ? t('dashboard.activePlan') : t('dashboard.activePlans')}</span>
               {completedPlans.length > 0 && (
                 <>
                   <span className="w-1 h-1 rounded-full bg-border" />
-                  <span>{completedPlans.length} completed</span>
+                  <span>{completedPlans.length} {t('dashboard.completed')}</span>
                 </>
               )}
             </div>
@@ -151,7 +151,7 @@ export default function DashboardPage() {
           {/* Other Plans — De-emphasized, minimal */}
           {activePlans.length > 1 && (
             <div className="mb-8">
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">Other active plans</p>
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">{t('dashboard.otherActivePlans')}</p>
               <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 opacity-70 hover:opacity-100 transition-opacity">
                 {activePlans.slice(1).map(plan => (
                   <PlanCard key={plan.id} plan={plan} />
@@ -163,7 +163,7 @@ export default function DashboardPage() {
           {/* Completed Plans — Most de-emphasized */}
           {completedPlans.length > 0 && (
             <div className="opacity-50 hover:opacity-70 transition-opacity">
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">Completed</p>
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">{t('dashboard.completed')}</p>
               <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                 {completedPlans.map(plan => (
                   <PlanCard key={plan.id} plan={plan} />

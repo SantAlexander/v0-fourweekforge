@@ -203,7 +203,7 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
           {plan.tasks.filter(t => !t.is_completed).length > 0 && (
             <div className="mb-10 p-8 md:p-10 rounded-xl border-2 border-primary bg-card space-y-6">
               <div className="space-y-1">
-                <p className="text-sm font-medium text-primary uppercase tracking-wide">Next task</p>
+                <p className="text-sm font-medium text-primary uppercase tracking-wide">{t('plan.nextTask')}</p>
                 <h1 className="text-2xl md:text-3xl font-bold text-foreground">
                   {plan.tasks.find(t => !t.is_completed)?.title || 'No tasks'}
                 </h1>
@@ -222,18 +222,18 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
                 className="gap-2"
               >
                 <CheckCircle2 className="h-5 w-5" />
-                Mark complete
+                {t('plan.markComplete')}
               </Button>
             </div>
           )}
 
           {/* Progress — Minimal, supporting signal */}
           <div className="mb-6 flex items-center gap-4 text-sm text-muted-foreground">
-            <span>Week {currentWeek} of 4</span>
+            <span>{t('planner.week')} {currentWeek} {t('plan.weekOf')}</span>
             <span className="w-1 h-1 rounded-full bg-border" />
             <span>{format(startDate, 'MMM d')} - {format(endDate, 'MMM d, yyyy')}</span>
             <span className="w-1 h-1 rounded-full bg-border" />
-            <span>{plan.progress}% complete</span>
+            <span>{plan.progress}% {t('plan.overallProgress').toLowerCase()}</span>
           </div>
 
           {/* View Toggle */}

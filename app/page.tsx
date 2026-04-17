@@ -109,10 +109,10 @@ export default function HomePage() {
             <div className="mx-auto max-w-2xl text-center space-y-8">
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight text-balance">
-                  Learn any skill in 4 weeks
+                  {t('landing.heroTitle')}
                 </h1>
                 <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-                  Structured daily tasks. 15-30 minutes. Clear progress from day one.
+                  {t('landing.heroSubtitle')}
                 </p>
               </div>
 
@@ -120,12 +120,12 @@ export default function HomePage() {
               <div className="flex flex-col items-center gap-4 pt-4">
                 <Button asChild size="lg" className="px-8">
                   <Link href={user ? "/planner" : "/register"}>
-                    Start learning
+                    {t('landing.startLearning')}
                   </Link>
                 </Button>
                 {!user && (
                   <p className="text-sm text-muted-foreground">
-                    Already have an account? <Link href="/login" className="text-primary hover:underline">Sign in</Link>
+                    {t('landing.alreadyHaveAccount')} <Link href="/login" className="text-primary hover:underline">{t('landing.signIn')}</Link>
                   </p>
                 )}
               </div>
@@ -138,7 +138,7 @@ export default function HomePage() {
           <div className="mx-auto max-w-4xl px-4">
             <div className="mb-12 text-center">
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
-                How it works
+                {t('landing.howItWorks')}
               </h2>
             </div>
             <div className="grid gap-6 md:grid-cols-4">
@@ -166,7 +166,7 @@ export default function HomePage() {
             <div className="mb-16 text-center space-y-3">
               <p className="hierarchy-tertiary">Learning examples</p>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                {t('landing.examplesTitle')}
+                {t('landing.learningExamples')}
               </h2>
               <p className="hierarchy-secondary max-w-2xl mx-auto">
                 {t('landing.examplesSubtitle')}
@@ -241,12 +241,12 @@ export default function HomePage() {
         <section className="border-b border-border py-20 md:py-24">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-16 text-center space-y-3">
-              <p className="hierarchy-tertiary">Popular hobbies</p>
+              <p className="hierarchy-tertiary">{t('landing.popularHobbies')}</p>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                Pick your passion
+                {t('landing.pickYourPassion')}
               </h2>
               <p className="hierarchy-secondary max-w-2xl mx-auto">
-                30+ learning plans available
+                {t('landing.plansAvailable')}
               </p>
             </div>
             <div className="space-y-6">
@@ -287,14 +287,14 @@ export default function HomePage() {
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-xl px-4 text-center space-y-6">
             <h2 className="text-2xl md:text-3xl font-bold">
-              Ready to start?
+              {t('landing.readyToStart')}
             </h2>
             <p className="text-muted-foreground">
-              Pick a hobby. Get a structured plan. Start today.
+              {t('landing.getStructuredPlan')}
             </p>
             <Button asChild size="lg" className="px-8">
               <Link href={user ? "/dashboard" : "/register"}>
-                {user ? 'Go to dashboard' : 'Create account'}
+                {user ? t('landing.goToDashboard') : t('landing.createAccount')}
               </Link>
             </Button>
           </div>
@@ -309,7 +309,7 @@ export default function HomePage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
                 <Flame className="h-4 w-4 text-primary-foreground" />
               </div>
-              <span className="font-semibold">FourWeekForge</span>
+              <span className="font-semibold">{t('landing.productName')}</span>
             </div>
             <p className="text-sm text-muted-foreground">
               {t('landing.footer')}
