@@ -22,34 +22,82 @@ FourWeekForge helps users create structured learning plans for any hobby. The pl
 ## Project Structure
 
 ```
-app/
-├── page.tsx              # Landing page
-├── login/                # Login page
-├── register/             # Registration page (redirects to /planner)
-├── dashboard/            # User dashboard with plans overview
-├── planner/              # 3-step plan creation wizard
-├── plan/[id]/            # Individual plan view with tasks
-├── admin/feedback/       # Admin page for viewing feedback
-└── api/
-    ├── auth/             # Auth endpoints (register, login, logout, me)
-    ├── plans/            # Plans CRUD
-    ├── tasks/            # Tasks CRUD
-    ├── hobbies/          # Hobbies list
-    ├── feedback/         # Feedback collection
-    ├── generate-tasks/   # AI task generation (Groq)
-    └── init-db/          # Database initialization
-
 lib/
-├── db.ts                 # Neon database connection + types
-├── auth.ts               # JWT utilities
-├── auth-context.tsx      # Auth React context
-└── i18n-context.tsx      # Internationalization (RU/EN)
+├── types/              # TypeScript интерфейсы и типы
+│   ├── plan.ts        # Plan и Task типы
+│   ├── user.ts        # User типы
+│   ├── hobby.ts       # Hobby типы
+│   ├── common.ts      # Общие типы
+│   └── index.ts       # Экспорты
+├── services/          # Бизнес-логика и API
+│   ├── api.ts         # HTTP запросы
+│   ├── auth.ts        # Аутентификация
+│   ├── plan.ts        # План операции
+│   └── index.ts       # Экспорты
+├── hooks/             # Custom React hooks
+│   ├── use-auth.ts    # Auth hook
+│   ├── use-plans.ts   # Plans hook
+│   ├── use-tasks.ts   # Tasks hook
+│   └── index.ts       # Экспорты
+├── schemas/           # Zod валидация
+│   ├── plan.ts        # Plan схема
+│   ├── user.ts        # User схема
+│   ├── task.ts        # Task схема
+│   └── index.ts       # Экспорты
+├── constants/         # Константы приложения
+│   ├── app.ts         # Основные константы
+│   ├── hobbies.ts     # Список хобби
+│   ├── ui.ts          # UI константы
+│   └── index.ts       # Экспорты
+├── i18n-context.tsx   # Переводы
+├── db.ts              # Database конфиг
+└── utils.ts           # Утилиты
 
 components/
-├── header.tsx            # Main navigation header
-├── plan-card.tsx         # Plan card component
-├── feedback-widget.tsx   # Floating feedback button
-└── ui/                   # shadcn/ui components
+├── common/            # Переиспользуемые компоненты
+│   ├── header.tsx
+│   ├── language-switcher.tsx
+│   ├── theme-provider.tsx
+│   └── index.ts       # Экспорты
+├── features/          # Функциональные компоненты
+│   ├── feedback-widget.tsx
+│   ├── export-dropdown.tsx
+│   ├── onboarding-modal.tsx
+│   ├── completion-celebration.tsx
+│   └── index.ts       # Экспорты
+├── sections/          # Секции страниц
+│   ├── week-tasks.tsx
+│   ├── plan-card.tsx
+│   ├── calendar-view.tsx
+│   ├── streak-badge.tsx
+│   ├── week-completion-card.tsx
+│   └── index.ts       # Экспорты
+└── ui/                # shadcn/ui компоненты
+    └── *.tsx
+```
+
+## Folder Organization Principles
+
+### `/components`
+- **`ui/`** - shadcn/ui components (don't modify)
+- **`common/`** - Shared layout components used across multiple pages (Header, Navigation, Theme)
+- **`features/`** - Feature-specific components (Feedback, Export, Modals, etc.)
+- **`sections/`** - Page section components (Cards, Lists, Charts, etc.)
+
+### `/lib`
+- **`types/`** - TypeScript interfaces and types
+- **`services/`** - API calls and business logic
+- **`hooks/`** - Custom React hooks for state and logic
+- **`schemas/`** - Zod validation schemas
+- **`constants/`** - Static constants and configurations
+- **Context files** - Auth, i18n providers at root level
+
+## Import Patterns
+
+```typescript
+import { Header } from '@/components/common'
+import { PlanCard, WeekTasks } from '@/components/sections'
+import { FeedbackWidget } from '@/components/features'
 ```
 
 ## Database Schema
