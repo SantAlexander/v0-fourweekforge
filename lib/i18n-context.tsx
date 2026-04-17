@@ -383,7 +383,7 @@ const ru: Record<string, string> = {
   'landing.ctaButton': 'Создать аккаунт',
   'landing.ctaButtonLoggedIn': 'Перейти в панель',
   
-  'landing.footer': 'Освой любое хобби за 4 недели. ��оздано с любовью.',
+  'landing.footer': 'Освой любое хобби за 4 недели. Создано с любовью.',
   
   // Hobby names (by icon key from DB)
   'hobby.guitar': 'Гитара',
@@ -475,7 +475,7 @@ const ru: Record<string, string> = {
   'planner.generationError': 'Не удалось сгенерировать задачи. Можно добавить вручную.',
   'planner.noTasksForWeek': 'Нет задач на эту неделю',
 
-  'planner.autoGenerate': 'Автогенерация 28 ��адач',
+  'planner.autoGenerate': 'Автогенерация 28 задач',
   'planner.autoGenerating': 'Генерация задач...',
   'planner.clearTasks': 'Очистить все',
   

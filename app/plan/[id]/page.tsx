@@ -191,11 +191,15 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted">
               <Icon className="h-4 w-4" />
             </div>
-            <span className="font-medium text-foreground">{plan.hobby_name}</span>
+            <span className="font-medium text-foreground">
+              {t(`hobby.${plan.hobby_icon}`) !== `hobby.${plan.hobby_icon}` ? t(`hobby.${plan.hobby_icon}`) : plan.hobby_name}
+            </span>
             <span className="w-1 h-1 rounded-full bg-border" />
             <span>{plan.goal}</span>
             <Badge variant="outline" className={cn('ml-auto', statusColors[plan.status])}>
-              {plan.status}
+              {plan.status === 'active' && t('planCard.statusActive')}
+              {plan.status === 'completed' && t('planCard.statusDone')}
+              {plan.status === 'paused' && t('planCard.statusPaused')}
             </Badge>
           </div>
 
