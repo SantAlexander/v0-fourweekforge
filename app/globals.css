@@ -4,67 +4,82 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Neutral Base - Clean, modern foundation */
-  --background: oklch(0.98 0.002 240);
-  --foreground: oklch(0.12 0.02 240);
-  --card: oklch(0.99 0.001 240);
-  --card-foreground: oklch(0.12 0.02 240);
-  --popover: oklch(0.99 0.001 240);
-  --popover-foreground: oklch(0.12 0.02 240);
+  /* Phase 11: Calm Productivity Color System */
+  /* Neutral Base - Clean, professional foundation */
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --card: #FFFFFF;
+  --card-foreground: #0F172A;
+  --popover: #FFFFFF;
+  --popover-foreground: #0F172A;
 
-  /* Primary - Actions only */
-  --primary: oklch(0.58 0.22 31);
-  --primary-foreground: oklch(0.99 0.001 240);
+  /* Primary - Indigo (calm, focused, professional) */
+  --primary: #4F46E5;
+  --primary-foreground: #FFFFFF;
 
-  /* Muted - Background elements, neutrals */
-  --muted: oklch(0.94 0.01 240);
-  --muted-foreground: oklch(0.45 0.01 240);
+  /* Muted - Subtle backgrounds, secondary text */
+  --muted: #F1F5F9;
+  --muted-foreground: #64748B;
 
-  /* Success - Completed tasks, achievements */
-  --accent: oklch(0.62 0.2 140);
-  --accent-foreground: oklch(0.99 0.001 240);
+  /* Accent - Success (green for completed tasks) */
+  --accent: #22C55E;
+  --accent-foreground: #FFFFFF;
 
-  /* Destructive */
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.98 0 0);
+  /* Destructive - Red ONLY for destructive actions */
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
 
-  /* Borders and inputs */
-  --border: oklch(0.90 0.01 240);
-  --input: oklch(0.92 0.01 240);
-  --ring: oklch(0.58 0.22 31);
+  /* Borders and inputs - Subtle, low contrast */
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #4F46E5;
 
-  --radius: 0.625rem;
+  /* Chart colors for visual variety (muted) */
+  --chart-1: #6366F1;
+  --chart-2: #8B5CF6;
+  --chart-3: #06B6D4;
+  --chart-4: #10B981;
+  --chart-5: #F59E0B;
+
+  --radius: 0.5rem;
 }
 
 .dark {
-  /* Neutral Base - Dark, deep */
-  --background: oklch(0.11 0.01 240);
-  --foreground: oklch(0.95 0.01 240);
-  --card: oklch(0.145 0.01 240);
-  --card-foreground: oklch(0.95 0.01 240);
-  --popover: oklch(0.145 0.01 240);
-  --popover-foreground: oklch(0.95 0.01 240);
+  /* Phase 11: Calm Productivity Dark Mode */
+  --background: #0F172A;
+  --foreground: #F8FAFC;
+  --card: #1E293B;
+  --card-foreground: #F8FAFC;
+  --popover: #1E293B;
+  --popover-foreground: #F8FAFC;
 
-  /* Primary - Actions only */
-  --primary: oklch(0.63 0.22 31);
-  --primary-foreground: oklch(0.08 0.01 240);
+  /* Primary - Indigo (slightly lighter for dark mode) */
+  --primary: #6366F1;
+  --primary-foreground: #FFFFFF;
 
   /* Muted */
-  --muted: oklch(0.22 0.01 240);
-  --muted-foreground: oklch(0.65 0.01 240);
+  --muted: #334155;
+  --muted-foreground: #94A3B8;
 
-  /* Success - Completed tasks, achievements */
-  --accent: oklch(0.67 0.2 140);
-  --accent-foreground: oklch(0.08 0.01 240);
+  /* Accent - Success */
+  --accent: #22C55E;
+  --accent-foreground: #0F172A;
 
   /* Destructive */
-  --destructive: oklch(0.5 0.2 25);
-  --destructive-foreground: oklch(0.96 0.01 240);
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
 
   /* Borders */
-  --border: oklch(0.23 0.01 240);
-  --input: oklch(0.25 0.01 240);
-  --ring: oklch(0.63 0.22 31);
+  --border: #334155;
+  --input: #334155;
+  --ring: #6366F1;
+
+  /* Chart colors (dark mode) */
+  --chart-1: #818CF8;
+  --chart-2: #A78BFA;
+  --chart-3: #22D3EE;
+  --chart-4: #34D399;
+  --chart-5: #FBBF24;
 }
 
 @theme inline {

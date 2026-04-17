@@ -11,8 +11,7 @@ import { Header } from '@/components/header'
 import { WeekTasks } from '@/components/week-tasks'
 import { CalendarView } from '@/components/calendar-view'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Spinner } from '@/components/ui/spinner'
 import {
@@ -187,82 +186,55 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
             </Link>
           </Button>
 
-          {/* Plan Header */}
-          <Card className="mb-6">
-            <CardHeader>
-              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                <div className="flex items-start gap-4">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <Icon className="h-7 w-7" />
-                  </div>
-                  <div>
-                    <h1 className="hierarchy-tertiary mb-1">Learning Plan</h1>
-                    <p className="text-2xl font-bold">{plan.hobby_name}</p>
-                    <p className="mt-1 text-muted-foreground">{plan.goal}</p>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Badge variant="outline" className={statusColors[plan.status]}>
-                    {plan.status}
-                  </Badge>
-                </div>
-              </div>
-            </CardHeader>
-          </Card>
+          {/* Plan Context — Minimal header */}
+          <div className="mb-6 flex items-center gap-3 text-sm text-muted-foreground">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted">
+              <Icon className="h-4 w-4" />
+            </div>
+            <span className="font-medium text-foreground">{plan.hobby_name}</span>
+            <span className="w-1 h-1 rounded-full bg-border" />
+            <span>{plan.goal}</span>
+            <Badge variant="outline" className={cn('ml-auto', statusColors[plan.status])}>
+              {plan.status}
+            </Badge>
+          </div>
 
-          {/* PRIMARY SECTION — Today's Task */}
+          {/* PRIMARY FOCUS BLOCK — "What do I do next?" */}
           {plan.tasks.filter(t => !t.is_completed).length > 0 && (
-            <div className="mb-8 p-8 rounded-lg border bg-primary/5 space-y-4">
-              <p className="hierarchy-tertiary">Today's task</p>
-              <div>
-                <h2 className="hierarchy-primary mb-2">
-                  {plan.tasks.find(t => !t.is_completed)?.title || 'No tasks today'}
-                </h2>
+            <div className="mb-10 p-8 md:p-10 rounded-xl border-2 border-primary bg-card space-y-6">
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-primary uppercase tracking-wide">Next task</p>
+                <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+                  {plan.tasks.find(t => !t.is_completed)?.title || 'No tasks'}
+                </h1>
                 {plan.tasks.find(t => !t.is_completed)?.description && (
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground mt-2">
                     {plan.tasks.find(t => !t.is_completed)?.description}
                   </p>
                 )}
               </div>
-              <div className="flex items-center justify-between">
-                <Button
-                  onClick={() => {
-                    const task = plan.tasks.find(t => !t.is_completed)
-                    if (task) handleTaskToggle(task.id, true)
-                  }}
-                  className="gap-2"
-                >
-                  <CheckCircle2 className="h-5 w-5" />
-                  Mark Complete
-                </Button>
-              </div>
+              <Button
+                onClick={() => {
+                  const task = plan.tasks.find(t => !t.is_completed)
+                  if (task) handleTaskToggle(task.id, true)
+                }}
+                size="lg"
+                className="gap-2"
+              >
+                <CheckCircle2 className="h-5 w-5" />
+                Mark complete
+              </Button>
             </div>
           )}
 
-          {/* Stats */}
-          <Card className="mb-6">
-            <CardContent className="p-6">
-              <div className="grid gap-6 md:grid-cols-3">
-                <div className="space-y-2">
-                  <p className="hierarchy-tertiary">{t('plan.duration')}</p>
-                  <p className="font-medium">
-                    {format(startDate, 'MMM d')} - {format(endDate, 'MMM d, yyyy')}
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  <p className="hierarchy-tertiary">{t('plan.currentWeek')}</p>
-                  <p className="font-medium">Week {currentWeek} of 4</p>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="hierarchy-tertiary">{t('plan.overallProgress')}</span>
-                    <span className="font-medium">{plan.progress}%</span>
-                  </div>
-                  <Progress value={plan.progress} className="h-3" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Progress — Minimal, supporting signal */}
+          <div className="mb-6 flex items-center gap-4 text-sm text-muted-foreground">
+            <span>Week {currentWeek} of 4</span>
+            <span className="w-1 h-1 rounded-full bg-border" />
+            <span>{format(startDate, 'MMM d')} - {format(endDate, 'MMM d, yyyy')}</span>
+            <span className="w-1 h-1 rounded-full bg-border" />
+            <span>{plan.progress}% complete</span>
+          </div>
 
           {/* View Toggle */}
           <div className="mb-6 flex gap-2">

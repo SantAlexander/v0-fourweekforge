@@ -6,7 +6,6 @@ import { useI18n } from '@/lib/i18n-context'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
-import { CheckCircle2 } from 'lucide-react'
 
 interface WeekTasksProps {
   weekNumber: number
@@ -40,35 +39,32 @@ export function WeekTasks({ weekNumber, tasks, onTaskToggle }: WeekTasksProps) {
   return (
     <Card className={cn(
       'transition-all',
-      isWeekComplete && 'border-accent/50 bg-accent/5'
+      isWeekComplete && 'opacity-50'
     )}>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-base">
+          <CardTitle className="text-sm font-medium text-muted-foreground">
             {t('planner.week')} {weekNumber}
-            {isWeekComplete && (
-              <CheckCircle2 className="h-5 w-5 text-accent" />
-            )}
           </CardTitle>
           <span className="text-xs text-muted-foreground">
-            {completedCount}/{totalCount} {t('planCard.tasks')}
+            {completedCount}/{totalCount}
           </span>
         </div>
       </CardHeader>
-      <CardContent className="space-y-2">
+      <CardContent className="space-y-1">
         {tasks.length === 0 ? (
           <p className="text-sm text-muted-foreground py-2">{t('weekTasks.noTasks')}</p>
         ) : (
           <>
-            {/* Incomplete tasks - prominent */}
+            {/* Incomplete tasks — Focus on first */}
             {incompleteTasks.length > 0 && (
-              <div className="space-y-2">
+              <div className="space-y-1">
                 {incompleteTasks.map((task, idx) => (
                   <div
                     key={task.id}
                     className={cn(
-                      'flex items-start gap-2 rounded-md p-2.5 transition-all',
-                      idx === 0 && 'border-l-2 border-primary bg-primary/3 border-l-primary'
+                      'flex items-start gap-3 rounded-md p-2 transition-all',
+                      idx === 0 ? 'bg-primary/5 border border-primary/20' : 'opacity-60'
                     )}
                   >
                     <Checkbox
@@ -77,24 +73,24 @@ export function WeekTasks({ weekNumber, tasks, onTaskToggle }: WeekTasksProps) {
                       onCheckedChange={() => handleToggle(task.id, false)}
                       className="mt-0.5"
                     />
-                    <div className="flex-1 min-w-0">
-                      {idx === 0 && <p className="text-xs font-semibold text-primary mb-1">NOW</p>}
-                      <p className="text-sm font-medium">
-                        {task.title}
-                      </p>
-                    </div>
+                    <p className={cn(
+                      'text-sm',
+                      idx === 0 ? 'font-medium text-foreground' : 'text-muted-foreground'
+                    )}>
+                      {task.title}
+                    </p>
                   </div>
                 ))}
               </div>
             )}
 
-            {/* Completed tasks - collapsed */}
+            {/* Completed tasks — Minimal */}
             {completedTasks.length > 0 && (
-              <div className="pt-2 space-y-1 opacity-60">
+              <div className="pt-1 space-y-0.5 opacity-40">
                 {completedTasks.map(task => (
                   <div
                     key={task.id}
-                    className="flex items-start gap-2 rounded-md p-2 transition-all"
+                    className="flex items-start gap-3 p-1.5"
                   >
                     <Checkbox
                       checked={true}
@@ -102,11 +98,9 @@ export function WeekTasks({ weekNumber, tasks, onTaskToggle }: WeekTasksProps) {
                       onCheckedChange={() => handleToggle(task.id, true)}
                       className="mt-0.5"
                     />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs line-through text-muted-foreground">
-                        {task.title}
-                      </p>
-                    </div>
+                    <p className="text-xs line-through text-muted-foreground">
+                      {task.title}
+                    </p>
                   </div>
                 ))}
               </div>

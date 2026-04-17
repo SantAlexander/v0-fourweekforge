@@ -15,7 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Spinner } from '@/components/ui/spinner'
 import { PlanWithTasks } from '@/lib/db'
-import { Plus, Flame, Target, CheckCircle2, Clock, TrendingUp } from 'lucide-react'
+import { Plus } from 'lucide-react'
 
 const fetcher = (url: string) => fetch(url).then(res => res.json())
 
@@ -88,47 +88,42 @@ export default function DashboardPage() {
       <OnboardingModal />
       <main className="flex-1">
         <div className="mx-auto max-w-6xl px-4 py-12">
-          {/* Welcome Section — Tertiary Level (small, context) */}
-          <div className="mb-12 space-y-2">
-            <h1 className="hierarchy-tertiary">
-              Learning progress
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              {activePlans.length === 0
-                ? 'No plans yet. Start one to begin.'
-                : `${completedTasks} of ${totalTasks} tasks completed`}
-            </p>
-          </div>
-
-          {/* PRIMARY SECTION — Continue Plan / Create Plan */}
+          {/* PRIMARY FOCUS BLOCK — "What do I do next?" */}
           {activePlans.length === 0 ? (
-            <div className="mb-12 p-10 md:p-12 rounded-lg border bg-primary/5 text-center space-y-4 max-w-2xl">
-              <h2 className="hierarchy-primary">Start learning</h2>
-              <p className="hierarchy-secondary max-w-md mx-auto">
-                Choose any hobby and we'll create a 4-week learning plan for you.
-              </p>
+            <div className="mb-16 p-8 md:p-12 rounded-xl border-2 border-primary/20 bg-card space-y-6 max-w-xl">
+              <div className="space-y-3">
+                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Get started</p>
+                <h1 className="text-3xl md:text-4xl font-bold text-foreground">Start learning</h1>
+                <p className="text-muted-foreground">
+                  Choose any hobby. We create a 4-week plan.
+                </p>
+              </div>
               <Link href="/planner">
-                <Button size="lg" className="gap-2 mt-4">
+                <Button size="lg" className="gap-2">
                   <Plus className="h-5 w-5" />
                   Create plan
                 </Button>
               </Link>
             </div>
           ) : (
-            <div className="mb-12 p-10 md:p-12 rounded-lg border-2 border-primary bg-primary/5 space-y-6 max-w-2xl">
+            <div className="mb-16 p-8 md:p-12 rounded-xl border-2 border-primary bg-card space-y-6 max-w-xl">
               <div className="space-y-1">
-                <h2 className="hierarchy-primary mb-2">{firstActivePlan?.hobby?.name || 'Learning'}</h2>
-                <p className="hierarchy-secondary">
-                  Week {Math.ceil((firstActivePlan?.tasks.filter(t => !t.is_completed).length || 1) / 7)} of 4 • {nextIncompleteTask ? `${(firstActivePlan?.tasks.filter(t => !t.is_completed).length || 0)} task${(firstActivePlan?.tasks.filter(t => !t.is_completed).length || 0) !== 1 ? 's' : ''} left` : 'Complete'}
-                </p>
+                <p className="text-sm font-medium text-primary uppercase tracking-wide">Today</p>
+                <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+                  {nextIncompleteTask?.title || 'All tasks done'}
+                </h1>
+                {nextIncompleteTask?.description && (
+                  <p className="text-muted-foreground mt-2">
+                    {nextIncompleteTask.description}
+                  </p>
+                )}
               </div>
               
-              {nextIncompleteTask && (
-                <div className="space-y-2 pt-4 border-t border-primary/20">
-                  <p className="hierarchy-tertiary">Today</p>
-                  <p className="text-lg font-bold">{nextIncompleteTask.title}</p>
-                </div>
-              )}
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <span>{firstActivePlan?.hobby_name}</span>
+                <span className="w-1 h-1 rounded-full bg-border" />
+                <span>{(firstActivePlan?.tasks.filter(t => !t.is_completed).length || 0)} tasks left</span>
+              </div>
               
               <Link href={`/plan/${firstActivePlan?.id}`} className="block">
                 <Button size="lg" className="w-full">
@@ -138,39 +133,26 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* Achievement Stats Grid — SECONDARY Level */}
+          {/* Stats — Minimal, supporting signal only */}
           {activePlans.length > 0 && (
-            <div className="mb-12">
-              <p className="hierarchy-tertiary mb-4">Stats</p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div className="p-4 rounded-lg border bg-muted/50 space-y-2">
-                  <p className="text-lg font-bold text-primary">{activePlans.length}</p>
-                  <p className="text-xs text-muted-foreground">Active</p>
-                </div>
-
-                <div className="p-4 rounded-lg border bg-muted/50 space-y-2">
-                  <p className="text-lg font-bold text-accent">{completedPlans.length}</p>
-                  <p className="text-xs text-muted-foreground">Completed</p>
-                </div>
-
-                <div className="p-4 rounded-lg border bg-muted/50 space-y-2">
-                  <p className="text-lg font-bold">{completedTasks}</p>
-                  <p className="text-xs text-muted-foreground">Tasks done</p>
-                </div>
-
-                <div className="p-4 rounded-lg border bg-muted/50 space-y-2">
-                  <p className="text-lg font-bold">{totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0}%</p>
-                  <p className="text-xs text-muted-foreground">Overall</p>
-                </div>
-              </div>
+            <div className="mb-12 flex items-center gap-6 text-sm text-muted-foreground">
+              <span>{completedTasks} of {totalTasks} tasks</span>
+              <span className="w-1 h-1 rounded-full bg-border" />
+              <span>{activePlans.length} active plan{activePlans.length !== 1 ? 's' : ''}</span>
+              {completedPlans.length > 0 && (
+                <>
+                  <span className="w-1 h-1 rounded-full bg-border" />
+                  <span>{completedPlans.length} completed</span>
+                </>
+              )}
             </div>
           )}
 
-          {/* Active Plans Grid — TERTIARY Level */}
+          {/* Other Plans — De-emphasized, minimal */}
           {activePlans.length > 1 && (
-            <div className="mb-12">
-              <p className="hierarchy-tertiary mb-4">Other plans</p>
-              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mb-8">
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">Other active plans</p>
+              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 opacity-70 hover:opacity-100 transition-opacity">
                 {activePlans.slice(1).map(plan => (
                   <PlanCard key={plan.id} plan={plan} />
                 ))}
@@ -178,11 +160,11 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* Completed Plans */}
+          {/* Completed Plans — Most de-emphasized */}
           {completedPlans.length > 0 && (
-            <div>
-              <p className="hierarchy-tertiary mb-4">Completed</p>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="opacity-50 hover:opacity-70 transition-opacity">
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">Completed</p>
+              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                 {completedPlans.map(plan => (
                   <PlanCard key={plan.id} plan={plan} />
                 ))}
