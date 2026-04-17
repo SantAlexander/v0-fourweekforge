@@ -164,7 +164,7 @@ export default function HomePage() {
         <section className="border-b border-border py-20 md:py-24">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-16 text-center space-y-3">
-              <p className="hierarchy-tertiary">Learning examples</p>
+              <p className="hierarchy-tertiary">{t('landing.examplesTitle')}</p>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
                 {t('landing.learningExamples')}
               </h2>

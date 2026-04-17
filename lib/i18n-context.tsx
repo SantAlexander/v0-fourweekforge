@@ -31,9 +31,6 @@ const en = {
   'landing.cta.start': 'Start learning',
   'landing.cta.signin': 'Sign in',
   
-  'landing.howItWorks': 'The process',
-  'landing.howItWorksSubtitle': 'Four simple steps to master a new hobby',
-  
   'landing.feature1.title': 'Choose a hobby',
   'landing.feature1.description': 'Pick any hobby from our list or create your own.',
   'landing.feature2.title': 'Set your goal',
@@ -42,17 +39,6 @@ const en = {
   'landing.feature3.description': 'AI creates 28 structured tasks across 4 weeks.',
   'landing.feature4.title': 'Learn daily',
   'landing.feature4.description': '15-30 minutes a day and master the skill in a month.',
-  
-  'landing.popularHobbies': 'Pick your passion',
-  'landing.popularHobbiesSubtitle': '30+ learning plans available',
-  'landing.moreHobbies': 'And many more...',
-  
-  'landing.ctaTitle': 'Ready to start?',
-  'landing.ctaSubtitle': 'Join thousands who mastered new skills in 4 weeks',
-  'landing.ctaButton': 'Create account',
-  'landing.ctaButtonLoggedIn': 'Go to dashboard',
-  
-  'landing.footer': 'Master any hobby in 4 weeks. Built with passion.',
   
   // Hobby names (by icon key from DB)
   'hobby.guitar': 'Guitar',
@@ -374,9 +360,6 @@ const ru: Record<string, string> = {
   'landing.cta.start': 'Начать обучение',
   'landing.cta.signin': 'Войти',
   
-  'landing.howItWorks': 'Процесс',
-  'landing.howItWorksSubtitle': 'Четыре простых шага к освоению нового хобби',
-  
   'landing.feature1.title': 'Выбери хобби',
   'landing.feature1.description': 'Выбери любое хобби из списка или создай своё.',
   'landing.feature2.title': 'Постав цель',
@@ -386,16 +369,12 @@ const ru: Record<string, string> = {
   'landing.feature4.title': 'Учись каждый день',
   'landing.feature4.description': '15-30 минут в день — и за месяц ты освоишь навык.',
   
-  'landing.popularHobbies': 'Выбери своё увлечение',
-  'landing.popularHobbiesSubtitle': 'Более 30 готовых планов обучения',
-  'landing.moreHobbies': 'И многое другое...',
-  
   'landing.ctaTitle': 'Готов начать?',
   'landing.ctaSubtitle': 'Присоединяйся к тысячам, кто освоил новые навыки за 4 недели',
   'landing.ctaButton': 'Создать аккаунт',
   'landing.ctaButtonLoggedIn': 'Перейти в панель',
   
-  'landing.footer': 'Освой любое хобби за 4 недели. Создано с любовью.',
+  'landing.footer': 'Освой любое хобби за 4 недели. ��оздано с любовью.',
   
   // Hobby names (by icon key from DB)
   'hobby.guitar': 'Гитара',
@@ -592,6 +571,9 @@ const ru: Record<string, string> = {
   'plan.nextTask': 'Следующая задача',
   'plan.markComplete': 'Отметить выполненным',
   'plan.weekOf': 'из 4',
+  
+  'landing.examplesTitle': 'Примеры обучения',
+  'landing.examplesSubtitle': 'Реальные примеры персонализированных планов',
   
   'landing.heroTitle': 'Научись любому навыку за 4 недели',
   'landing.heroSubtitle': 'Структурированные ежедневные задачи. 15-30 минут. Виден прогресс с первого дня.',
