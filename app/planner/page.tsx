@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import useSWR from 'swr'
 import { useAuth } from '@/lib/auth-context'
 import { useI18n } from '@/lib/i18n-context'
-import { Header } from '@/components/header'
+import { Header } from '@/components/common'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -189,7 +189,7 @@ export default function PlannerPage() {
    * - value: новое значение
    * 
    * Как работает:
-   * 1. Создаёт коп����ю массива
+   * 1. Создаёт коп������ю массива
    * 2. Обновляет указанное поле у нужной задачи
    * 3. Устанавливает новый массив
    */
@@ -398,7 +398,7 @@ export default function PlannerPage() {
         throw new Error(data.error || 'Failed to create plan')
       }
 
-      // Показываем уведомление об успехе
+      // Показываем уведомление об успе��е
       const hobbyName = selectedHobbyData?.name || customHobby
       toast.success(`${hobbyName} ${t('toast.planCreated')}`)
       

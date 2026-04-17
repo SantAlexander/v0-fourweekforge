@@ -4,7 +4,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { AuthProvider } from '@/lib/auth-context'
 import { I18nProvider } from '@/lib/i18n-context'
 import { Toaster } from '@/components/ui/sonner'
-import { FeedbackWidget } from '@/components/feedback-widget'
+import { FeedbackWidget } from '@/components/features'
 import './globals.css'
 
 const _geist = Geist({ subsets: ['latin'] })

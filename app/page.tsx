@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { Header } from '@/components/header'
+import { Header } from '@/components/common'
 import { useI18n } from '@/lib/i18n-context'
 import { useAuth } from '@/lib/auth-context'
 import { Button } from '@/components/ui/button'
