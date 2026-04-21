@@ -263,7 +263,7 @@ export default function PlannerPage() {
    * getWeekTasks - возвращает задачи для указанной недели с их индексами
    * 
    * useMemo кеширует результат пока tasks не изменится
-   * Это оптимизация - не пересчитывать при каждом рендере
+   * Это оптимизация - не пересчитывать при ��аждом рендере
    * 
    * Возвращает объект где ключ - номер недели, значение - массив задач с индексами
    */
@@ -459,6 +459,16 @@ export default function PlannerPage() {
             <GoalSettingStep
               goal={goal}
               startDate={startDate}
+              hobbyName={
+                selectedHobby
+                  ? (() => {
+                      const hobbyData = hobbies.find(h => h.id === selectedHobby)
+                      return hobbyData?.icon && t(`hobby.${hobbyData.icon}`) !== `hobby.${hobbyData.icon}`
+                        ? t(`hobby.${hobbyData.icon}`)
+                        : hobbyData?.name || ''
+                    })()
+                  : customHobby
+              }
               onGoalChange={setGoal}
               onStartDateChange={setStartDate}
               t={t}
@@ -659,12 +669,14 @@ function HobbySelectionStep({
 function GoalSettingStep({
   goal,
   startDate,
+  hobbyName,
   onGoalChange,
   onStartDateChange,
   t,
 }: {
   goal: string
   startDate: string
+  hobbyName: string
   onGoalChange: (value: string) => void
   onStartDateChange: (value: string) => void
   t: (key: string) => string
@@ -672,6 +684,12 @@ function GoalSettingStep({
   return (
     <div className="space-y-8">
       <div>
+        {/* Hobby badge */}
+        <div className="mb-4">
+          <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+            {hobbyName}
+          </span>
+        </div>
         <h2 className="text-2xl font-bold mb-2">{t('planner.goalJourneyTitle')}</h2>
         <p className="text-muted-foreground">{t('planner.goalJourneySubtitle')}</p>
       </div>
