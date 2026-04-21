@@ -22,83 +22,66 @@ FourWeekForge helps users create structured learning plans for any hobby. The pl
 ## Project Structure
 
 ```
-lib/
-├── types/              # TypeScript интерфейсы и типы
-│   ├── plan.ts        # Plan и Task типы
-│   ├── user.ts        # User типы
-│   ├── hobby.ts       # Hobby типы
-│   ├── common.ts      # Общие типы
-│   └── index.ts       # Экспорты
-├── services/          # Бизнес-логика и API
-│   ├── api.ts         # HTTP запросы
-│   ├── auth.ts        # Аутентификация
-│   ├── plan.ts        # План операции
-│   └── index.ts       # Экспорты
-├── hooks/             # Custom React hooks
-│   ├── use-auth.ts    # Auth hook
-│   ├── use-plans.ts   # Plans hook
-│   ├── use-tasks.ts   # Tasks hook
-│   └── index.ts       # Экспорты
-├── schemas/           # Zod валидация
-│   ├── plan.ts        # Plan схема
-│   ├── user.ts        # User схема
-│   ├── task.ts        # Task схема
-│   └── index.ts       # Экспорты
-├── constants/         # Константы приложения
-│   ├── app.ts         # Основные константы
-│   ├── hobbies.ts     # Список хобби
-│   ├── ui.ts          # UI константы
-│   └── index.ts       # Экспорты
-├── i18n-context.tsx   # Переводы
-├── db.ts              # Database конфиг
-└── utils.ts           # Утилиты
-
-components/
-├── common/            # Переиспользуемые компоненты
-│   ├── header.tsx
-│   ├── language-switcher.tsx
-│   ├── theme-provider.tsx
-│   └── index.ts       # Экспорты
-├── features/          # Функциональные компоненты
-│   ├── feedback-widget.tsx
-│   ├── export-dropdown.tsx
-│   ├── onboarding-modal.tsx
-│   ├── completion-celebration.tsx
-│   └── index.ts       # Экспорты
-├── sections/          # Секции страниц
-│   ├── week-tasks.tsx
-│   ├── plan-card.tsx
-│   ├── calendar-view.tsx
-│   ├── streak-badge.tsx
-│   ├── week-completion-card.tsx
-│   └── index.ts       # Экспорты
-└── ui/                # shadcn/ui компоненты
-    └── *.tsx
+v0-fourweekforge/
+├── app/                          # Next.js App Router pages and routes
+│   ├── admin/                    # Admin dashboard and management
+│   ├── api/                      # API routes for backend logic
+│   ├── dashboard/                # User dashboard
+│   ├── login/                    # Authentication login page
+│   ├── register/                 # User registration page
+│   ├── planner/                  # Interactive 4-week plan creator
+│   ├── plan/[id]/                # Individual plan detail view
+│   ├── layout.tsx                # Root layout with i18n provider
+│   └── page.tsx                  # Home/landing page
+│
+├── components/                   # Reusable React components
+│   ├── common/                   # Common/shared components (Header, Navigation)
+│   ├── features/                 # Feature-specific components (Modals, Widgets)
+│   ├── sections/                 # Page section components (Cards, Lists, Charts)
+│   └── ui/                       # Shadcn/ui components and primitives
+│
+├── hooks/                        # Custom React hooks
+│
+├── lib/                          # Shared utilities and configuration
+│   ├── constants/                # Application constants and hobbies list
+│   ├── hooks/                    # Custom hooks library
+│   ├── schemas/                  # Zod validation schemas
+│   ├── services/                 # API and external services (Groq, Auth, DB)
+│   ├── types/                    # TypeScript type definitions
+│   ├── i18n-context.tsx          # i18n translations (EN/RU)
+│   ├── db.ts                     # Database configuration
+│   └── [utility files]           # Helper functions and utilities
+│
+├── public/                       # Static assets (images, icons, etc.)
+│
+├── scripts/                      # Database setup scripts and migrations
+│
+├── package.json                  # Dependencies and project metadata
+├── tailwind.config.ts            # Tailwind CSS configuration
+├── tsconfig.json                 # TypeScript configuration
+└── README.md                     # Project documentation
 ```
 
-## Folder Organization Principles
+### Folder Organization Principles
 
-### `/components`
-- **`ui/`** - shadcn/ui components (don't modify)
-- **`common/`** - Shared layout components used across multiple pages (Header, Navigation, Theme)
-- **`features/`** - Feature-specific components (Feedback, Export, Modals, etc.)
-- **`sections/`** - Page section components (Cards, Lists, Charts, etc.)
+**`/components`**
+- `ui/` - Shadcn/ui components (don't modify)
+- `common/` - Shared layout components (Header, Navigation, Theme Provider)
+- `features/` - Feature-specific components (Feedback Widget, Export, Modals)
+- `sections/` - Page section components (Plan Cards, Week Tasks, Calendar View)
 
-### `/lib`
-- **`types/`** - TypeScript interfaces and types
-- **`services/`** - API calls and business logic
-- **`hooks/`** - Custom React hooks for state and logic
-- **`schemas/`** - Zod validation schemas
-- **`constants/`** - Static constants and configurations
-- **Context files** - Auth, i18n providers at root level
+**`/lib`**
+- `types/` - TypeScript interfaces and types
+- `services/` - API calls and business logic
+- `hooks/` - Custom React hooks for state and logic
+- `schemas/` - Zod validation schemas
+- `constants/` - Static constants and configurations
+- Context files - Auth, i18n providers at root level
 
-## Import Patterns
-
-```typescript
-import { Header } from '@/components/common'
-import { PlanCard, WeekTasks } from '@/components/sections'
-import { FeedbackWidget } from '@/components/features'
-```
+**`/app`**
+- Each route has its own folder with `page.tsx` and optional `layout.tsx`
+- API routes in `/api` for backend endpoints
+- Dynamic routes use `[id]` folder naming convention
 
 ## Database Schema
 
