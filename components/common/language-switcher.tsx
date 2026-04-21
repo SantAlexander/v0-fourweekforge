@@ -18,11 +18,11 @@ const languages: { code: Locale; name: string; flag: string }[] = [
 export function LanguageSwitcher() {
   const { locale, setLocale } = useI18n()
   const [mounted, setMounted] = useState(false)
-  
+
   useEffect(() => {
     setMounted(true)
   }, [])
-  
+
   const currentLang = languages.find(l => l.code === locale) || languages[0]
 
   return (

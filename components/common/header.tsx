@@ -30,7 +30,7 @@ export function Header() {
 
         <nav className="flex items-center gap-2">
           <LanguageSwitcher />
-          
+
           {isLoading ? (
             <div className="h-9 w-20 animate-pulse rounded-md bg-muted" />
           ) : user ? (

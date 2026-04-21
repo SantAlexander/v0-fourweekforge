@@ -26,7 +26,7 @@ export function ExportDropdown({ planId, planName }: ExportDropdownProps) {
     try {
       const res = await fetch(`/api/plans/${planId}/export?format=json`)
       const data = await res.json()
-      
+
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
@@ -36,7 +36,7 @@ export function ExportDropdown({ planId, planName }: ExportDropdownProps) {
       a.click()
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
-      
+
       toast.success('JSON exported!')
     } catch (error) {
       console.error('Export error:', error)
@@ -51,7 +51,7 @@ export function ExportDropdown({ planId, planName }: ExportDropdownProps) {
     try {
       const res = await fetch(`/api/plans/${planId}/export?format=csv`)
       const csv = await res.text()
-      
+
       const blob = new Blob([csv], { type: 'text/csv' })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
@@ -61,7 +61,7 @@ export function ExportDropdown({ planId, planName }: ExportDropdownProps) {
       a.click()
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
-      
+
       toast.success('CSV exported!')
     } catch (error) {
       console.error('Export error:', error)
