@@ -371,7 +371,7 @@ const ru: Record<string, string> = {
   
   'landing.feature1.title': 'Выбери хобби',
   'landing.feature1.description': 'Выбери любое хобби из списка или создай своё.',
-  'landing.feature2.title': 'Постав цель',
+  'landing.feature2.title': 'Поставь цель',
   'landing.feature2.description': 'Определи, что хочешь достичь за 4 недели.',
   'landing.feature3.title': 'Получи план',
   'landing.feature3.description': 'AI создаст 28 структурированных задач на 4 недели.',
