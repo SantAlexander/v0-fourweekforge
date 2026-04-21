@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { format } from 'date-fns'
+import { ru, enUS } from 'date-fns/locale'
 import { useI18n } from '@/lib/i18n-context'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
@@ -16,7 +17,8 @@ interface PlanCardProps {
 }
 
 export function PlanCard({ plan }: PlanCardProps) {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
+  const dateLocale = locale === 'ru' ? ru : enUS
   const Icon = getHobbyIcon(plan.hobby_icon)
   const statusConfig = {
     active: { bg: 'bg-gradient-to-br from-primary/10 to-accent/5', border: 'border-primary/30', text: 'text-primary' },
@@ -44,7 +46,7 @@ export function PlanCard({ plan }: PlanCardProps) {
                 </CardTitle>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
                   <Calendar className="h-4 w-4" />
-                  <span>{format(new Date(plan.start_date), 'MMM d, yyyy')}</span>
+                  <span>{format(new Date(plan.start_date), 'd MMM yyyy', { locale: dateLocale })}</span>
                 </div>
               </div>
             </div>

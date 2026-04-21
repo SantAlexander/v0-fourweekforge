@@ -189,7 +189,7 @@ export default function PlannerPage() {
    * - value: новое значение
    * 
    * Как работает:
-   * 1. Создаёт коп������ю массива
+   * 1. Создаёт коп��������ю массива
    * 2. Обновляет указанное поле у нужной задачи
    * 3. Устанавливает новый массив
    */
@@ -263,7 +263,7 @@ export default function PlannerPage() {
    * getWeekTasks - возвращает задачи для указанной недели с их индексами
    * 
    * useMemo кеширует результат пока tasks не изменится
-   * Это оптимизация - не пересчитывать при каждом рендере
+   * Это оптимизация - не пересчитывать при ��аждом рендере
    * 
    * Возвращает объект где ключ - номер недели, значение - массив задач с индексами
    */
@@ -459,6 +459,16 @@ export default function PlannerPage() {
             <GoalSettingStep
               goal={goal}
               startDate={startDate}
+              hobbyName={
+                selectedHobby
+                  ? (() => {
+                      const hobbyData = hobbies.find(h => h.id === selectedHobby)
+                      return hobbyData?.icon && t(`hobby.${hobbyData.icon}`) !== `hobby.${hobbyData.icon}`
+                        ? t(`hobby.${hobbyData.icon}`)
+                        : hobbyData?.name || ''
+                    })()
+                  : customHobby
+              }
               onGoalChange={setGoal}
               onStartDateChange={setStartDate}
               t={t}
@@ -482,9 +492,9 @@ export default function PlannerPage() {
           {/* Commitment message before final step */}
           {step === 3 && (
             <div className="mt-8 p-6 rounded-lg border border-primary/30 bg-primary/3 space-y-2">
-              <p className="text-sm font-semibold text-primary">You're about to start a 4-week journey</p>
+              <p className="text-sm font-semibold text-primary">{t('planner.commitmentTitle')}</p>
               <p className="text-sm text-muted-foreground">
-                {tasks.length} tasks. 15-30 minutes daily. Structured learning plan from day one.
+                {t('planner.commitmentDesc').replace('{count}', String(tasks.length))}
               </p>
             </div>
           )}
@@ -659,12 +669,14 @@ function HobbySelectionStep({
 function GoalSettingStep({
   goal,
   startDate,
+  hobbyName,
   onGoalChange,
   onStartDateChange,
   t,
 }: {
   goal: string
   startDate: string
+  hobbyName: string
   onGoalChange: (value: string) => void
   onStartDateChange: (value: string) => void
   t: (key: string) => string
@@ -672,6 +684,12 @@ function GoalSettingStep({
   return (
     <div className="space-y-8">
       <div>
+        {/* Hobby badge */}
+        <div className="mb-4">
+          <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+            {hobbyName}
+          </span>
+        </div>
         <h2 className="text-2xl font-bold mb-2">{t('planner.goalJourneyTitle')}</h2>
         <p className="text-muted-foreground">{t('planner.goalJourneySubtitle')}</p>
       </div>
@@ -865,11 +883,12 @@ function TaskPlanningStep({
                           onChange={(e) => onUpdateTask(index, 'title', e.target.value)}
                           className="border-0 bg-transparent p-0 font-medium shadow-none focus-visible:ring-0 h-auto text-base"
                         />
-                        <Input
+                        <Textarea
                           placeholder={t('planner.taskDescInput')}
                           value={task.description}
                           onChange={(e) => onUpdateTask(index, 'description', e.target.value)}
-                          className="border-0 bg-transparent p-0 text-sm text-muted-foreground shadow-none focus-visible:ring-0 h-auto"
+                          className="border-0 bg-transparent p-0 text-sm text-muted-foreground shadow-none focus-visible:ring-0 min-h-[60px] resize-none"
+                          rows={2}
                         />
                         {tasksCount > MIN_TASKS && (
                           <div className="pt-2 flex justify-end">
@@ -927,20 +946,20 @@ function NavigationButtons({
       {step > 1 && (
         <Button variant="ghost" onClick={onPrevious} className="gap-2">
           <ArrowLeft className="h-4 w-4" />
-          Back
+          {t('planner.back')}
         </Button>
       )}
       <div className="flex-1" />
       
       {step < TOTAL_STEPS ? (
         <Button size="lg" onClick={onNext} disabled={!canProceed} className="gap-2 px-8">
-          Next
+          {t('planner.next')}
           <ArrowRight className="h-4 w-4" />
         </Button>
       ) : (
         <Button size="lg" onClick={onSubmit} disabled={!canProceed || isSubmitting} className="gap-2 px-8">
           {isSubmitting && <Spinner className="h-4 w-4 mr-1" />}
-          Create plan
+          {t('planner.createPlan')}
         </Button>
       )}
     </div>

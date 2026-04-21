@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import useSWR from 'swr'
 import { format, addWeeks, isWithinInterval, startOfDay } from 'date-fns'
+import { ru, enUS } from 'date-fns/locale'
 import { useAuth } from '@/lib/auth-context'
 import { useI18n } from '@/lib/i18n-context'
 import { Header } from '@/components/common'
@@ -37,7 +38,8 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
   const { id } = use(params)
   const router = useRouter()
   const { user, isLoading: authLoading } = useAuth()
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
+  const dateLocale = locale === 'ru' ? ru : enUS
   const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list')
   
   const { data, isLoading, mutate } = useSWR<{ plan: PlanWithTasks }>(
@@ -234,7 +236,7 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
           <div className="mb-6 flex items-center gap-4 text-sm text-muted-foreground">
             <span>{t('planner.week')} {currentWeek} {t('plan.weekOf')}</span>
             <span className="w-1 h-1 rounded-full bg-border" />
-            <span>{format(startDate, 'MMM d')} - {format(endDate, 'MMM d, yyyy')}</span>
+            <span>{format(startDate, 'd MMM', { locale: dateLocale })} - {format(endDate, 'd MMM yyyy', { locale: dateLocale })}</span>
             <span className="w-1 h-1 rounded-full bg-border" />
             <span>{plan.progress}% {t('plan.overallProgress').toLowerCase()}</span>
           </div>
