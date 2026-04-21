@@ -22,34 +22,59 @@ FourWeekForge helps users create structured learning plans for any hobby. The pl
 ## Project Structure
 
 ```
-src/
-├── app/                      # Next.js App Router pages
-│   ├── dashboard/
-│   ├── plan/[id]/
-│   └── layout.tsx
-├── shared/                   # Shared across all features
-│   ├── config/              # App configuration
-│   ├── types/               # TypeScript types
-│   ├── ui/                  # Reusable UI components
-│   └── lib/                 # Utilities & constants
-├── entities/                # Business entities (models + APIs)
-│   ├── user/
-│   ├── plan/
-│   └── task/
-├── features/                # Feature slices
-│   ├── auth/               # Authentication
-│   ├── plan-management/    # Plan features
-│   └── task-management/    # Task features
-├── processes/              # Page orchestration & workflows
-├── widgets/                # Composite UI widgets
-├── hooks/                  # Custom React hooks
-└── server/                 # Server-side code
-    ├── db/                # Database connection
-    ├── repositories/      # Data access layer
-    ├── services/          # Business logic
-    └── auth/              # Authentication logic
-```
+lib/
+├── types/              # TypeScript интерфейсы и типы
+│   ├── plan.ts        # Plan и Task типы
+│   ├── user.ts        # User типы
+│   ├── hobby.ts       # Hobby типы
+│   ├── common.ts      # Общие типы
+│   └── index.ts       # Экспорты
+├── services/          # Бизнес-логика и API
+│   ├── api.ts         # HTTP запросы
+│   ├── auth.ts        # Аутентификация
+│   ├── plan.ts        # План операции
+│   └── index.ts       # Экспорты
+├── hooks/             # Custom React hooks
+│   ├── use-auth.ts    # Auth hook
+│   ├── use-plans.ts   # Plans hook
+│   ├── use-tasks.ts   # Tasks hook
+│   └── index.ts       # Экспорты
+├── schemas/           # Zod валидация
+│   ├── plan.ts        # Plan схема
+│   ├── user.ts        # User схема
+│   ├── task.ts        # Task схема
+│   └── index.ts       # Экспорты
+├── constants/         # Константы приложения
+│   ├── app.ts         # Основные константы
+│   ├── hobbies.ts     # Список хобби
+│   ├── ui.ts          # UI константы
+│   └── index.ts       # Экспорты
+├── i18n-context.tsx   # Переводы
+├── db.ts              # Database конфиг
+└── utils.ts           # Утилиты
 
+components/
+├── common/            # Переиспользуемые компоненты
+│   ├── header.tsx
+│   ├── language-switcher.tsx
+│   ├── theme-provider.tsx
+│   └── index.ts       # Экспорты
+├── features/          # Функциональные компоненты
+│   ├── feedback-widget.tsx
+│   ├── export-dropdown.tsx
+│   ├── onboarding-modal.tsx
+│   ├── completion-celebration.tsx
+│   └── index.ts       # Экспорты
+├── sections/          # Секции страниц
+│   ├── week-tasks.tsx
+│   ├── plan-card.tsx
+│   ├── calendar-view.tsx
+│   ├── streak-badge.tsx
+│   ├── week-completion-card.tsx
+│   └── index.ts       # Экспорты
+└── ui/                # shadcn/ui компоненты
+    └── *.tsx
+```
 
 ## Folder Organization Principles
 

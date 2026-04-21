@@ -1,5 +1,5 @@
-// Widgets - Composite UI Components
-// Exports composed widgets combining multiple UI elements
+// Widgets - Index
+// Re-export all widgets
 
 export { DashboardHeaderWidget } from './dashboard-header.widget'
 export { PlanCardWidget } from './plan-card.widget'
