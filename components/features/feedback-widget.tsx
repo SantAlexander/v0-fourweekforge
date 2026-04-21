@@ -1,3 +1,5 @@
-export default function FeedbackWidget() {
+'use client'
+
+export function FeedbackWidget() {
   return null
 }
