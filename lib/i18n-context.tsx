@@ -265,6 +265,8 @@ const en = {
   'planner.timelineCurrent': 'Current',
   'planner.timelineUpcoming': 'Upcoming',
   'planner.timelineFinish': 'Finish!',
+  'planner.commitmentTitle': "You're about to start a 4-week journey",
+  'planner.commitmentDesc': '{count} tasks. 15-30 minutes daily. Structured learning plan from day one.',
 
   // Landing - Example Plans Section
   'landing.examplesTitle': 'See what you\'ll get',
@@ -520,6 +522,8 @@ const ru: Record<string, string> = {
   'planner.timelineCurrent': 'Текущая',
   'planner.timelineUpcoming': 'Впереди',
   'planner.timelineFinish': 'Финиш!',
+  'planner.commitmentTitle': 'Ты начинаешь 4-недельное путешествие',
+  'planner.commitmentDesc': '{count} задач. 15-30 минут в день. Структурированный план обучения с первого дня.',
   
   // Plan Detail
   'plan.backToDashboard': 'Назад к панели',

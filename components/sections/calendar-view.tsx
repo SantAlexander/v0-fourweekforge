@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { addDays, format, startOfDay } from 'date-fns'
+import { ru, enUS } from 'date-fns/locale'
 import { useI18n } from '@/lib/i18n-context'
 import { Task, PlanWithTasks } from '@/lib/db'
 import { Card, CardContent } from '@/components/ui/card'
@@ -16,6 +17,7 @@ interface CalendarViewProps {
 
 export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
   const { t, locale } = useI18n()
+  const dateLocale = locale === 'ru' ? ru : enUS
   const [expandedDay, setExpandedDay] = useState<number | null>(null)
 
   const startDate = new Date(plan.start_date)
@@ -87,7 +89,7 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
                   {locale === 'ru' ? `Неделя ${weekIdx + 1}` : `Week ${weekIdx + 1}`}
                 </h3>
                 <span className="text-sm font-medium text-muted-foreground">
-                  {format(addDays(startDate, weekStart), 'MMM d')} – {format(addDays(startDate, weekEnd - 1), 'MMM d')}
+                  {format(addDays(startDate, weekStart), 'd MMM', { locale: dateLocale })} – {format(addDays(startDate, weekEnd - 1), 'd MMM', { locale: dateLocale })}
                 </span>
               </div>
               <div className="flex items-center gap-3">
@@ -157,7 +159,7 @@ export function CalendarView({ plan, onTaskToggle }: CalendarViewProps) {
             {expandedDay !== null && expandedDay >= weekStart && expandedDay < weekEnd && (
               <div className="mt-4 p-4 rounded-lg bg-muted border space-y-3">
                 <h4 className="font-semibold text-sm text-foreground">
-                  {format(addDays(startDate, expandedDay), 'MMMM d, yyyy')} {locale === 'ru' ? 'Задачи' : 'Tasks'}
+                  {format(addDays(startDate, expandedDay), 'd MMMM yyyy', { locale: dateLocale })} {locale === 'ru' ? 'Задачи' : 'Tasks'}
                 </h4>
                 {tasksByDay[expandedDay]?.length === 0 ? (
                   <p className="text-sm text-muted-foreground">{locale === 'ru' ? 'Нет задач' : 'No tasks'}</p>

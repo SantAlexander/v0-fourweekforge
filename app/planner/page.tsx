@@ -189,7 +189,7 @@ export default function PlannerPage() {
    * - value: новое значение
    * 
    * Как работает:
-   * 1. Создаёт коп������ю массива
+   * 1. Создаёт коп��������ю массива
    * 2. Обновляет указанное поле у нужной задачи
    * 3. Устанавливает новый массив
    */
@@ -482,9 +482,9 @@ export default function PlannerPage() {
           {/* Commitment message before final step */}
           {step === 3 && (
             <div className="mt-8 p-6 rounded-lg border border-primary/30 bg-primary/3 space-y-2">
-              <p className="text-sm font-semibold text-primary">You're about to start a 4-week journey</p>
+              <p className="text-sm font-semibold text-primary">{t('planner.commitmentTitle')}</p>
               <p className="text-sm text-muted-foreground">
-                {tasks.length} tasks. 15-30 minutes daily. Structured learning plan from day one.
+                {t('planner.commitmentDesc').replace('{count}', String(tasks.length))}
               </p>
             </div>
           )}
@@ -865,11 +865,12 @@ function TaskPlanningStep({
                           onChange={(e) => onUpdateTask(index, 'title', e.target.value)}
                           className="border-0 bg-transparent p-0 font-medium shadow-none focus-visible:ring-0 h-auto text-base"
                         />
-                        <Input
+                        <Textarea
                           placeholder={t('planner.taskDescInput')}
                           value={task.description}
                           onChange={(e) => onUpdateTask(index, 'description', e.target.value)}
-                          className="border-0 bg-transparent p-0 text-sm text-muted-foreground shadow-none focus-visible:ring-0 h-auto"
+                          className="border-0 bg-transparent p-0 text-sm text-muted-foreground shadow-none focus-visible:ring-0 min-h-[60px] resize-none"
+                          rows={2}
                         />
                         {tasksCount > MIN_TASKS && (
                           <div className="pt-2 flex justify-end">
@@ -927,20 +928,20 @@ function NavigationButtons({
       {step > 1 && (
         <Button variant="ghost" onClick={onPrevious} className="gap-2">
           <ArrowLeft className="h-4 w-4" />
-          Back
+          {t('planner.back')}
         </Button>
       )}
       <div className="flex-1" />
       
       {step < TOTAL_STEPS ? (
         <Button size="lg" onClick={onNext} disabled={!canProceed} className="gap-2 px-8">
-          Next
+          {t('planner.next')}
           <ArrowRight className="h-4 w-4" />
         </Button>
       ) : (
         <Button size="lg" onClick={onSubmit} disabled={!canProceed || isSubmitting} className="gap-2 px-8">
           {isSubmitting && <Spinner className="h-4 w-4 mr-1" />}
-          Create plan
+          {t('planner.createPlan')}
         </Button>
       )}
     </div>
