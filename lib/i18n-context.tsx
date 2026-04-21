@@ -13,7 +13,7 @@ interface I18nContextType {
 const I18nContext = createContext<I18nContextType | null>(null)
 
 // English translations
-const en = {
+const en: Record<string, string> = {
   // Header
   'header.dashboard': 'Dashboard',
   'header.newPlan': 'New Plan',
@@ -298,21 +298,8 @@ const en = {
   'plan.today': 'Today',
   'plan.nextActionable': 'Next week',
   
-  // Export
-  'export.title': 'Export Plan',
-  'export.json': 'Download JSON',
-  'export.csv': 'Download CSV',
-  'export.pdf': 'Print / PDF',
-  
-  // Plan Details
-  'plan.duration': 'Duration',
-  'plan.pause': 'Pause',
-  'plan.resume': 'Resume',
-  'plan.delete': 'Delete',
-  
   // Toast messages
   'toast.taskMarked': 'Task marked as complete!',
-  'toast.planCreated': 'Plan created!',
 
   // Phase 11 - New UI strings
   'dashboard.getStarted': 'Get started',
@@ -328,8 +315,6 @@ const en = {
   'dashboard.allTasksDone': 'All tasks done',
   
   'plan.nextTask': 'Next task',
-  'plan.markComplete': 'Mark complete',
-  'plan.weekOf': 'of 4',
   
   'landing.heroTitle': 'Learn any skill in 4 weeks',
   'landing.heroSubtitle': 'Structured daily tasks. 15-30 minutes. Clear progress from day one.',
@@ -628,8 +613,6 @@ const ru: Record<string, string> = {
   'dashboard.allTasksDone': 'Все задачи выполнены',
   
   'plan.nextTask': 'Следующая задача',
-  'plan.markComplete': 'Отметить выполненным',
-  'plan.weekOf': 'из 4',
   
   'landing.examplesTitle': 'Примеры обучения',
   'landing.examplesSubtitle': 'Реальные примеры персонализированных планов',
