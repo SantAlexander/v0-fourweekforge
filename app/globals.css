@@ -1,31 +1,198 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Phase 11: Calm Productivity Color System */
+  /* Neutral Base - Clean, professional foundation */
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --card: #FFFFFF;
+  --card-foreground: #0F172A;
+  --popover: #FFFFFF;
+  --popover-foreground: #0F172A;
+
+  /* Primary - Indigo (calm, focused, professional) */
+  --primary: #4F46E5;
+  --primary-foreground: #FFFFFF;
+
+  /* Muted - Subtle backgrounds, secondary text */
+  --muted: #F1F5F9;
+  --muted-foreground: #64748B;
+
+  /* Accent - Success (green for completed tasks) */
+  --accent: #22C55E;
+  --accent-foreground: #FFFFFF;
+
+  /* Destructive - Red ONLY for destructive actions */
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+
+  /* Borders and inputs - Subtle, low contrast */
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #4F46E5;
+
+  /* Chart colors for visual variety (muted) */
+  --chart-1: #6366F1;
+  --chart-2: #8B5CF6;
+  --chart-3: #06B6D4;
+  --chart-4: #10B981;
+  --chart-5: #F59E0B;
+
+  --radius: 0.5rem;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--background);
+.dark {
+  /* Phase 11: Calm Productivity Dark Mode */
+  --background: #0F172A;
+  --foreground: #F8FAFC;
+  --card: #1E293B;
+  --card-foreground: #F8FAFC;
+  --popover: #1E293B;
+  --popover-foreground: #F8FAFC;
+
+  /* Primary - Indigo (slightly lighter for dark mode) */
+  --primary: #6366F1;
+  --primary-foreground: #FFFFFF;
+
+  /* Muted */
+  --muted: #334155;
+  --muted-foreground: #94A3B8;
+
+  /* Accent - Success */
+  --accent: #22C55E;
+  --accent-foreground: #0F172A;
+
+  /* Destructive */
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+
+  /* Borders */
+  --border: #334155;
+  --input: #334155;
+  --ring: #6366F1;
+
+  /* Chart colors (dark mode) */
+  --chart-1: #818CF8;
+  --chart-2: #A78BFA;
+  --chart-3: #22D3EE;
+  --chart-4: #34D399;
+  --chart-5: #FBBF24;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
+@theme inline {
+  --font-sans: var(--font-sans, 'Inter', system-ui, sans-serif);
+  --font-mono: var(--font-mono, 'JetBrains Mono', monospace);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--muted-foreground);
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
+/* Visual Hierarchy System — 3 levels for clarity */
+@layer components {
+  /* PRIMARY LEVEL — Focus, action-oriented (100% contrast, large) */
+  .hierarchy-primary {
+    @apply text-3xl font-bold text-foreground leading-tight;
+  }
 
-/* Text selection */
-::selection {
-  background: var(--primary);
-  color: var(--primary-foreground);
+  /* SECONDARY LEVEL — Context, supporting (70% contrast, medium) */
+  .hierarchy-secondary {
+    @apply text-lg font-semibold text-foreground/70 leading-relaxed;
+  }
+
+  /* TERTIARY LEVEL — Background, minimal (40% contrast, small) */
+  .hierarchy-tertiary {
+    @apply text-sm text-muted-foreground leading-relaxed;
+  }
+
+  /* Typography Scale (normalized) */
+  h1 {
+    @apply text-4xl font-bold leading-tight tracking-tight;
+  }
+
+  h2 {
+    @apply text-3xl font-bold leading-tight tracking-tight;
+  }
+
+  h3 {
+    @apply text-2xl font-bold leading-snug;
+  }
+
+  h4 {
+    @apply text-xl font-bold leading-snug;
+  }
+
+  h5 {
+    @apply text-lg font-semibold leading-snug;
+  }
+
+  h6 {
+    @apply text-base font-semibold leading-snug;
+  }
+
+  p {
+    @apply text-base leading-relaxed;
+  }
+
+  small {
+    @apply text-sm leading-relaxed;
+  }
+
+  .text-caption {
+    @apply text-xs leading-tight text-muted-foreground;
+  }
+
+  /* Spacing System (8px grid) */
+  .spacing-xs {
+    @apply gap-1 space-y-1;
+  }
+
+  .spacing-sm {
+    @apply gap-2 space-y-2;
+  }
+
+  .spacing-md {
+    @apply gap-3 space-y-3;
+  }
+
+  .spacing-lg {
+    @apply gap-4 space-y-4;
+  }
+
+  .spacing-xl {
+    @apply gap-6 space-y-6;
+  }
+
+  .spacing-2xl {
+    @apply gap-8 space-y-8;
+  }
 }
