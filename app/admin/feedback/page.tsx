@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Feedback } from '@/lib/db'
-import { Bug, Lightbulb, HelpCircle, Loader2, RefreshCw, MessageSquare, User, Mail, Calendar } from 'lucide-react'
+import { Bug, Lightbulb, HelpCircle, Loader2, RefreshCw, MessageSquare, User, Mail, Calendar, LogIn } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
@@ -23,17 +24,27 @@ function formatDate(date: Date | string) {
 }
 
 export default function AdminFeedbackPage() {
+  const router = useRouter()
   const [feedback, setFeedback] = useState<Feedback[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [needsAuth, setNeedsAuth] = useState(false)
   const [filter, setFilter] = useState<'all' | 'bug' | 'idea' | 'question'>('all')
 
   const fetchFeedback = async () => {
     setLoading(true)
     setError('')
+    setNeedsAuth(false)
     try {
-      const res = await fetch('/api/feedback')
+      const res = await fetch('/api/feedback', { credentials: 'include' })
       const data = await res.json()
+      
+      // Check if authentication is required
+      if (res.status === 401) {
+        setNeedsAuth(true)
+        return
+      }
+      
       if (!res.ok || !data.success) {
         setError('Не удалось загрузить отзывы')
       } else {
@@ -111,6 +122,20 @@ export default function AdminFeedbackPage() {
         {loading ? (
           <div className="flex items-center justify-center py-24">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          </div>
+        ) : needsAuth ? (
+          <div className="flex flex-col items-center justify-center py-24 gap-4">
+            <div className="p-4 rounded-full bg-muted">
+              <LogIn className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <div className="text-center">
+              <p className="text-foreground font-medium mb-1">Требуется авторизация</p>
+              <p className="text-muted-foreground text-sm">Войдите в систему для просмотра отзывов</p>
+            </div>
+            <Button onClick={() => router.push('/login?redirect=/admin/feedback')}>
+              <LogIn className="h-4 w-4 mr-2" />
+              Войти
+            </Button>
           </div>
         ) : error ? (
           <div className="flex flex-col items-center justify-center py-24 gap-3">

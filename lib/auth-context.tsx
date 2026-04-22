@@ -44,12 +44,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
+        credentials: 'include', // Ensure cookies are sent/received
       })
       const data = await res.json()
       if (!res.ok) {
         return { success: false, error: data.error || 'Login failed' }
       }
-      await mutate()
+      // Wait for SWR to refetch and update user state before returning
+      await mutate(data.user, { revalidate: false })
       return { success: true }
     } catch {
       return { success: false, error: 'Network error' }
@@ -62,12 +64,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, name, password }),
+        credentials: 'include', // Ensure cookies are sent/received
       })
       const data = await res.json()
       if (!res.ok) {
         return { success: false, error: data.error || 'REGISTRATION_FAILED', message: data.message }
       }
-      await mutate()
+      // Wait for SWR to update user state before returning
+      await mutate(data.user, { revalidate: false })
       return { success: true }
     } catch {
       return { success: false, error: 'DATABASE_ERROR', message: 'Network error' }
@@ -75,7 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [mutate])
 
   const logout = useCallback(async () => {
-    await fetch('/api/auth/logout', { method: 'POST' })
+    await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
     await mutate(null)
     router.push('/')
   }, [mutate, router])

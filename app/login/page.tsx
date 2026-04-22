@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/lib/auth-context'
 import { useI18n } from '@/lib/i18n-context'
 import { Header } from '@/components/common'
@@ -16,11 +16,15 @@ import { Flame } from 'lucide-react'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { login } = useAuth()
   const { t } = useI18n()
   const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  // Get redirect URL from query params (default to /dashboard)
+  const redirectUrl = searchParams.get('redirect') || '/dashboard'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -30,12 +34,13 @@ export default function LoginPage() {
     
     if (result.success) {
       toast.success(t('toast.welcomeBack'))
-      router.push('/dashboard')
+      // Refresh to ensure auth state is synchronized, then redirect
+      router.refresh()
+      router.push(redirectUrl)
     } else {
       toast.error(result.error || 'Login failed')
+      setIsLoading(false)
     }
-    
-    setIsLoading(false)
   }
 
   return (
