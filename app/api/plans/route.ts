@@ -2,11 +2,22 @@ import { sql, PlanWithTasks, Task } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const user = await getCurrentUser()
     if (!user) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+    }
+
+    // Parse pagination params
+    const limit = Math.min(parseInt(request.nextUrl.searchParams.get('limit') || '50'), 100)
+    const offset = parseInt(request.nextUrl.searchParams.get('offset') || '0')
+
+    if (isNaN(limit) || isNaN(offset) || limit < 1 || offset < 0) {
+      return NextResponse.json(
+        { error: 'Invalid pagination parameters' },
+        { status: 400 }
+      )
     }
 
     const plans = await sql`
@@ -18,6 +29,7 @@ export async function GET() {
       LEFT JOIN hobbies h ON p.hobby_id = h.id
       WHERE p.user_id = ${user.id}
       ORDER BY p.created_at DESC
+      LIMIT ${limit} OFFSET ${offset}
     `
 
     // Get tasks for each plan
@@ -42,7 +54,14 @@ export async function GET() {
       })
     )
 
-    return NextResponse.json({ plans: plansWithTasks })
+    return NextResponse.json({ 
+      plans: plansWithTasks,
+      pagination: {
+        limit,
+        offset,
+        hasMore: plansWithTasks.length === limit
+      }
+    })
   } catch (error) {
     console.error('Error fetching plans:', error)
     return NextResponse.json({ error: 'Failed to fetch plans' }, { status: 500 })

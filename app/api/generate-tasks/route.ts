@@ -61,19 +61,22 @@ Return all task texts IN ENGLISH.`
       ? `Хобби: ${hobby}\nЦель на 4 недели: ${goal}`
       : `Hobby: ${hobby}\nGoal for 4 weeks: ${goal}`
 
-    console.log('[v0] Generating tasks for hobby:', hobby, 'goal:', goal)
+    // Call AI via Groq (structured output not supported by llama-3.3-70b-versatile)
+    // Add 30-second timeout to prevent hanging requests
+    const abortController = new AbortController()
+    const timeoutId = setTimeout(() => abortController.abort(), 30000)
 
-    // Вызов AI через Groq без structured output (не поддерживается llama-3.3-70b-versatile)
-    const result = await generateText({
-      model: groq('llama-3.3-70b-versatile'),
-      system: systemPrompt,
-      prompt: userPrompt,
-    })
+    try {
+      const result = await generateText({
+        model: groq('llama-3.3-70b-versatile'),
+        system: systemPrompt,
+        prompt: userPrompt,
+      })
 
-    console.log('[v0] AI raw response:', result.text)
+      clearTimeout(timeoutId)
 
-    // Парсим JSON из ответа AI
-    let jsonText = result.text.trim()
+      // Parse JSON from AI response
+      let jsonText = result.text.trim()
     
     // Удаляем возможные markdown обёртки
     if (jsonText.startsWith('```json')) {
@@ -86,13 +89,23 @@ Return all task texts IN ENGLISH.`
     }
     jsonText = jsonText.trim()
 
-    // Парсим и валидируем JSON
+    // Parse and validate JSON
     const parsed = JSON.parse(jsonText)
     const validated = GeneratedTasksSchema.parse(parsed)
 
-    console.log('[v0] Parsed tasks count:', validated.tasks.length)
-
     return NextResponse.json({ tasks: validated.tasks })
+    } catch (error) {
+      clearTimeout(timeoutId)
+      
+      // Check if timeout occurred
+      if (error instanceof Error && error.name === 'AbortError') {
+        return NextResponse.json(
+          { error: 'Task generation timeout (30s limit exceeded)' },
+          { status: 504 }
+        )
+      }
+      throw error
+    }
   } catch (error) {
     console.error('[v0] Error generating tasks:', error)
     return NextResponse.json(

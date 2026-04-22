@@ -3,9 +3,15 @@ import bcrypt from 'bcryptjs'
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'your-secret-key-change-in-production'
-)
+// Validate JWT_SECRET is set
+if (!process.env.JWT_SECRET) {
+  throw new Error(
+    'CRITICAL: JWT_SECRET environment variable is not set. ' +
+    'Set it in .env.local or Vercel project settings before running in production.'
+  )
+}
+
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET)
 
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 12)
@@ -41,7 +47,9 @@ export async function getCurrentUser(): Promise<User | null> {
   const payload = await verifyToken(token)
   if (!payload) return null
   
-  const users = await sql`SELECT * FROM users WHERE id = ${payload.userId}`
+  const users = await sql`
+    SELECT id, email, name, created_at FROM users WHERE id = ${payload.userId}
+  `
   return users[0] as User || null
 }
 
