@@ -189,7 +189,7 @@ export default function PlannerPage() {
    * - value: новое значение
    * 
    * Как работает:
-   * 1. Создаёт коп��������ю массива
+   * 1. Создаёт коп����������ю массива
    * 2. Обновляет указанное поле у нужной задачи
    * 3. Устанавливает новый массив
    */
@@ -224,6 +224,7 @@ export default function PlannerPage() {
       const response = await fetch('/api/generate-tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ hobby: hobbyName, goal, locale }),
       })
 
@@ -389,6 +390,7 @@ export default function PlannerPage() {
       const response = await fetch('/api/plans', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(payload),
       })
 

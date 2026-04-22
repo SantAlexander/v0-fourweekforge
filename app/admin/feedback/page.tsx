@@ -36,7 +36,7 @@ export default function AdminFeedbackPage() {
     setError('')
     setNeedsAuth(false)
     try {
-      const res = await fetch('/api/feedback')
+      const res = await fetch('/api/feedback', { credentials: 'include' })
       const data = await res.json()
       
       // Check if authentication is required
