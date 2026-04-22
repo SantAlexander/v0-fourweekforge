@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 
 vi.mock("@/lib/rate-limit", () => ({
-  checkRateLimit: vi.fn().mockReturnValue({
+  checkRateLimit: vi.fn().mockResolvedValue({
     success: true,
     resetAt: Date.now() + 10000,
   }),

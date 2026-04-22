@@ -32,7 +32,7 @@ describe("POST /api/login", () => {
     vi.clearAllMocks();
 
     // ✅ по умолчанию rate limit НЕ блокирует
-    (checkRateLimit as any).mockReturnValue({
+    (checkRateLimit as any).mockResolvedValue({
       success: true,
       resetAt: Date.now() + 10000,
     });
