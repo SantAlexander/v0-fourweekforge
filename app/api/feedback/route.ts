@@ -1,12 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
+import { getCurrentUser } from '@/lib/auth'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    // Only allow authenticated users to fetch feedback
+    const user = await getCurrentUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+    }
+
+    // Only allow admin users (you can add an is_admin field to users table)
+    // For now, we'll restrict to logged-in users, but add TODO for admin-only check
     const rows = await sql`
       SELECT id, name, email, message, type, created_at
       FROM feedback
       ORDER BY created_at DESC
+      LIMIT 100
     `
     return NextResponse.json({ success: true, feedback: rows })
   } catch (error) {

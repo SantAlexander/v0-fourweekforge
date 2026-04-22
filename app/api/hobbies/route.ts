@@ -3,7 +3,9 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    const hobbies = await sql`SELECT * FROM hobbies ORDER BY name`
+    const hobbies = await sql`
+      SELECT id, name, icon, description FROM hobbies ORDER BY name
+    `
     return NextResponse.json({ hobbies: hobbies as Hobby[] })
   } catch (error) {
     console.error('Error fetching hobbies:', error)

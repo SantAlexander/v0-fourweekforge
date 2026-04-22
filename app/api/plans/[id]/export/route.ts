@@ -33,7 +33,8 @@ export async function GET(
 
     // Get tasks
     const tasks = await sql`
-      SELECT * FROM tasks 
+      SELECT id, week_number, title, description, is_completed, created_at 
+      FROM tasks 
       WHERE plan_id = ${id} 
       ORDER BY week_number, created_at
     `
