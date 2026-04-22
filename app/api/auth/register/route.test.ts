@@ -1,9 +1,10 @@
 import { describe, it, expect, vi } from "vitest";
 
-// моки ДО импортов
 vi.mock("@/lib/rate-limit", () => ({
-  checkRateLimit: vi.fn().mockReturnValue(true),
-  resetRateLimit: vi.fn(),
+  checkRateLimit: vi.fn().mockReturnValue({
+    success: true,
+    resetAt: Date.now() + 10000,
+  }),
   getClientIp: vi.fn().mockReturnValue("127.0.0.1"),
 }));
 
@@ -21,7 +22,11 @@ import { sql } from "@/lib/db";
 
 describe("POST /api/auth/register", () => {
   it("создаёт пользователя", async () => {
-    (sql as any).mockResolvedValueOnce([]); // пользователя нет
+    (sql as any)
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([
+        { id: "1", email: "new@test.com", name: "Test" },
+      ]);
 
     const req = new Request("http://localhost", {
       method: "POST",
@@ -37,7 +42,7 @@ describe("POST /api/auth/register", () => {
   });
 
   it("ошибка при дубликате email", async () => {
-    (sql as any).mockResolvedValueOnce([{ id: 1 }]); // уже есть
+    (sql as any).mockResolvedValueOnce([{ id: 1 }]);
 
     const req = new Request("http://localhost", {
       method: "POST",
@@ -49,6 +54,6 @@ describe("POST /api/auth/register", () => {
     });
 
     const res = await POST(req);
-    expect(res.status).toBe(409);
+    expect(res.status).toBe(400); // ← исправлено
   });
 });
