@@ -1,5 +1,24 @@
+import { vi } from "vitest";
+
+// 🧠 MOCK DB
+vi.mock("@/lib/db", () => ({
+  sql: vi.fn(),
+}));
+
+// 🧠 MOCK AUTH
+vi.mock("@/lib/auth", () => ({
+  verifyPassword: vi.fn(),
+  createToken: vi.fn(() => "test-token"),
+}));
+
+// 🧠 MOCK RATE LIMIT
+vi.mock('@/lib/rate-limit', () => ({
+  checkRateLimit: vi.fn().mockReturnValue(true),
+  resetRateLimit: vi.fn(),
+  getClientIp: vi.fn().mockReturnValue('127.0.0.1'),
+}));
+
 import { describe, it, expect, vi } from 'vitest'
-import { POST } from './route'
 
 // мокаем зависимости
 vi.mock('@/lib/db', () => ({
