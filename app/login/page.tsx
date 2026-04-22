@@ -34,13 +34,13 @@ export default function LoginPage() {
     
     if (result.success) {
       toast.success(t('toast.welcomeBack'))
-      // Redirect to the original URL or dashboard
+      // Refresh to ensure auth state is synchronized, then redirect
+      router.refresh()
       router.push(redirectUrl)
     } else {
       toast.error(result.error || 'Login failed')
+      setIsLoading(false)
     }
-    
-    setIsLoading(false)
   }
 
   return (
