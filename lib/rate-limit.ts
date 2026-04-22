@@ -22,11 +22,21 @@ interface RateLimitResult {
   resetAt: number
 }
 
-// Initialize Redis client
-const redis = new Redis({
-  url: process.env.KV_REST_API_URL,
-  token: process.env.KV_REST_API_TOKEN,
-})
+// Lazy initialization of Redis client to avoid build-time errors
+let redis: Redis | null = null
+
+function getRedis(): Redis {
+  if (!redis) {
+    if (!process.env.KV_REST_API_URL || !process.env.KV_REST_API_TOKEN) {
+      throw new Error('Upstash Redis environment variables are not configured')
+    }
+    redis = new Redis({
+      url: process.env.KV_REST_API_URL,
+      token: process.env.KV_REST_API_TOKEN,
+    })
+  }
+  return redis
+}
 
 /**
  * Check rate limit by combining IP + Email identifier
@@ -42,16 +52,18 @@ export async function checkRateLimit(
   
   const windowSeconds = Math.ceil(config.windowMs / 1000)
   
+  const redisClient = getRedis()
+  
   // Use Redis INCR to atomically increment counter
-  const count = await redis.incr(key)
+  const count = await redisClient.incr(key)
   
   // If this is the first request in the window, set expiration
   if (count === 1) {
-    await redis.expire(key, windowSeconds)
+    await redisClient.expire(key, windowSeconds)
   }
   
   // Calculate TTL for this key
-  const ttl = await redis.ttl(key)
+  const ttl = await redisClient.ttl(key)
   const resetAt = Date.now() + (ttl * 1000)
   
   // Check if exceeded limit
@@ -75,7 +87,7 @@ export async function checkRateLimit(
  */
 export async function resetRateLimit(ipAddress: string, email?: string): Promise<void> {
   const key = email ? `auth:${ipAddress}:${email.toLowerCase()}` : `auth:${ipAddress}`
-  await redis.del(key)
+  await getRedis().del(key)
 }
 
 /**
