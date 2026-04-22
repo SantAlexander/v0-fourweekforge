@@ -1,83 +1,131 @@
-import { describe, it, expect, vi } from 'vitest'
-import { POST } from './route'
+import { describe, it, expect, vi, beforeEach } from "vitest";
 
-// мокаем зависимости
-vi.mock('@/lib/db', () => ({
-  sql: vi.fn()
-}))
+// ✅ моки ДО импортов
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: vi.fn(),
+  resetRateLimit: vi.fn(),
+  getClientIp: vi.fn().mockReturnValue("127.0.0.1"),
+}));
 
-vi.mock('@/lib/auth', () => ({
-  verifyPassword: vi.fn(),
-  createToken: vi.fn()
-}))
+vi.mock("@/lib/db", () => ({
+  sql: vi.fn(),
+}));
 
-describe('POST /api/login', () => {
-  it('возвращает 400 если нет email', async () => {
-    const req = {
-      json: async () => ({ password: '123' })
-    } as any
+vi.mock("@/lib/auth", () => ({
+  createToken: vi.fn().mockResolvedValue("token"),
+}));
 
-    const res = await POST(req)
+vi.mock("bcryptjs", () => ({
+  default: {
+    compare: vi.fn(),
+  },
+}));
 
-    expect(res.status).toBe(400)
-  })
+// ✅ импорты после моков
+import { POST } from "./route";
+import { sql } from "@/lib/db";
+import { checkRateLimit } from "@/lib/rate-limit";
+import bcrypt from "bcryptjs";
 
-  it('возвращает 401 если пользователь не найден', async () => {
-    const { sql } = await import('@/lib/db')
-    sql.mockResolvedValue([])
+describe("POST /api/login", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
 
-    const req = {
-      json: async () => ({ email: 'test@test.com', password: '123' })
-    } as any
+    // ✅ по умолчанию rate limit НЕ блокирует
+    (checkRateLimit as any).mockReturnValue({
+      success: true,
+      resetAt: Date.now() + 10000,
+    });
+  });
 
-    const res = await POST(req)
+  it("возвращает 400 если нет email", async () => {
+    const req = new Request("http://localhost", {
+      method: "POST",
+      body: JSON.stringify({
+        password: "12345678",
+      }),
+    });
 
-    expect(res.status).toBe(401)
-  })
+    const res = await POST(req);
+    expect(res.status).toBe(400);
+  });
 
-  it('возвращает 401 если пароль неверный', async () => {
-    const { sql } = await import('@/lib/db')
-    const { verifyPassword } = await import('@/lib/auth')
+  it("возвращает 401 если пользователь не найден", async () => {
+    (sql as any).mockResolvedValueOnce([]); // нет пользователя
+    (bcrypt.compare as any).mockResolvedValue(false);
 
-    sql.mockResolvedValue([{ id: 1, password_hash: 'hash' }])
-    verifyPassword.mockResolvedValue(false)
+    const req = new Request("http://localhost", {
+      method: "POST",
+      body: JSON.stringify({
+        email: "notfound@test.com",
+        password: "12345678",
+      }),
+    });
 
-    const req = {
-      json: async () => ({ email: 'test@test.com', password: '123' })
-    } as any
+    const res = await POST(req);
+    expect(res.status).toBe(401);
+  });
 
-    const res = await POST(req)
+  it("возвращает 401 если пароль неверный", async () => {
+    (sql as any).mockResolvedValueOnce([
+      {
+        id: "1",
+        email: "test@test.com",
+        name: "Test",
+        password_hash: "hashed",
+      },
+    ]);
 
-    expect(res.status).toBe(401)
-  })
+    (bcrypt.compare as any).mockResolvedValue(false);
 
-  it('возвращает 200 при успешном логине', async () => {
-    const { sql } = await import('@/lib/db')
-    const { verifyPassword, createToken } = await import('@/lib/auth')
+    const req = new Request("http://localhost", {
+      method: "POST",
+      body: JSON.stringify({
+        email: "test@test.com",
+        password: "12345678",
+      }),
+    });
 
-    sql.mockResolvedValue([
-      { id: 1, email: 'test@test.com', name: 'Test', password_hash: 'hash', created_at: 'now' }
-    ])
+    const res = await POST(req);
+    expect(res.status).toBe(401);
+  });
 
-    verifyPassword.mockResolvedValue(true)
-    createToken.mockResolvedValue('token123')
+  it("возвращает 200 при успешном логине", async () => {
+    (sql as any).mockResolvedValueOnce([
+      {
+        id: "1",
+        email: "test@test.com",
+        name: "Test",
+        password_hash: "hashed",
+      },
+    ]);
 
-    const req = {
-      json: async () => ({ email: 'test@test.com', password: '123' })
-    } as any
+    (bcrypt.compare as any).mockResolvedValue(true);
 
-    const res = await POST(req)
+    const req = new Request("http://localhost", {
+      method: "POST",
+      body: JSON.stringify({
+        email: "test@test.com",
+        password: "12345678",
+      }),
+    });
 
-    expect(res.status).toBe(200)
-  })
+    const res = await POST(req);
+    expect(res.status).toBe(200);
+  });
 
-  it('возвращает 500 при ошибке', async () => {
-    const req = {
-      json: async () => { throw new Error('fail') }
-    } as any
+  it("возвращает 500 при ошибке", async () => {
+    (sql as any).mockRejectedValueOnce(new Error("DB error"));
 
-    const res = await POST(req)
+    const req = new Request("http://localhost", {
+      method: "POST",
+      body: JSON.stringify({
+        email: "test@test.com",
+        password: "12345678",
+      }),
+    });
 
-    expect(res.status).toBe(500)
-  })
-})
+    const res = await POST(req);
+    expect(res.status).toBe(500);
+  });
+});

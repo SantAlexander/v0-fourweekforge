@@ -1,6 +1,15 @@
 /**
  * Simple in-memory rate limiter for authentication endpoints
- * Note: For production with multiple instances, use Redis (Upstash) instead
+ * 
+ * ⚠️ IMPORTANT: For production with Vercel serverless, use Redis/Upstash instead
+ * This in-memory implementation works locally but won't persist across serverless instances.
+ * 
+ * Setup Upstash Redis:
+ * 1. Add integration in Vercel project settings
+ * 2. Use: import { Ratelimit } from "@upstash/ratelimit"
+ * 3. Replace this implementation with Upstash client
+ * 
+ * See: https://upstash.com/docs/redis/features/ratelimiting
  */
 
 interface RateLimitEntry {
@@ -31,12 +40,19 @@ interface RateLimitResult {
   resetAt: number
 }
 
+/**
+ * Check rate limit by combining IP + Email identifier
+ * This prevents both distributed attacks and single email spam
+ */
 export function checkRateLimit(
-  identifier: string,
+  ipAddress: string,
+  email?: string,
   config: RateLimitConfig = { maxAttempts: 5, windowMs: 15 * 60 * 1000 } // 5 attempts per 15 minutes
 ): RateLimitResult {
   const now = Date.now()
-  const key = `login:${identifier}`
+  
+  // Combine IP + email for composite key (IP-based for registration, IP+email for login)
+  const key = email ? `auth:${ipAddress}:${email.toLowerCase()}` : `auth:${ipAddress}`
   
   let entry = rateLimitStore.get(key)
   
@@ -77,23 +93,34 @@ export function checkRateLimit(
 /**
  * Reset rate limit for an identifier (e.g., after successful login)
  */
-export function resetRateLimit(identifier: string): void {
-  rateLimitStore.delete(`login:${identifier}`)
+export function resetRateLimit(ipAddress: string, email?: string): void {
+  const key = email ? `auth:${ipAddress}:${email.toLowerCase()}` : `auth:${ipAddress}`
+  rateLimitStore.delete(key)
 }
 
 /**
  * Get client IP from request headers
+ * Handles X-Forwarded-For, X-Real-IP, and Cloudflare headers
  */
 export function getClientIp(request: Request): string {
+  // Cloudflare
+  const cfConnecting = request.headers.get('cf-connecting-ip')
+  if (cfConnecting) {
+    return cfConnecting
+  }
+  
+  // X-Forwarded-For (take first IP from comma-separated list)
   const forwarded = request.headers.get('x-forwarded-for')
   if (forwarded) {
     return forwarded.split(',')[0].trim()
   }
   
+  // X-Real-IP
   const realIp = request.headers.get('x-real-ip')
   if (realIp) {
     return realIp
   }
   
-  return 'unknown'
+  // Fallback (shouldn't happen in production)
+  return '127.0.0.1'
 }

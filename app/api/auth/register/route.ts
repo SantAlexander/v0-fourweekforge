@@ -8,18 +8,46 @@ export async function POST(request: NextRequest) {
   try {
     // Get client IP for rate limiting
     const clientIp = getClientIp(request)
-    
-    // Check rate limit (more lenient for registration: 10 attempts per 15 min)
-    const rateLimitResult = checkRateLimit(clientIp, { 
-      maxAttempts: 10, 
-      windowMs: 15 * 60 * 1000 
+
+    // Parse body first to get email for combined rate limit check
+    let body: unknown
+    try {
+      body = await request.json()
+    } catch {
+      return NextResponse.json(
+        { error: 'Invalid request format' },
+        { status: 400 }
+      )
+    }
+
+    // Validate input
+    const validationResult = registerSchema.safeParse(body)
+
+    if (!validationResult.success) {
+      // Log validation errors server-side (don't expose to client)
+      console.error('[Auth] Registration validation error:', validationResult.error.flatten())
+
+      // Return generic error to user
+      return NextResponse.json(
+        { error: 'Invalid registration data' },
+        { status: 400 }
+      )
+    }
+
+    const { name, email, password } = validationResult.data
+    const normalizedEmail = email.toLowerCase()
+
+    // Check rate limit by IP + email (more lenient for registration)
+    const rateLimitResult = checkRateLimit(clientIp, normalizedEmail, {
+      maxAttempts: 10,
+      windowMs: 15 * 60 * 1000
     })
-    
+
     if (!rateLimitResult.success) {
       const retryAfter = Math.ceil((rateLimitResult.resetAt - Date.now()) / 1000)
       return NextResponse.json(
         { error: 'Too many registration attempts. Please try again later.' },
-        { 
+        {
           status: 429,
           headers: {
             'Retry-After': String(retryAfter),
@@ -28,33 +56,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Parse and validate input
-    const body = await request.json()
-    const validationResult = registerSchema.safeParse(body)
-    
-    if (!validationResult.success) {
-      const errors = validationResult.error.flatten().fieldErrors
-      return NextResponse.json(
-        { 
-          error: 'VALIDATION_FAILED',
-          message: 'Validation failed',
-          details: errors
-        },
-        { status: 400 }
-      )
-    }
-
-    const { name, email, password } = validationResult.data
-    const normalizedEmail = email.toLowerCase()
-
-    // Check if user exists
+    // Check if user exists - select only needed fields
     const existingUser = await sql`
-      SELECT id FROM users WHERE email = ${normalizedEmail}
+      SELECT id FROM users WHERE email = ${normalizedEmail} LIMIT 1
     `
-    
+
     if (existingUser.length > 0) {
+      // Don't reveal that email exists (timing attack prevention)
       return NextResponse.json(
-        { error: 'EMAIL_EXISTS', message: 'An account with this email already exists' },
+        { error: 'Registration failed. Please try again.' },
         { status: 400 }
       )
     }
@@ -67,29 +77,37 @@ export async function POST(request: NextRequest) {
       RETURNING id, email, name, created_at
     `
 
-    // Create token
-    const token = await createToken(newUser[0].id)
+    const userId = (newUser[0] as { id: string }).id
 
-    // Create response with user data
+    // Create token with 7-day expiry
+    const token = await createToken(userId)
+
+    // Create response with user data (exclude sensitive fields)
     const response = NextResponse.json({
       success: true,
-      user: newUser[0]
-    })
+      user: {
+        id: (newUser[0] as { id: string }).id,
+        email: (newUser[0] as { email: string }).email,
+        name: (newUser[0] as { name: string }).name,
+      }
+    },
+      { status: 201 }
+    )
 
-    // Set auth cookie on the response
+    // Set auth cookie with secure settings
     response.cookies.set('auth_token', token, {
       httpOnly: true,
-      secure: true,
-      sameSite: 'none',
+      secure: true, // HTTPS only
+      sameSite: 'lax', // Prevent CSRF, allow same-site requests
       maxAge: 60 * 60 * 24 * 7, // 7 days
       path: '/',
     })
 
     return response
   } catch (error) {
-    console.error('Registration error:', error)
+    console.error('[Auth] Registration error:', error)
     return NextResponse.json(
-      { error: 'Failed to register user' },
+      { error: 'Failed to register' },
       { status: 500 }
     )
   }
