@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     const normalizedEmail = email.toLowerCase()
 
     // Check rate limit by IP + email (more lenient for registration)
-    const rateLimitResult = checkRateLimit(clientIp, normalizedEmail, {
+    const rateLimitResult = await checkRateLimit(clientIp, normalizedEmail, {
       maxAttempts: 10,
       windowMs: 15 * 60 * 1000
     })

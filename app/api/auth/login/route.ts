@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     const { email, password } = validationResult.data
 
     // Check rate limit by IP + email (prevents both distributed attacks and single-email spam)
-    const rateLimitResult = checkRateLimit(clientIp, email)
+    const rateLimitResult = await checkRateLimit(clientIp, email)
     if (!rateLimitResult.success) {
       const retryAfter = Math.ceil((rateLimitResult.resetAt - Date.now()) / 1000)
       return NextResponse.json(
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Reset rate limit on successful login
-    resetRateLimit(clientIp, email)
+    await resetRateLimit(clientIp, email)
 
     // Create token with 7-day expiry
     const token = await createToken(user.id)
