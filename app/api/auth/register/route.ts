@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   try {
     // Get client IP for rate limiting
     const clientIp = getClientIp(request)
-    
+
     // Parse body first to get email for combined rate limit check
     let body: unknown
     try {
@@ -22,11 +22,11 @@ export async function POST(request: NextRequest) {
 
     // Validate input
     const validationResult = registerSchema.safeParse(body)
-    
+
     if (!validationResult.success) {
       // Log validation errors server-side (don't expose to client)
       console.error('[Auth] Registration validation error:', validationResult.error.flatten())
-      
+
       // Return generic error to user
       return NextResponse.json(
         { error: 'Invalid registration data' },
@@ -38,16 +38,16 @@ export async function POST(request: NextRequest) {
     const normalizedEmail = email.toLowerCase()
 
     // Check rate limit by IP + email (more lenient for registration)
-    const rateLimitResult = checkRateLimit(clientIp, normalizedEmail, { 
-      maxAttempts: 10, 
-      windowMs: 15 * 60 * 1000 
+    const rateLimitResult = checkRateLimit(clientIp, normalizedEmail, {
+      maxAttempts: 10,
+      windowMs: 15 * 60 * 1000
     })
-    
+
     if (!rateLimitResult.success) {
       const retryAfter = Math.ceil((rateLimitResult.resetAt - Date.now()) / 1000)
       return NextResponse.json(
         { error: 'Too many registration attempts. Please try again later.' },
-        { 
+        {
           status: 429,
           headers: {
             'Retry-After': String(retryAfter),
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     const existingUser = await sql`
       SELECT id FROM users WHERE email = ${normalizedEmail} LIMIT 1
     `
-    
+
     if (existingUser.length > 0) {
       // Don't reveal that email exists (timing attack prevention)
       return NextResponse.json(
@@ -90,7 +90,9 @@ export async function POST(request: NextRequest) {
         email: (newUser[0] as { email: string }).email,
         name: (newUser[0] as { name: string }).name,
       }
-    })
+    },
+      { status: 201 }
+    )
 
     // Set auth cookie with secure settings
     response.cookies.set('auth_token', token, {

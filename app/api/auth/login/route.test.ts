@@ -32,7 +32,7 @@ vi.mock('@/lib/auth', () => ({
 describe('POST /api/login', () => {
   it('возвращает 400 если нет email', async () => {
     const req = {
-      json: async () => ({ password: '123' })
+      json: async () => ({ password: '12345678' })
     } as any
 
     const res = await POST(req)
@@ -45,7 +45,7 @@ describe('POST /api/login', () => {
     sql.mockResolvedValue([])
 
     const req = {
-      json: async () => ({ email: 'test@test.com', password: '123' })
+      json: async () => ({ email: 'test@test.com', password: '12345678' })
     } as any
 
     const res = await POST(req)
@@ -61,7 +61,7 @@ describe('POST /api/login', () => {
     verifyPassword.mockResolvedValue(false)
 
     const req = {
-      json: async () => ({ email: 'test@test.com', password: '123' })
+      json: async () => ({ email: 'test@test.com', password: '12345678' })
     } as any
 
     const res = await POST(req)
@@ -81,7 +81,7 @@ describe('POST /api/login', () => {
     createToken.mockResolvedValue('token123')
 
     const req = {
-      json: async () => ({ email: 'test@test.com', password: '123' })
+      json: async () => ({ email: 'test@test.com', password: '12345678' })
     } as any
 
     const res = await POST(req)
