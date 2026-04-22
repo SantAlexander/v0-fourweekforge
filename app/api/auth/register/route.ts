@@ -1,58 +1,57 @@
 import { sql } from '@/lib/db'
 import { hashPassword, createToken } from '@/lib/auth'
+import { registerSchema } from '@/lib/schemas/user'
+import { checkRateLimit, getClientIp } from '@/lib/rate-limit'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, name, password } = await request.json()
-
-    // Detailed validation with specific error codes
-    if (!name || name.trim().length === 0) {
+    // Get client IP for rate limiting
+    const clientIp = getClientIp(request)
+    
+    // Check rate limit (more lenient for registration: 10 attempts per 15 min)
+    const rateLimitResult = checkRateLimit(clientIp, { 
+      maxAttempts: 10, 
+      windowMs: 15 * 60 * 1000 
+    })
+    
+    if (!rateLimitResult.success) {
+      const retryAfter = Math.ceil((rateLimitResult.resetAt - Date.now()) / 1000)
       return NextResponse.json(
-        { error: 'NAME_REQUIRED', message: 'Name is required' },
+        { error: 'Too many registration attempts. Please try again later.' },
+        { 
+          status: 429,
+          headers: {
+            'Retry-After': String(retryAfter),
+          }
+        }
+      )
+    }
+
+    // Parse and validate input
+    const body = await request.json()
+    const validationResult = registerSchema.safeParse(body)
+    
+    if (!validationResult.success) {
+      const errors = validationResult.error.flatten().fieldErrors
+      return NextResponse.json(
+        { 
+          error: 'VALIDATION_FAILED',
+          message: 'Validation failed',
+          details: errors
+        },
         { status: 400 }
       )
     }
 
-    if (name.trim().length < 2) {
-      return NextResponse.json(
-        { error: 'NAME_TOO_SHORT', message: 'Name must be at least 2 characters' },
-        { status: 400 }
-      )
-    }
-
-    if (!email || email.trim().length === 0) {
-      return NextResponse.json(
-        { error: 'EMAIL_REQUIRED', message: 'Email is required' },
-        { status: 400 }
-      )
-    }
-
-    // Email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: 'EMAIL_INVALID', message: 'Please enter a valid email address' },
-        { status: 400 }
-      )
-    }
-
-    if (!password) {
-      return NextResponse.json(
-        { error: 'PASSWORD_REQUIRED', message: 'Password is required' },
-        { status: 400 }
-      )
-    }
-
-    if (password.length < 6) {
-      return NextResponse.json(
-        { error: 'PASSWORD_TOO_SHORT', message: 'Password must be at least 6 characters' },
-        { status: 400 }
-      )
-    }
+    const { name, email, password } = validationResult.data
+    const normalizedEmail = email.toLowerCase()
 
     // Check if user exists
-    const existingUser = await sql`SELECT id FROM users WHERE email = ${email}`
+    const existingUser = await sql`
+      SELECT id FROM users WHERE email = ${normalizedEmail}
+    `
+    
     if (existingUser.length > 0) {
       return NextResponse.json(
         { error: 'EMAIL_EXISTS', message: 'An account with this email already exists' },
@@ -64,7 +63,7 @@ export async function POST(request: NextRequest) {
     const passwordHash = await hashPassword(password)
     const newUser = await sql`
       INSERT INTO users (email, name, password_hash)
-      VALUES (${email}, ${name}, ${passwordHash})
+      VALUES (${normalizedEmail}, ${name.trim()}, ${passwordHash})
       RETURNING id, email, name, created_at
     `
 
@@ -78,7 +77,6 @@ export async function POST(request: NextRequest) {
     })
 
     // Set auth cookie on the response
-    // Using sameSite: 'none' and secure: true for cross-origin iframe support (v0 preview)
     response.cookies.set('auth_token', token, {
       httpOnly: true,
       secure: true,
