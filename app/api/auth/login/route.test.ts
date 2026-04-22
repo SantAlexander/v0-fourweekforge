@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 // 🧠 MOCK DB
 vi.mock("@/lib/db", () => ({
@@ -17,8 +17,6 @@ vi.mock('@/lib/rate-limit', () => ({
   resetRateLimit: vi.fn(),
   getClientIp: vi.fn().mockReturnValue('127.0.0.1'),
 }));
-
-import { describe, it, expect, vi } from 'vitest'
 
 // мокаем зависимости
 vi.mock('@/lib/db', () => ({
